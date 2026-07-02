@@ -1,5 +1,6 @@
 import MarketingNavbar from '@/components/layout/MarketingNavbar';
 import { ReactNode } from 'react';
+import Link from 'next/link';
 
 export default function MarketingLayout({ children }: { children: ReactNode }) {
   return (
@@ -15,9 +16,9 @@ export default function MarketingLayout({ children }: { children: ReactNode }) {
             © {new Date().getFullYear()} ServiceApotheke.tech. Alle Rechte vorbehalten. 
           </p>
           <div className="mt-4 flex justify-center space-x-6 text-sm text-slate-500">
-            <a href="#" className="hover:text-white transition-colors">Impressum</a>
-            <a href="#" className="hover:text-white transition-colors">Datenschutz</a>
-            <a href="#" className="hover:text-white transition-colors">AGB</a>
+            <Link href="/impressum" className="hover:text-white transition-colors">Impressum</Link>
+            <Link href="/datenschutz" className="hover:text-white transition-colors">Datenschutz</Link>
+            <Link href="/agb" className="hover:text-white transition-colors">AGB</Link>
           </div>
         </div>
       </footer>
