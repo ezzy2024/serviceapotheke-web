@@ -11,48 +11,33 @@ export default function ImpressumPage() {
             <section>
               <h2 className="text-xl font-bold text-slate-900 mb-3">Angaben gemäß § 5 TMG</h2>
               <p>
-                ServiceApotheke GmbH<br />
-                Musterstraße 1<br />
-                12345 Berlin
+                ServiceApotheke<br />
+                Karlsplatz 2<br />
+                47798 Krefeld
               </p>
             </section>
 
             <section>
               <h2 className="text-xl font-bold text-slate-900 mb-3">Vertreten durch</h2>
-              <p>Max Mustermann (Geschäftsführer)</p>
+              <p>Ezzeldin Hassan</p>
             </section>
 
             <section>
               <h2 className="text-xl font-bold text-slate-900 mb-3">Kontakt</h2>
               <p>
-                Telefon: +49 (0) 123 44 55 66<br />
-                E-Mail: info@serviceapotheke.tech
+                Telefon: +4915166884447<br />
+                E-Mail: ezzeldinemad90@gmail.com / team@serviceapotheke.tech
               </p>
             </section>
 
-            <section>
-              <h2 className="text-xl font-bold text-slate-900 mb-3">Registereintrag</h2>
-              <p>
-                Eintragung im Handelsregister.<br />
-                Registergericht: Amtsgericht Charlottenburg (Berlin)<br />
-                Registernummer: HRB 123456 B
-              </p>
-            </section>
 
-            <section>
-              <h2 className="text-xl font-bold text-slate-900 mb-3">Umsatzsteuer-ID</h2>
-              <p>
-                Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz:<br />
-                DE 123 456 789
-              </p>
-            </section>
 
             <section>
               <h2 className="text-xl font-bold text-slate-900 mb-3">Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h2>
               <p>
-                Max Mustermann<br />
-                Musterstraße 1<br />
-                12345 Berlin
+                Ezzeldin Hassan<br />
+                Karlsplatz 2<br />
+                47798 Krefeld
               </p>
             </section>
           </div>

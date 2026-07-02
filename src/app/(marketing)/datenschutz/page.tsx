@@ -22,7 +22,7 @@ export default function DatenschutzPage() {
                 Die verantwortliche Stelle für die Datenverarbeitung auf dieser Website ist:<br /><br />
                 ServiceApotheke GmbH<br />
                 Musterstraße 1<br />
-                12345 Berlin<br />
+                47798 Krefeld<br />
                 E-Mail: datenschutz@serviceapotheke.tech
               </p>
             </section>
