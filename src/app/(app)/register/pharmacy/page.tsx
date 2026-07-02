@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, ArrowLeft, KeySquare, ShieldCheck } from 'lucide-react';
+import { ArrowRight, ArrowLeft, ShieldCheck, FileText, UploadCloud } from 'lucide-react';
 import api from '@/lib/api';
 import { useRouter } from 'next/navigation';
 
@@ -19,6 +19,8 @@ export default function PharmacyWizard() {
     phoneNumber: '',
     address: '',
     licenseNumber: '',
+    pdlManagement: false,
+    emergencyMatching: false,
   });
 
   const nextStep = () => setStep(s => s + 1);
@@ -123,16 +125,41 @@ export default function PharmacyWizard() {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
-                  className="space-y-4"
+                  className="space-y-6"
                 >
-                  <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center">
-                    <KeySquare className="w-6 h-6 mr-2 text-teal-600" /> Telemetrie-Setup
+                  <h3 className="text-xl font-bold text-slate-800 flex items-center">
+                    <FileText className="w-6 h-6 mr-2 text-teal-600" /> Profil & Dokumente
                   </h3>
-                  <p className="text-sm text-slate-500 mb-4">Du kannst später in deinem Dashboard einen x-api-key generieren, um deine Kühlschrank-Temperatursensoren direkt an unser System anzubinden.</p>
                   
-                  <div className="bg-slate-100 rounded-xl p-6 border border-slate-200">
-                    <h4 className="font-semibold text-slate-700">IoT-Hardware Ready</h4>
-                    <p className="text-sm text-slate-500 mt-2">Nach der Registrierung findest du alle Infos zur Integration in deinem Profil. Die Anomalie-Erkennung ist sofort aktiv.</p>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">Apothekenerlaubnis hochladen</label>
+                    <div className="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center hover:bg-slate-50 transition-colors cursor-pointer">
+                      <UploadCloud className="w-8 h-8 text-slate-400 mx-auto mb-3" />
+                      <p className="text-sm text-slate-600">PDF, JPG oder PNG (max. 5MB)</p>
+                      <button className="mt-3 px-4 py-2 bg-slate-100 text-slate-700 text-sm font-medium rounded-lg hover:bg-slate-200">Datei auswählen</button>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4 pt-4 border-t border-slate-100">
+                    <label className="flex items-start space-x-3 cursor-pointer group">
+                      <div className="flex-shrink-0 mt-1">
+                        <input type="checkbox" checked={formData.pdlManagement} onChange={e => setFormData({...formData, pdlManagement: e.target.checked})} className="w-5 h-5 rounded border-slate-300 text-teal-600 focus:ring-teal-500" />
+                      </div>
+                      <div>
+                        <span className="block text-sm font-medium text-slate-700 group-hover:text-teal-700 transition-colors">pDL-Management aktivieren</span>
+                        <span className="block text-xs text-slate-500">Automatisierte Dokumentation von Pharmazeutischen Dienstleistungen.</span>
+                      </div>
+                    </label>
+
+                    <label className="flex items-start space-x-3 cursor-pointer group">
+                      <div className="flex-shrink-0 mt-1">
+                        <input type="checkbox" checked={formData.emergencyMatching} onChange={e => setFormData({...formData, emergencyMatching: e.target.checked})} className="w-5 h-5 rounded border-slate-300 text-teal-600 focus:ring-teal-500" />
+                      </div>
+                      <div>
+                        <span className="block text-sm font-medium text-slate-700 group-hover:text-teal-700 transition-colors">Personal-Matching für Notdienste</span>
+                        <span className="block text-xs text-slate-500">Erhalte priorisierte Vorschläge für Wochenend- und Nachtschichten.</span>
+                      </div>
+                    </label>
                   </div>
                 </motion.div>
               )}
@@ -161,7 +188,7 @@ export default function PharmacyWizard() {
                 disabled={isLoading}
                 className="flex items-center px-8 py-3 rounded-xl font-bold text-white bg-teal-600 hover:bg-teal-700 transition-colors disabled:opacity-50"
               >
-                {isLoading ? 'Lädt...' : 'Konto erstellen'}
+                {isLoading ? 'Lädt...' : 'Registrierung abschließen'}
               </button>
             )}
           </div>

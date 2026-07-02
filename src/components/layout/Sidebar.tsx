@@ -7,8 +7,7 @@ import {
   LayoutDashboard, 
   Briefcase, 
   FileText, 
-  Settings, 
-  ThermometerSnowflake,
+  Settings,
   Radar
 } from 'lucide-react';
 
@@ -20,7 +19,6 @@ export default function Sidebar() {
     { name: 'Übersicht', href: '/dashboard/pharmacy', icon: LayoutDashboard },
     { name: 'Vakanzen', href: '/dashboard/pharmacy/jobs', icon: Briefcase },
     { name: 'Rechnungen', href: '/dashboard/pharmacy/invoices', icon: FileText },
-    { name: 'Telemetrie', href: '/dashboard/pharmacy/telemetry', icon: ThermometerSnowflake },
     { name: 'Einstellungen', href: '/dashboard/pharmacy/settings', icon: Settings },
   ];
 

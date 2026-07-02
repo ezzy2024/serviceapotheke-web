@@ -38,7 +38,7 @@ export default function RegisterHub() {
               </div>
               <h2 className="text-2xl font-bold text-slate-800 mb-3">Für Apotheken (B2B)</h2>
               <p className="text-slate-500 mb-8 leading-relaxed">
-                Inseriere Vakanzen und finde verifizierte Vertretungsapotheker. Profitiere von automatisierter Rechnungsstellung und Echtzeit-Hardware-Telemetrie.
+                Inseriere Vakanzen und finde verifizierte Vertretungsapotheker. Profitiere von automatisierter Rechnungsstellung und wasserdichter AÜG-Compliance.
               </p>
               <div className="flex items-center text-teal-600 font-semibold group-hover:translate-x-2 transition-transform">
                 Apotheke registrieren <ArrowRight className="ml-2 w-5 h-5" />
