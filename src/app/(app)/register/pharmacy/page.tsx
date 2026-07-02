@@ -19,8 +19,8 @@ export default function PharmacyWizard() {
     phoneNumber: '',
     address: '',
     licenseNumber: '',
-    pdlManagement: false,
-    emergencyMatching: false,
+    description: '',
+    documentName: '',
   });
 
   const nextStep = () => setStep(s => s + 1);
@@ -133,33 +133,41 @@ export default function PharmacyWizard() {
                   
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-2">Apothekenerlaubnis hochladen</label>
-                    <div className="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center hover:bg-slate-50 transition-colors cursor-pointer">
+                    <label className="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center hover:bg-slate-50 transition-colors cursor-pointer block relative">
+                      <input 
+                        type="file" 
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) setFormData({...formData, documentName: file.name});
+                        }}
+                      />
                       <UploadCloud className="w-8 h-8 text-slate-400 mx-auto mb-3" />
-                      <p className="text-sm text-slate-600">PDF, JPG oder PNG (max. 5MB)</p>
-                      <button className="mt-3 px-4 py-2 bg-slate-100 text-slate-700 text-sm font-medium rounded-lg hover:bg-slate-200">Datei auswählen</button>
-                    </div>
+                      <p className="text-sm text-slate-600">
+                        {formData.documentName ? (
+                          <span className="font-bold text-teal-600">{formData.documentName} ausgewählt</span>
+                        ) : (
+                          "PDF, JPG oder PNG (max. 5MB)"
+                        )}
+                      </p>
+                      {!formData.documentName && (
+                        <div className="mt-3 inline-block px-4 py-2 bg-slate-100 text-slate-700 text-sm font-medium rounded-lg hover:bg-slate-200">
+                          Datei auswählen
+                        </div>
+                      )}
+                    </label>
                   </div>
 
-                  <div className="space-y-4 pt-4 border-t border-slate-100">
-                    <label className="flex items-start space-x-3 cursor-pointer group">
-                      <div className="flex-shrink-0 mt-1">
-                        <input type="checkbox" checked={formData.pdlManagement} onChange={e => setFormData({...formData, pdlManagement: e.target.checked})} className="w-5 h-5 rounded border-slate-300 text-teal-600 focus:ring-teal-500" />
-                      </div>
-                      <div>
-                        <span className="block text-sm font-medium text-slate-700 group-hover:text-teal-700 transition-colors">pDL-Management aktivieren</span>
-                        <span className="block text-xs text-slate-500">Automatisierte Dokumentation von Pharmazeutischen Dienstleistungen.</span>
-                      </div>
-                    </label>
-
-                    <label className="flex items-start space-x-3 cursor-pointer group">
-                      <div className="flex-shrink-0 mt-1">
-                        <input type="checkbox" checked={formData.emergencyMatching} onChange={e => setFormData({...formData, emergencyMatching: e.target.checked})} className="w-5 h-5 rounded border-slate-300 text-teal-600 focus:ring-teal-500" />
-                      </div>
-                      <div>
-                        <span className="block text-sm font-medium text-slate-700 group-hover:text-teal-700 transition-colors">Personal-Matching für Notdienste</span>
-                        <span className="block text-xs text-slate-500">Erhalte priorisierte Vorschläge für Wochenend- und Nachtschichten.</span>
-                      </div>
-                    </label>
+                  <div className="space-y-2 pt-4 border-t border-slate-100">
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Apotheken-Beschreibung & Weitere Details (Optional)</label>
+                    <p className="text-xs text-slate-500 mb-2">Gib potenziellen Vertretern einen kurzen Einblick in deine Apotheke (z.B. Teamgröße, Parkplätze, Kundenstamm).</p>
+                    <textarea 
+                      rows={4}
+                      value={formData.description || ''} 
+                      onChange={e => setFormData({...formData, description: e.target.value})} 
+                      className="w-full px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-teal-500 outline-none text-slate-900 placeholder:text-slate-400 resize-none" 
+                      placeholder="Wir sind eine lebhafte Center-Apotheke mit einem jungen Team..."
+                    />
                   </div>
                 </motion.div>
               )}
