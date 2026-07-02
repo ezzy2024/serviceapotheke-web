@@ -20,7 +20,10 @@ export default function PharmacistWizard() {
     phoneNumber: '',
     address: '',
     maxDistanceKm: 50,
+    qualification: 'Approbation',
+    wwsProficiency: 'Pharmatechnik IXOS'
   });
+  const [customSoftware, setCustomSoftware] = useState('');
   
   const [file, setFile] = useState<File | null>(null);
 
@@ -38,6 +41,8 @@ export default function PharmacistWizard() {
         password: formData.password,
         phoneNumber: formData.phoneNumber,
         address: formData.address,
+        qualification: formData.qualification,
+        wwsProficiency: formData.wwsProficiency === 'Andere' ? customSoftware : formData.wwsProficiency
       });
 
       // 2. Login to get cookie
@@ -52,9 +57,7 @@ export default function PharmacistWizard() {
       if (file) {
         const fileData = new FormData();
         fileData.append('file', file);
-        await api.post(`/Pharmacist/${userId}/upload-approbation`, fileData, {
-          headers: { 'Content-Type': 'multipart/form-data' }
-        });
+        await api.post(`/Pharmacist/${userId}/upload-approbation`, fileData);
       }
 
       await api.put(`/Pharmacist/${userId}/profile`, {
@@ -128,6 +131,49 @@ export default function PharmacistWizard() {
                 >
                   <h3 className="text-xl font-bold text-slate-800 mb-4">Adresse & Einsatzradius</h3>
                   <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-1">Qualifikation</label>
+                      <select 
+                        value={formData.qualification}
+                        onChange={e => setFormData({...formData, qualification: e.target.value})}
+                        className="w-full px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-indigo-500 outline-none"
+                      >
+                        <option value="Approbation">Approbierte/r Apotheker/in</option>
+                        <option value="PTA">PTA</option>
+                        <option value="PKA">PKA</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-1">Warenwirtschaftssystem (WWS)</label>
+                      <select 
+                        value={formData.wwsProficiency}
+                        onChange={e => {
+                          setFormData({...formData, wwsProficiency: e.target.value});
+                          if (e.target.value !== 'Andere') setCustomSoftware('');
+                        }}
+                        className="w-full px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-indigo-500 outline-none mb-2"
+                      >
+                        <option value="Pharmatechnik IXOS">Pharmatechnik IXOS</option>
+                        <option value="CGM Lauer">CGM Lauer</option>
+                        <option value="ApothekenSysteme">ApothekenSysteme (ADG)</option>
+                        <option value="awinta">awinta</option>
+                        <option value="Sanitas">Sanitas</option>
+                        <option value="Andere">Andere (Bitte angeben)</option>
+                      </select>
+                      
+                      {formData.wwsProficiency === 'Andere' && (
+                        <input 
+                          type="text" 
+                          value={customSoftware}
+                          onChange={e => setCustomSoftware(e.target.value)}
+                          placeholder="Welches WWS nutzt du?"
+                          required
+                          className="w-full px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-indigo-500 outline-none"
+                        />
+                      )}
+                    </div>
+
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-1">Vollständige Adresse (für Geocoding)</label>
                       <input type="text" placeholder="Musterstraße 1, 12345 Berlin" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="w-full px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-indigo-500 outline-none" required />

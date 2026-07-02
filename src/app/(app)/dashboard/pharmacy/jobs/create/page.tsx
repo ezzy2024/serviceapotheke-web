@@ -16,10 +16,15 @@ export default function CreateJobPost() {
   const [endDate, setEndDate] = useState('');
   const [salary, setSalary] = useState<number>(45); // Default to minimum
   const [requiredSoftware, setRequiredSoftware] = useState('Pharmatechnik IXOS');
+  const [customSoftware, setCustomSoftware] = useState('');
   
   // Travel Expenses
   const [travelExpenseCap, setTravelExpenseCap] = useState<number | ''>('');
   
+  // Qualification & Reason
+  const [requiredQualification, setRequiredQualification] = useState('Approbation');
+  const [reasonForVacancy, setReasonForVacancy] = useState('Urlaub');
+
   // Accommodation
   const [accommodationType, setAccommodationType] = useState('');
   
@@ -69,7 +74,9 @@ export default function CreateJobPost() {
         startDate: new Date(startDate).toISOString(),
         endDate: new Date(endDate).toISOString(),
         salary,
-        requiredSoftware,
+        requiredQualifications: requiredQualification,
+        requiredWws: requiredSoftware === 'Andere' ? customSoftware : requiredSoftware,
+        reasonForVacancy: reasonForVacancy,
         isUrgent: false,
         
         // Serialize additional metadata into the notes/description field or dedicated columns if they exist
@@ -146,19 +153,63 @@ export default function CreateJobPost() {
               </div>
             </div>
 
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Benötigte Qualifikation</label>
+                <select 
+                  value={requiredQualification}
+                  onChange={e => setRequiredQualification(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl border bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition-colors"
+                >
+                  <option value="Approbation">Approbierte/r Apotheker/in</option>
+                  <option value="PTA">PTA</option>
+                  <option value="PKA">PKA</option>
+                </select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Vertretungsgrund</label>
+                <select 
+                  value={reasonForVacancy}
+                  onChange={e => setReasonForVacancy(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl border bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition-colors"
+                >
+                  <option value="Urlaub">Urlaubsvertretung</option>
+                  <option value="Krankheit">Krankheitsausfall</option>
+                  <option value="Engpass">Personalengpass</option>
+                  <option value="Notdienst">Notdienst</option>
+                </select>
+              </div>
+            </div>
+
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Warenwirtschaftssystem (WWS)</label>
               <select 
                 value={requiredSoftware}
-                onChange={e => setRequiredSoftware(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition-colors"
+                onChange={e => {
+                  setRequiredSoftware(e.target.value);
+                  if (e.target.value !== 'Andere') setCustomSoftware('');
+                }}
+                className="w-full px-4 py-3 rounded-xl border bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition-colors mb-2"
               >
                 <option value="Pharmatechnik IXOS">Pharmatechnik IXOS</option>
                 <option value="CGM Lauer">CGM Lauer</option>
                 <option value="ApothekenSysteme">ApothekenSysteme (ADG)</option>
                 <option value="awinta">awinta</option>
-                <option value="Andere">Andere</option>
+                <option value="Sanitas">Sanitas</option>
+                <option value="Andere">Andere (Bitte angeben)</option>
               </select>
+              
+              {requiredSoftware === 'Andere' && (
+                <input 
+                  type="text" 
+                  value={customSoftware}
+                  onChange={e => setCustomSoftware(e.target.value)}
+                  placeholder="Welches WWS wird verwendet?"
+                  required
+                  className="w-full px-4 py-3 rounded-xl border border-indigo-200 bg-indigo-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition-colors"
+                />
+              )}
             </div>
           </div>
 
