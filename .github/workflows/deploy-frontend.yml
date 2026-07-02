@@ -56,3 +56,10 @@ jobs:
           image: ${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/serviceapotheke/web:${{ github.sha }}
           env_vars: |
             NEXT_PUBLIC_API_URL=${{ env.PROD_API_URL }}
+
+      - name: Make Cloud Run Service Public
+        run: |
+          gcloud run services add-iam-policy-binding ${{ env.SERVICE }} \
+            --region=${{ env.REGION }} \
+            --member="allUsers" \
+            --role="roles/run.invoker"
