@@ -107,15 +107,15 @@ export default function PharmacistWizard() {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="col-span-2">
                       <label className="block text-sm font-medium text-slate-700 mb-1">Vollständiger Name</label>
-                      <input type="text" value={formData.fullName} onChange={e => setFormData({...formData, fullName: e.target.value})} className="w-full px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-indigo-500 outline-none" required />
+                      <input type="text" value={formData.fullName} onChange={e => setFormData({...formData, fullName: e.target.value})} className="w-full px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-indigo-500 outline-none text-slate-900 placeholder:text-slate-400" required />
                     </div>
                     <div className="col-span-2 md:col-span-1">
                       <label className="block text-sm font-medium text-slate-700 mb-1">E-Mail</label>
-                      <input type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="w-full px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-indigo-500 outline-none" required />
+                      <input type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="w-full px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-indigo-500 outline-none text-slate-900 placeholder:text-slate-400" required />
                     </div>
                     <div className="col-span-2 md:col-span-1">
                       <label className="block text-sm font-medium text-slate-700 mb-1">Passwort</label>
-                      <input type="password" value={formData.password} onChange={e => setFormData({...formData, password: e.target.value})} className="w-full px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-indigo-500 outline-none" required />
+                      <input type="password" value={formData.password} onChange={e => setFormData({...formData, password: e.target.value})} className="w-full px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-indigo-500 outline-none text-slate-900 placeholder:text-slate-400" required />
                     </div>
                   </div>
                 </motion.div>
@@ -136,7 +136,7 @@ export default function PharmacistWizard() {
                       <select 
                         value={formData.qualification}
                         onChange={e => setFormData({...formData, qualification: e.target.value})}
-                        className="w-full px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-indigo-500 outline-none"
+                        className="w-full px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-indigo-500 outline-none text-slate-900 placeholder:text-slate-400"
                       >
                         <option value="Approbation">Approbierte/r Apotheker/in</option>
                         <option value="PTA">PTA</option>
@@ -169,14 +169,14 @@ export default function PharmacistWizard() {
                           onChange={e => setCustomSoftware(e.target.value)}
                           placeholder="Welches WWS nutzt du?"
                           required
-                          className="w-full px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-indigo-500 outline-none"
+                          className="w-full px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-indigo-500 outline-none text-slate-900 placeholder:text-slate-400"
                         />
                       )}
                     </div>
 
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-1">Vollständige Adresse (für Geocoding)</label>
-                      <input type="text" placeholder="Musterstraße 1, 12345 Berlin" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="w-full px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-indigo-500 outline-none" required />
+                      <input type="text" placeholder="Musterstraße 1, 12345 Berlin" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="w-full px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-indigo-500 outline-none text-slate-900 placeholder:text-slate-400" required />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-1">Maximaler Einsatzradius (km)</label>

@@ -81,19 +81,19 @@ export default function PharmacyWizard() {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="col-span-2">
                       <label className="block text-sm font-medium text-slate-700 mb-1">Name der Apotheke</label>
-                      <input type="text" value={formData.pharmacyName} onChange={e => setFormData({...formData, pharmacyName: e.target.value})} className="w-full px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-teal-500 outline-none" required />
+                      <input type="text" value={formData.pharmacyName} onChange={e => setFormData({...formData, pharmacyName: e.target.value})} className="w-full px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-teal-500 outline-none text-slate-900 placeholder:text-slate-400" required />
                     </div>
                     <div className="col-span-2">
                       <label className="block text-sm font-medium text-slate-700 mb-1">Adresse (inkl. PLZ/Ort)</label>
-                      <input type="text" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="w-full px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-teal-500 outline-none" required />
+                      <input type="text" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="w-full px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-teal-500 outline-none text-slate-900 placeholder:text-slate-400" required />
                     </div>
                     <div className="col-span-2 md:col-span-1">
                       <label className="block text-sm font-medium text-slate-700 mb-1">Kontakt-E-Mail</label>
-                      <input type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="w-full px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-teal-500 outline-none" required />
+                      <input type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="w-full px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-teal-500 outline-none text-slate-900 placeholder:text-slate-400" required />
                     </div>
                     <div className="col-span-2 md:col-span-1">
                       <label className="block text-sm font-medium text-slate-700 mb-1">Passwort</label>
-                      <input type="password" value={formData.password} onChange={e => setFormData({...formData, password: e.target.value})} className="w-full px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-teal-500 outline-none" required />
+                      <input type="password" value={formData.password} onChange={e => setFormData({...formData, password: e.target.value})} className="w-full px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-teal-500 outline-none text-slate-900 placeholder:text-slate-400" required />
                     </div>
                   </div>
                 </motion.div>
@@ -114,7 +114,7 @@ export default function PharmacyWizard() {
                   
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-1">Nummer der Betriebserlaubnis</label>
-                    <input type="text" placeholder="z.B. BE-12345-67" value={formData.licenseNumber} onChange={e => setFormData({...formData, licenseNumber: e.target.value})} className="w-full px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-teal-500 outline-none" required />
+                    <input type="text" placeholder="z.B. BE-12345-67" value={formData.licenseNumber} onChange={e => setFormData({...formData, licenseNumber: e.target.value})} className="w-full px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-teal-500 outline-none text-slate-900 placeholder:text-slate-400" required />
                   </div>
                 </motion.div>
               )}
