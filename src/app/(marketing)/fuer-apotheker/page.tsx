@@ -1,114 +1,121 @@
 import Link from 'next/link';
-import { MapPin, Euro, Receipt, ChevronRight } from 'lucide-react';
+import { Banknote, FileCheck2, Map, CheckCircle2 } from 'lucide-react';
+import FadeIn from '@/components/ui/FadeIn';
 
 export const metadata = {
-  title: 'Für Apotheker | ServiceApotheke - Honorarvertretung ohne Bürokratie',
-  description: 'Finde lukrative Schichten in deiner Nähe. Garantierter Mindestlohn, automatische Fahrtkostenerstattung und Zero-Touch Invoicing für Freelance Apotheker.',
+  title: 'Für Apotheker | ServiceApotheke - Honorarvertretung für Freelancer',
+  description: 'Finden Sie lukrative Schichten als Honorarvertreter. Haversine Matching, automatisierte Rechnungen und garantierter AÜG-Schutz.',
 };
 
 export default function ForPharmacists() {
   return (
-    <div className="bg-slate-50">
+    <div className="bg-white min-h-screen">
       {/* Hero */}
-      <section className="py-20 border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-6xl font-extrabold text-slate-900 mb-6">
-            Konzentriere dich auf die Pharmazie. <br/>
-            <span className="text-indigo-600">Wir machen die Administration.</span>
-          </h1>
-          <p className="text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">
-            Als Vertretungsapotheker willst du Apotheken helfen und gutes Geld verdienen – nicht stundenlang Rechnungen tippen. ServiceApotheke automatisiert deinen gesamten Workflow.
-          </p>
-          <Link 
-            href="/register/pharmacist" 
-            className="inline-flex items-center justify-center px-8 py-4 text-lg font-bold rounded-2xl text-white bg-slate-900 hover:bg-indigo-600 shadow-xl transition-all"
-          >
-            Kostenlos als Freelancer starten
-          </Link>
+      <section className="bg-zinc-50 pt-32 pb-24 border-b border-zinc-200/60 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <FadeIn delay={0.1}>
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-zinc-900 mb-6 tracking-tight">
+                  Ihre Expertise. <br className="hidden md:block" />
+                  <span className="text-zinc-400">Ihre Bedingungen.</span>
+                </h1>
+              </FadeIn>
+              <FadeIn delay={0.2}>
+                <p className="text-base md:text-lg text-zinc-500 mb-8 leading-relaxed max-w-xl">
+                  Konzentrieren Sie sich auf Ihre pharmazeutische Arbeit. Wir übernehmen die lästige Administration: Verträge, AÜG-Nachweise und die gesamte Rechnungsstellung – vollautomatisiert.
+                </p>
+              </FadeIn>
+              <FadeIn delay={0.3}>
+                <Link 
+                  href="/register/pharmacist" 
+                  className="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold rounded-lg text-white bg-zinc-900 hover:bg-zinc-800 shadow-sm transition-all hover:shadow-md"
+                >
+                  Als Freelancer starten
+                </Link>
+              </FadeIn>
+            </div>
+            
+            <div className="hidden md:block relative">
+              <FadeIn delay={0.4} direction="left">
+                <div className="bg-white p-8 rounded-2xl shadow-sm border border-zinc-200/60 relative w-full max-w-md mx-auto">
+                  <div className="flex items-center space-x-4 mb-6">
+                    <div className="w-10 h-10 bg-zinc-50 border border-zinc-100 text-zinc-800 rounded-lg flex items-center justify-center">
+                      <Banknote className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-zinc-900 text-sm">Auszahlung initiiert</h3>
+                      <p className="text-xs text-zinc-500">Zero-Touch Invoicing erfolgreich</p>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="h-2 bg-zinc-100 rounded-full w-full"></div>
+                    <div className="h-2 bg-zinc-100 rounded-full w-3/4"></div>
+                  </div>
+                </div>
+              </FadeIn>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Benefits */}
-      <section className="py-24 bg-white">
+      <section className="py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
-            <div className="space-y-10">
-              <div className="flex">
-                <div className="flex-shrink-0 mt-1">
-                  <div className="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center">
-                    <Euro className="w-6 h-6" />
-                  </div>
-                </div>
-                <div className="ml-6">
-                  <h3 className="text-xl font-bold text-slate-900">Garantiert faire Konditionen</h3>
-                  <p className="mt-2 text-slate-600 leading-relaxed">
-                    Unsere Plattform erzwingt ein hartes Limit: Keine Schicht wird unter 45€/h ausgeschrieben. Zudem ist eine automatische Fahrtkostenerstattung (0,30€/km) tief in der Architektur verankert.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex">
-                <div className="flex-shrink-0 mt-1">
-                  <div className="w-12 h-12 bg-cyan-50 text-cyan-600 rounded-xl flex items-center justify-center">
-                    <MapPin className="w-6 h-6" />
-                  </div>
-                </div>
-                <div className="ml-6">
-                  <h3 className="text-xl font-bold text-slate-900">Schicht-Radar mit Haversine-Matching</h3>
-                  <p className="mt-2 text-slate-600 leading-relaxed">
-                    Lege deinen Einsatzradius fest. Unser Backend berechnet in Echtzeit via Haversine-Algorithmus exakt die Vakanzen, die für dich logistisch Sinn machen. Frictionless One-Click Application.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex">
-                <div className="flex-shrink-0 mt-1">
-                  <div className="w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center">
-                    <Receipt className="w-6 h-6" />
-                  </div>
-                </div>
-                <div className="ml-6">
-                  <h3 className="text-xl font-bold text-slate-900">Zero-Touch Invoicing</h3>
-                  <p className="mt-2 text-slate-600 leading-relaxed">
-                    Nach der Schicht klickst du auf "Abschließen". Das System generiert automatisch eine rechtskonforme Rechnung und stellt sie der Apotheke zu. Keine Word-Vorlagen, kein Buchhaltungs-Chaos.
-                  </p>
-                </div>
-              </div>
+          <FadeIn delay={0.1}>
+            <div className="text-center mb-20">
+              <h2 className="text-3xl font-extrabold text-zinc-900 tracking-tight">Die beste Plattform für Freelancer</h2>
             </div>
+          </FadeIn>
 
-            <div className="bg-slate-50 p-8 rounded-3xl border border-slate-200">
-              <h3 className="text-2xl font-bold text-slate-900 mb-6">Dein Onboarding</h3>
-              <ul className="space-y-6">
-                <li className="flex items-start">
-                  <span className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold">1</span>
-                  <div className="ml-4">
-                    <h4 className="font-bold text-slate-800">Account anlegen</h4>
-                    <p className="text-sm text-slate-500">Persönliche Daten & Radius definieren</p>
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <span className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold">2</span>
-                  <div className="ml-4">
-                    <h4 className="font-bold text-slate-800">Approbation hochladen</h4>
-                    <p className="text-sm text-slate-500">Sicherer Upload für die B2B-Verifizierung</p>
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <span className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold">3</span>
-                  <div className="ml-4">
-                    <h4 className="font-bold text-slate-800">Schichten finden</h4>
-                    <p className="text-sm text-slate-500">Direkt loslegen und erstes Geld verdienen</p>
-                  </div>
-                </li>
-              </ul>
-              
-              <div className="mt-10">
-                <Link href="/register/pharmacist" className="flex items-center text-indigo-600 font-bold hover:text-indigo-700">
-                  Zum Registrierungs-Wizard <ChevronRight className="w-5 h-5 ml-1" />
-                </Link>
+          <div className="grid md:grid-cols-3 gap-8">
+            <FadeIn delay={0.2}>
+              <div className="bg-white p-8 rounded-2xl border border-zinc-200/60 shadow-sm hover:shadow-md transition-shadow">
+                <div className="w-10 h-10 bg-zinc-50 border border-zinc-100 text-zinc-800 rounded-lg flex items-center justify-center mb-6">
+                  <Map className="w-5 h-5" />
+                </div>
+                <h3 className="text-base font-bold text-zinc-900 mb-3">Haversine Shift-Radar</h3>
+                <p className="text-sm text-zinc-500 leading-relaxed">Definieren Sie Ihren Aktionsradius. Unser Algorithmus benachrichtigt Sie nur über lukrative Schichten in Ihrer direkten Umgebung.</p>
               </div>
-            </div>
+            </FadeIn>
+
+            <FadeIn delay={0.3}>
+              <div className="bg-white p-8 rounded-2xl border border-zinc-200/60 shadow-sm hover:shadow-md transition-shadow">
+                <div className="w-10 h-10 bg-zinc-50 border border-zinc-100 text-zinc-800 rounded-lg flex items-center justify-center mb-6">
+                  <FileCheck2 className="w-5 h-5" />
+                </div>
+                <h3 className="text-base font-bold text-zinc-900 mb-3">Zero-Touch Invoicing</h3>
+                <p className="text-sm text-zinc-500 leading-relaxed">Sobald die Apotheke Ihre gearbeiteten Stunden im Dashboard bestätigt, generiert unser System automatisch Ihre Rechnung und sendet sie ab.</p>
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.4}>
+              <div className="bg-white p-8 rounded-2xl border border-zinc-200/60 shadow-sm hover:shadow-md transition-shadow">
+                <div className="w-10 h-10 bg-zinc-50 border border-zinc-100 text-zinc-800 rounded-lg flex items-center justify-center mb-6">
+                  <CheckCircle2 className="w-5 h-5" />
+                </div>
+                <h3 className="text-base font-bold text-zinc-900 mb-3">Unabhängigkeit Garantiert</h3>
+                <p className="text-sm text-zinc-500 leading-relaxed">Sie sind Ihr eigener Chef. Das System fragt aktiv Ihren "Independent Contractor" Status ab, um Scheinselbstständigkeit rechtssicher auszuschließen.</p>
+              </div>
+            </FadeIn>
           </div>
+        </div>
+      </section>
+
+      {/* CTA Bottom */}
+      <section className="bg-zinc-50 border-t border-zinc-200/60 py-32 text-center">
+        <div className="max-w-3xl mx-auto px-4">
+          <FadeIn delay={0.1}>
+            <h2 className="text-2xl md:text-3xl font-extrabold text-zinc-900 mb-6 tracking-tight">Ihre erste Schicht wartet.</h2>
+          </FadeIn>
+          <FadeIn delay={0.2}>
+            <Link 
+              href="/register/pharmacist" 
+              className="inline-flex items-center px-6 py-3 bg-zinc-900 text-white font-semibold rounded-lg shadow-sm hover:bg-zinc-800 transition-colors"
+            >
+              Jetzt Account erstellen <CheckCircle2 className="w-4 h-4 ml-2" />
+            </Link>
+          </FadeIn>
         </div>
       </section>
     </div>
