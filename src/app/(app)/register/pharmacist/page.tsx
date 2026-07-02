@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, ArrowLeft, Upload, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Upload, CheckCircle2, Plus, X } from 'lucide-react';
 import api from '@/lib/api';
 import { useRouter } from 'next/navigation';
 
@@ -20,12 +20,28 @@ export default function PharmacistWizard() {
     phoneNumber: '',
     address: '',
     maxDistanceKm: 50,
-    qualification: 'Approbation',
-    wwsProficiency: 'Pharmatechnik IXOS'
+    qualification: 'Approbation'
   });
+  
+  const [selectedWwsList, setSelectedWwsList] = useState<{system: string, level: string}[]>([]);
+  const [currentWws, setCurrentWws] = useState('Pharmatechnik IXOS');
+  const [currentLevel, setCurrentLevel] = useState('Gut');
   const [customSoftware, setCustomSoftware] = useState('');
   
   const [file, setFile] = useState<File | null>(null);
+
+  const handleAddWws = () => {
+    const sys = currentWws === 'Andere' ? customSoftware : currentWws;
+    if (!sys) return;
+    if (selectedWwsList.find(w => w.system === sys)) return;
+    setSelectedWwsList([...selectedWwsList, { system: sys, level: currentLevel }]);
+    setCustomSoftware('');
+    setCurrentWws('Pharmatechnik IXOS');
+  };
+
+  const handleRemoveWws = (sys: string) => {
+    setSelectedWwsList(selectedWwsList.filter(w => w.system !== sys));
+  };
 
   const nextStep = () => setStep(s => s + 1);
   const prevStep = () => setStep(s => s - 1);
@@ -42,7 +58,7 @@ export default function PharmacistWizard() {
         phoneNumber: formData.phoneNumber,
         address: formData.address,
         qualification: formData.qualification,
-        wwsProficiency: formData.wwsProficiency === 'Andere' ? customSoftware : formData.wwsProficiency
+        wwsProficiency: selectedWwsList.map(w => `${w.system}: ${w.level}`).join(', ') || 'Keine Angabe'
       });
 
       // 2. Login to get cookie
@@ -146,31 +162,61 @@ export default function PharmacistWizard() {
 
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-1">Warenwirtschaftssystem (WWS)</label>
-                      <select 
-                        value={formData.wwsProficiency}
-                        onChange={e => {
-                          setFormData({...formData, wwsProficiency: e.target.value});
-                          if (e.target.value !== 'Andere') setCustomSoftware('');
-                        }}
-                        className="w-full px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-indigo-500 outline-none mb-2"
-                      >
-                        <option value="Pharmatechnik IXOS">Pharmatechnik IXOS</option>
-                        <option value="CGM Lauer">CGM Lauer</option>
-                        <option value="ApothekenSysteme">ApothekenSysteme (ADG)</option>
-                        <option value="awinta">awinta</option>
-                        <option value="Sanitas">Sanitas</option>
-                        <option value="Andere">Andere (Bitte angeben)</option>
-                      </select>
-                      
-                      {formData.wwsProficiency === 'Andere' && (
+                      <div className="flex flex-col md:flex-row gap-2 mb-2">
+                        <select 
+                          value={currentWws}
+                          onChange={e => setCurrentWws(e.target.value)}
+                          className="w-full md:w-1/2 px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-indigo-500 outline-none text-slate-900"
+                        >
+                          <option value="Pharmatechnik IXOS">Pharmatechnik IXOS</option>
+                          <option value="CGM Lauer">CGM Lauer</option>
+                          <option value="ApothekenSysteme">ApothekenSysteme (ADG)</option>
+                          <option value="awinta">awinta</option>
+                          <option value="Sanitas">Sanitas</option>
+                          <option value="Andere">Andere (Bitte angeben)</option>
+                        </select>
+                        
+                        <select
+                          value={currentLevel}
+                          onChange={e => setCurrentLevel(e.target.value)}
+                          className="w-full md:w-1/3 px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-indigo-500 outline-none text-slate-900"
+                        >
+                          <option value="Grundkenntnisse">Grundkenntnisse</option>
+                          <option value="Gut">Gut</option>
+                          <option value="Sehr Gut">Sehr Gut</option>
+                          <option value="Beherrschen">Beherrschen</option>
+                        </select>
+
+                        <button 
+                          type="button" 
+                          onClick={handleAddWws}
+                          className="w-full md:w-auto px-4 py-3 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 rounded-xl flex items-center justify-center transition-colors"
+                        >
+                          <Plus className="w-5 h-5" />
+                        </button>
+                      </div>
+
+                      {currentWws === 'Andere' && (
                         <input 
                           type="text" 
                           value={customSoftware}
                           onChange={e => setCustomSoftware(e.target.value)}
                           placeholder="Welches WWS nutzt du?"
-                          required
-                          className="w-full px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-indigo-500 outline-none text-slate-900 placeholder:text-slate-400"
+                          className="w-full px-4 py-3 mb-2 rounded-xl border bg-white/50 focus:ring-2 focus:ring-indigo-500 outline-none text-slate-900 placeholder:text-slate-400"
                         />
+                      )}
+
+                      {selectedWwsList.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mt-3">
+                          {selectedWwsList.map((wws, idx) => (
+                            <span key={idx} className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-50 text-indigo-700 border border-indigo-100">
+                              {wws.system} ({wws.level})
+                              <button type="button" onClick={() => handleRemoveWws(wws.system)} className="ml-2 text-indigo-400 hover:text-indigo-600">
+                                <X className="w-4 h-4" />
+                              </button>
+                            </span>
+                          ))}
+                        </div>
                       )}
                     </div>
 
@@ -180,7 +226,7 @@ export default function PharmacistWizard() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-1">Maximaler Einsatzradius (km)</label>
-                      <input type="range" min="5" max="200" value={formData.maxDistanceKm} onChange={e => setFormData({...formData, maxDistanceKm: parseInt(e.target.value)})} className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600" />
+                      <input type="range" min="5" max="500" value={formData.maxDistanceKm} onChange={e => setFormData({...formData, maxDistanceKm: parseInt(e.target.value)})} className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600" />
                       <div className="text-indigo-600 font-bold mt-2">{formData.maxDistanceKm} km</div>
                     </div>
                   </div>
