@@ -20,10 +20,10 @@ export default function DatenschutzPage() {
               <h2 className="text-2xl font-bold text-slate-900 mb-4">2. Verantwortliche Stelle</h2>
               <p>
                 Die verantwortliche Stelle für die Datenverarbeitung auf dieser Website ist:<br /><br />
-                ServiceApotheke GmbH<br />
-                Musterstraße 1<br />
+                ServiceApotheke<br />
+                Karlsplatz 2<br />
                 47798 Krefeld<br />
-                E-Mail: datenschutz@serviceapotheke.tech
+                E-Mail: ezzeldinemad90@gmail.com / team@serviceapotheke.tech
               </p>
             </section>
 

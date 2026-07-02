@@ -11,7 +11,7 @@ export default function AGBPage() {
             <section>
               <h2 className="text-2xl font-bold text-slate-900 mb-4">1. Geltungsbereich</h2>
               <p>
-                Diese Allgemeinen Geschäftsbedingungen gelten für alle Verträge, die zwischen der ServiceApotheke GmbH (im Folgenden "Anbieter") und ihren Kunden (im Folgenden "Nutzer") über die Nutzung der Plattform geschlossen werden. Die Plattform richtet sich ausschließlich an Unternehmer im Sinne des § 14 BGB, juristische Personen des öffentlichen Rechts oder öffentlich-rechtliche Sondervermögen.
+                Diese Allgemeinen Geschäftsbedingungen gelten für alle Verträge, die zwischen der ServiceApotheke (im Folgenden "Anbieter") und ihren Kunden (im Folgenden "Nutzer") über die Nutzung der Plattform geschlossen werden. Die Plattform richtet sich ausschließlich an Unternehmer im Sinne des § 14 BGB, juristische Personen des öffentlichen Rechts oder öffentlich-rechtliche Sondervermögen.
               </p>
             </section>
 

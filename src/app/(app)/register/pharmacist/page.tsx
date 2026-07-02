@@ -80,8 +80,8 @@ export default function PharmacistWizard() {
         maxDistanceKm: formData.maxDistanceKm,
       });
 
-      // Done! Redirect to dashboard
-      router.push('/dashboard/pharmacist');
+      // Done! Redirect to dashboard (hard reload to trigger AuthContext fetch)
+      window.location.href = '/dashboard/pharmacist';
 
     } catch (err: any) {
       setError(err.response?.data?.message || 'Registrierung fehlgeschlagen.');

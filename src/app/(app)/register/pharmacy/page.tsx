@@ -39,8 +39,8 @@ export default function PharmacyWizard() {
         password: formData.password,
       });
 
-      // Done! Redirect to dashboard
-      router.push('/dashboard/pharmacy');
+      // Done! Redirect to dashboard (hard reload to trigger AuthContext fetch)
+      window.location.href = '/dashboard/pharmacy';
 
     } catch (err: any) {
       setError(err.response?.data?.message || 'Registrierung fehlgeschlagen.');
