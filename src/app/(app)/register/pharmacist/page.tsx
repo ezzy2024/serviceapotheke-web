@@ -46,6 +46,8 @@ export default function PharmacistWizard() {
   const nextStep = () => setStep(s => s + 1);
   const prevStep = () => setStep(s => s - 1);
 
+  const [otp, setOtp] = useState('');
+
   const handleRegister = async () => {
     setIsLoading(true);
     setError('');
@@ -61,13 +63,22 @@ export default function PharmacistWizard() {
         wwsProficiency: selectedWwsList.map(w => `${w.system}: ${w.level}`).join(', ') || 'Keine Angabe'
       });
 
-      // 2. Login to get cookie
-      const loginRes = await api.post('/Pharmacist/login', {
-        email: formData.email,
-        password: formData.password,
-      });
-      
-      const userId = loginRes.data.id;
+      // 2. Try to login
+      let userId;
+      try {
+        const loginRes = await api.post('/Pharmacist/login', {
+          email: formData.email,
+          password: formData.password,
+        });
+        userId = loginRes.data.id;
+      } catch (loginErr: any) {
+        if (loginErr.response?.status === 401 && loginErr.response?.data?.message?.includes('E-Mail-Adresse')) {
+          setStep(4);
+          setIsLoading(false);
+          return;
+        }
+        throw loginErr;
+      }
 
       // 3. Upload Approbation and Geodata
       if (file) {
@@ -86,6 +97,29 @@ export default function PharmacistWizard() {
     } catch (err: any) {
       setError(err.response?.data?.message || 'Registrierung fehlgeschlagen.');
     } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleOtpSubmit = async () => {
+    setIsLoading(true);
+    setError('');
+    try {
+      await api.post('/Pharmacist/confirm-email', { email: formData.email, token: otp });
+      const loginRes = await api.post('/Pharmacist/login', { email: formData.email, password: formData.password });
+      const userId = loginRes.data.id;
+
+      if (file) {
+        const fileData = new FormData();
+        fileData.append('file', file);
+        await api.post(`/Pharmacist/${userId}/upload-approbation`, fileData);
+      }
+
+      await api.put(`/Pharmacist/${userId}/profile`, { maxDistanceKm: formData.maxDistanceKm });
+
+      window.location.href = '/dashboard/pharmacist';
+    } catch (err: any) {
+      setError(err.response?.data || 'Ungültiger Code.');
       setIsLoading(false);
     }
   };
@@ -264,35 +298,71 @@ export default function PharmacistWizard() {
                   )}
                 </motion.div>
               )}
+              {step === 4 && (
+                <motion.div
+                  key="step4"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="space-y-6 text-center"
+                >
+                  <h3 className="text-2xl font-bold text-slate-800">E-Mail Adresse bestätigen</h3>
+                  <p className="text-slate-600">
+                    Wir haben einen 6-stelligen Bestätigungscode an <strong>{formData.email}</strong> gesendet.
+                    Bitte gib diesen Code unten ein.
+                  </p>
+                  
+                  <div className="max-w-xs mx-auto">
+                    <input 
+                      type="text" 
+                      maxLength={6}
+                      placeholder="123456"
+                      value={otp} 
+                      onChange={e => setOtp(e.target.value)} 
+                      className="w-full px-4 py-4 rounded-xl border-2 border-slate-200 bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 outline-none text-slate-900 text-center text-3xl tracking-widest font-mono transition-all" 
+                    />
+                  </div>
+
+                  <button
+                    onClick={handleOtpSubmit}
+                    disabled={isLoading || otp.length !== 6}
+                    className="w-full flex justify-center items-center px-8 py-4 rounded-xl font-bold text-white bg-indigo-600 hover:bg-indigo-700 transition-colors disabled:opacity-50"
+                  >
+                    {isLoading ? 'Lädt...' : 'Konto aktivieren & Einloggen'}
+                  </button>
+                </motion.div>
+              )}
             </AnimatePresence>
           </div>
 
-          <div className="mt-8 flex justify-between pt-6 border-t border-slate-100">
-            <button
-              onClick={prevStep}
-              disabled={step === 1 || isLoading}
-              className={`flex items-center px-6 py-3 rounded-xl font-medium ${step === 1 ? 'opacity-0 pointer-events-none' : 'text-slate-600 bg-slate-100 hover:bg-slate-200'}`}
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" /> Zurück
-            </button>
+          {step < 4 && (
+            <div className="mt-8 flex justify-between pt-6 border-t border-slate-100">
+              <button
+                onClick={prevStep}
+                disabled={step === 1 || isLoading}
+                className={`flex items-center px-6 py-3 rounded-xl font-medium ${step === 1 ? 'opacity-0 pointer-events-none' : 'text-slate-600 bg-slate-100 hover:bg-slate-200'}`}
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" /> Zurück
+              </button>
 
-            {step < 3 ? (
-              <button
-                onClick={nextStep}
-                className="flex items-center px-6 py-3 rounded-xl font-bold text-white bg-indigo-600 hover:bg-indigo-700 transition-colors"
-              >
-                Weiter <ArrowRight className="w-4 h-4 ml-2" />
-              </button>
-            ) : (
-              <button
-                onClick={handleRegister}
-                disabled={isLoading || !file}
-                className="flex items-center px-8 py-3 rounded-xl font-bold text-white bg-indigo-600 hover:bg-indigo-700 transition-colors disabled:opacity-50"
-              >
-                {isLoading ? 'Lädt...' : 'Registrierung abschließen'}
-              </button>
-            )}
-          </div>
+              {step < 3 ? (
+                <button
+                  onClick={nextStep}
+                  className="flex items-center px-6 py-3 rounded-xl font-bold text-white bg-indigo-600 hover:bg-indigo-700 transition-colors"
+                >
+                  Weiter <ArrowRight className="w-4 h-4 ml-2" />
+                </button>
+              ) : (
+                <button
+                  onClick={handleRegister}
+                  disabled={isLoading || !file}
+                  className="flex items-center px-8 py-3 rounded-xl font-bold text-white bg-indigo-600 hover:bg-indigo-700 transition-colors disabled:opacity-50"
+                >
+                  {isLoading ? 'Lädt...' : 'Registrierung abschließen'}
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
