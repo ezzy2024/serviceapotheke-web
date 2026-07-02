@@ -22,9 +22,8 @@ api.interceptors.response.use(
   },
   (error) => {
     if (error.response && error.response.status === 401) {
-      // If unauthorized, redirect to login
-      // Check if we are already on the login page to prevent infinite loops
-      if (typeof window !== 'undefined' && !window.location.pathname.includes('/login')) {
+      // If unauthorized, redirect to login ONLY if they are on a protected route
+      if (typeof window !== 'undefined' && window.location.pathname.startsWith('/dashboard')) {
         window.location.href = '/login';
       }
     }
