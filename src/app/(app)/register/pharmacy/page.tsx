@@ -25,6 +25,7 @@ export default function PharmacyWizard() {
     description: '',
     documentName: '',
     softwareSystem: '',
+    documentFile: null as File | null,
   });
 
   const [otp, setOtp] = useState('');
@@ -40,11 +41,13 @@ export default function PharmacyWizard() {
       await api.post('/Pharmacy/register', formData);
 
       // 2. Try to login
+      let pharmacyId = null;
       try {
-        await api.post('/Pharmacy/login', {
+        const loginRes = await api.post('/Pharmacy/login', {
           email: formData.email,
           password: formData.password,
         });
+        pharmacyId = loginRes.data.id;
       } catch (loginErr: any) {
         if (loginErr.response?.status === 401 && loginErr.response?.data?.message?.includes('E-Mail-Adresse')) {
           setStep(4);
@@ -52,6 +55,19 @@ export default function PharmacyWizard() {
           return;
         }
         throw loginErr;
+      }
+
+      // 3. Upload Document
+      if (pharmacyId && formData.documentFile) {
+        const docData = new FormData();
+        docData.append('license', formData.documentFile);
+        try {
+          await api.post(`/Document/pharmacy/${pharmacyId}`, docData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+          });
+        } catch (uploadErr) {
+          console.error('Failed to upload document', uploadErr);
+        }
       }
 
       window.location.href = '/dashboard/pharmacy';
@@ -177,7 +193,7 @@ export default function PharmacyWizard() {
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                         onChange={(e) => {
                           const file = e.target.files?.[0];
-                          if (file) setFormData({...formData, documentName: file.name});
+                          if (file) setFormData({...formData, documentName: file.name, documentFile: file});
                         }}
                       />
                       <UploadCloud className="w-8 h-8 text-slate-400 mx-auto mb-3" />

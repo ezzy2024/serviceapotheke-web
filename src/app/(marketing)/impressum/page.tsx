@@ -11,33 +11,25 @@ export default function ImpressumPage() {
             <section>
               <h2 className="text-xl font-bold text-slate-900 mb-3">Angaben gemäß § 5 TMG</h2>
               <p>
-                ServiceApotheke<br />
+                Ezzeldin Hassan (Einzelunternehmen)<br />
                 Karlsplatz 2<br />
-                47798 Krefeld
+                Krefeld, Deutschland
               </p>
-            </section>
-
-            <section>
-              <h2 className="text-xl font-bold text-slate-900 mb-3">Vertreten durch</h2>
-              <p>Ezzeldin Hassan</p>
             </section>
 
             <section>
               <h2 className="text-xl font-bold text-slate-900 mb-3">Kontakt</h2>
               <p>
-                Telefon: +4915166884447<br />
-                E-Mail: ezzeldinemad90@gmail.com / team@serviceapotheke.tech
+                E-Mail: ezzeldinemad90@gmail.com
               </p>
             </section>
-
-
 
             <section>
               <h2 className="text-xl font-bold text-slate-900 mb-3">Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h2>
               <p>
                 Ezzeldin Hassan<br />
                 Karlsplatz 2<br />
-                47798 Krefeld
+                Krefeld, Deutschland
               </p>
             </section>
           </div>

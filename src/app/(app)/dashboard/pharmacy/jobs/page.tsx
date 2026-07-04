@@ -25,8 +25,7 @@ export default function PharmacyJobs() {
 
   const fetchJobs = async () => {
     try {
-      // Assuming a GET /api/Job endpoint exists that returns the pharmacy's jobs with applications
-      const res = await api.get('/Job');
+      const res = await api.get(`/Job/pharmacy/${user?.id}`);
       setJobs(res.data);
     } catch (error) {
       console.error('Failed to load jobs', error);

@@ -2,11 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/lib/AuthContext';
 import { Briefcase, Calendar, Clock, Euro, MapPin, Building, AlertCircle } from 'lucide-react';
 import api from '@/lib/api';
 
 export default function CreateJobPost() {
   const router = useRouter();
+  const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -70,6 +72,7 @@ export default function CreateJobPost() {
     try {
       // DTO mapping for backend
       await api.post('/Job', {
+        pharmacyId: parseInt(user?.id || '0'),
         title,
         startDate: new Date(startDate).toISOString(),
         endDate: new Date(endDate).toISOString(),
@@ -126,7 +129,7 @@ export default function CreateJobPost() {
                 value={title}
                 onChange={e => setTitle(e.target.value)}
                 placeholder="z.B. Urlaubsvertretung für 2 Wochen"
-                className="w-full px-4 py-3 rounded-xl border bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition-colors" 
+                className="w-full px-4 py-3 rounded-xl border bg-slate-50 text-slate-900 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition-colors" 
               />
             </div>
 
@@ -138,7 +141,7 @@ export default function CreateJobPost() {
                   required
                   value={startDate}
                   onChange={e => setStartDate(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition-colors" 
+                  className="w-full px-4 py-3 rounded-xl border bg-slate-50 text-slate-900 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition-colors" 
                 />
               </div>
               <div>
@@ -148,7 +151,7 @@ export default function CreateJobPost() {
                   required
                   value={endDate}
                   onChange={e => setEndDate(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition-colors" 
+                  className="w-full px-4 py-3 rounded-xl border bg-slate-50 text-slate-900 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition-colors" 
                 />
               </div>
             </div>
@@ -159,7 +162,7 @@ export default function CreateJobPost() {
                 <select 
                   value={requiredQualification}
                   onChange={e => setRequiredQualification(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition-colors"
+                  className="w-full px-4 py-3 rounded-xl border bg-slate-50 text-slate-900 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition-colors"
                 >
                   <option value="Approbation">Approbierte/r Apotheker/in</option>
                   <option value="PTA">PTA</option>
@@ -172,7 +175,7 @@ export default function CreateJobPost() {
                 <select 
                   value={reasonForVacancy}
                   onChange={e => setReasonForVacancy(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition-colors"
+                  className="w-full px-4 py-3 rounded-xl border bg-slate-50 text-slate-900 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition-colors"
                 >
                   <option value="Urlaub">Urlaubsvertretung</option>
                   <option value="Krankheit">Krankheitsausfall</option>
@@ -190,7 +193,7 @@ export default function CreateJobPost() {
                   setRequiredSoftware(e.target.value);
                   if (e.target.value !== 'Andere') setCustomSoftware('');
                 }}
-                className="w-full px-4 py-3 rounded-xl border bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition-colors mb-2"
+                className="w-full px-4 py-3 rounded-xl border bg-slate-50 text-slate-900 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition-colors mb-2"
               >
                 <option value="Pharmatechnik IXOS">Pharmatechnik IXOS</option>
                 <option value="CGM Lauer">CGM Lauer</option>
@@ -207,7 +210,7 @@ export default function CreateJobPost() {
                   onChange={e => setCustomSoftware(e.target.value)}
                   placeholder="Welches WWS wird verwendet?"
                   required
-                  className="w-full px-4 py-3 rounded-xl border border-indigo-200 bg-indigo-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition-colors"
+                  className="w-full px-4 py-3 rounded-xl border border-indigo-200 bg-indigo-50 text-slate-900 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition-colors"
                 />
               )}
             </div>
@@ -245,7 +248,7 @@ export default function CreateJobPost() {
                   value={travelExpenseCap}
                   onChange={e => setTravelExpenseCap(e.target.value ? parseFloat(e.target.value) : '')}
                   placeholder="Optionaler Cap (z.B. 100)"
-                  className="w-full pl-12 pr-4 py-3 rounded-xl border bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition-colors" 
+                  className="w-full pl-12 pr-4 py-3 rounded-xl border bg-slate-50 text-slate-900 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition-colors" 
                 />
               </div>
             </div>
@@ -260,7 +263,7 @@ export default function CreateJobPost() {
                   required
                   value={accommodationType}
                   onChange={e => setAccommodationType(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-orange-200 bg-white focus:ring-2 focus:ring-orange-500 outline-none transition-colors"
+                  className="w-full px-4 py-3 rounded-xl border border-orange-200 bg-white text-slate-900 focus:ring-2 focus:ring-orange-500 outline-none transition-colors"
                 >
                   <option value="" disabled>Bitte auswählen...</option>
                   <option value="Wird gestellt (z.B. über der Apotheke)">Wird gestellt (z.B. über der Apotheke)</option>
@@ -292,3 +295,4 @@ export default function CreateJobPost() {
     </div>
   );
 }
+
