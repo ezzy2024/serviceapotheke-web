@@ -2,9 +2,16 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/lib/AuthContext';
-import { Briefcase, Calendar, Clock, Euro, MapPin, Building, AlertCircle } from 'lucide-react';
+import { Briefcase, Euro, Calendar as CalendarIcon, Clock, AlertCircle } from 'lucide-react';
 import api from '@/lib/api';
+import { useAuth } from '@/lib/AuthContext';
+
+type ShiftDay = {
+  date: string;
+  startTime: string;
+  endTime: string;
+  pauseMinutes: number;
+};
 
 export default function CreateJobPost() {
   const router = useRouter();
@@ -12,50 +19,146 @@ export default function CreateJobPost() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // Form State
-  const [title, setTitle] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [salary, setSalary] = useState<number>(45); // Default to minimum
+  // Mode: Single or Multi-day
+  const [isMultiDay, setIsMultiDay] = useState(false);
+
+  // Single Day State
+  const [singleDate, setSingleDate] = useState('');
+  const [singleStart, setSingleStart] = useState('08:00');
+  const [singleEnd, setSingleEnd] = useState('18:00');
+  const [singlePause, setSinglePause] = useState<number>(30);
+
+  // Multi Day State
+  const [multiStartDate, setMultiStartDate] = useState('');
+  const [multiEndDate, setMultiEndDate] = useState('');
+  const [shifts, setShifts] = useState<ShiftDay[]>([]);
+
+  // Other Form State
+  const [salary, setSalary] = useState<number>(45); 
   const [requiredSoftware, setRequiredSoftware] = useState('Pharmatechnik IXOS');
   const [customSoftware, setCustomSoftware] = useState('');
-  
-  // Travel Expenses
   const [travelExpenseCap, setTravelExpenseCap] = useState<number | ''>('');
-  
-  // Qualification & Reason
   const [requiredQualification, setRequiredQualification] = useState('Approbation');
   const [reasonForVacancy, setReasonForVacancy] = useState('Urlaub');
-
-  // Accommodation
   const [accommodationType, setAccommodationType] = useState('');
-  
-  // Validation State
   const [daysDifference, setDaysDifference] = useState(0);
 
-  // Recalculate days difference when dates change
+  // Fetch Pharmacy WWS
   useEffect(() => {
-    if (startDate && endDate) {
-      const start = new Date(startDate);
-      const end = new Date(endDate);
-      const diffTime = Math.abs(end.getTime() - start.getTime());
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      setDaysDifference(diffDays);
-      
-      if (diffDays < 3) {
-        setAccommodationType(''); // Reset if condition not met
-      }
+    if (user?.id) {
+      api.get(`/Pharmacy/${user.id}`).then(res => {
+        if (res.data?.softwareSystem) {
+          const sys = res.data.softwareSystem;
+          const known = ['Pharmatechnik IXOS', 'CGM Lauer', 'ApothekenSysteme', 'awinta', 'Sanitas'];
+          if (known.includes(sys)) {
+            setRequiredSoftware(sys);
+          } else {
+            setRequiredSoftware('Andere');
+            setCustomSoftware(sys);
+          }
+        }
+      }).catch(err => console.error("Could not fetch pharmacy profile", err));
     }
-  }, [startDate, endDate]);
+  }, [user]);
+
+  // Generate shifts array when dates change in multi-day mode
+  useEffect(() => {
+    if (isMultiDay && multiStartDate && multiEndDate) {
+      const start = new Date(multiStartDate);
+      const end = new Date(multiEndDate);
+      
+      if (start <= end) {
+        const diffTime = Math.abs(end.getTime() - start.getTime());
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; // inclusive
+        setDaysDifference(diffDays);
+
+        const newShifts: ShiftDay[] = [];
+        for (let i = 0; i < diffDays; i++) {
+          const d = new Date(start);
+          d.setDate(d.getDate() + i);
+          const dateStr = d.toISOString().split('T')[0];
+          
+          // Preserve existing entries if they match the date
+          const existing = shifts.find(s => s.date === dateStr);
+          if (existing) {
+            newShifts.push(existing);
+          } else {
+            newShifts.push({
+              date: dateStr,
+              startTime: '08:00',
+              endTime: '18:00',
+              pauseMinutes: 30
+            });
+          }
+        }
+        setShifts(newShifts);
+      } else {
+        setShifts([]);
+        setDaysDifference(0);
+      }
+    } else if (!isMultiDay && singleDate) {
+      setDaysDifference(1);
+    }
+    
+    if (daysDifference < 3) {
+      setAccommodationType('');
+    }
+  }, [isMultiDay, multiStartDate, multiEndDate, singleDate]);
+
+  const updateShift = (index: number, field: keyof ShiftDay, value: string | number) => {
+    const updated = [...shifts];
+    updated[index] = { ...updated[index], [field]: value };
+    setShifts(updated);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
     // Pre-flight Validations
-    if (new Date(startDate) >= new Date(endDate)) {
-      setError('Das Enddatum muss nach dem Startdatum liegen.');
-      return;
+    let finalStartIso = '';
+    let finalEndIso = '';
+    let shiftPayload: any = {};
+
+    if (isMultiDay) {
+      if (new Date(multiStartDate) > new Date(multiEndDate)) {
+        setError('Das Enddatum muss nach dem Startdatum liegen.');
+        return;
+      }
+      if (shifts.length === 0) {
+        setError('Bitte wähle ein gültiges Start- und Enddatum.');
+        return;
+      }
+      finalStartIso = new Date(`${shifts[0].date}T${shifts[0].startTime}:00`).toISOString();
+      const last = shifts[shifts.length - 1];
+      finalEndIso = new Date(`${last.date}T${last.endTime}:00`).toISOString();
+      
+      shiftPayload = {
+        isMultiDay: true,
+        shifts: shifts
+      };
+    } else {
+      if (!singleDate) {
+        setError('Bitte wähle ein Datum.');
+        return;
+      }
+      finalStartIso = new Date(`${singleDate}T${singleStart}:00`).toISOString();
+      finalEndIso = new Date(`${singleDate}T${singleEnd}:00`).toISOString();
+      
+      if (new Date(finalStartIso) >= new Date(finalEndIso)) {
+        setError('Das Ende der Schicht muss nach dem Start liegen.');
+        return;
+      }
+
+      shiftPayload = {
+        isMultiDay: false,
+        shifts: [{
+          date: singleDate,
+          startTime: singleStart,
+          endTime: singleEnd,
+          pauseMinutes: singlePause
+        }]
+      };
     }
 
     if (salary < 45) {
@@ -70,25 +173,23 @@ export default function CreateJobPost() {
 
     setIsLoading(true);
     try {
-      // DTO mapping for backend
+      const descriptionJson = JSON.stringify({
+        travelExpenseCap: travelExpenseCap,
+        travelExpensePerKm: 0.30,
+        accommodation: accommodationType
+      });
+
       await api.post('/Job', {
         pharmacyId: parseInt(user?.id || '0'),
-        title,
-        startDate: new Date(startDate).toISOString(),
-        endDate: new Date(endDate).toISOString(),
+        startDate: finalStartIso,
+        endDate: finalEndIso,
         salary,
         requiredQualifications: requiredQualification,
         requiredWws: requiredSoftware === 'Andere' ? customSoftware : requiredSoftware,
         reasonForVacancy: reasonForVacancy,
         isUrgent: false,
-        
-        // Serialize additional metadata into the notes/description field or dedicated columns if they exist
-        // Note: In MVP we'll push this into Description. In a real schema, we'd add columns.
-        description: JSON.stringify({
-          travelExpenseCap: travelExpenseCap,
-          travelExpensePerKm: 0.30,
-          accommodation: accommodationType
-        })
+        description: descriptionJson,
+        shiftDetails: JSON.stringify(shiftPayload)
       });
 
       router.push('/dashboard/pharmacy');
@@ -100,7 +201,7 @@ export default function CreateJobPost() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-4xl mx-auto pb-12">
       <div className="mb-8">
         <h1 className="text-3xl font-extrabold text-slate-800">Neue Vakanz inserieren</h1>
         <p className="text-slate-500 mt-2">Schreibe eine Schicht aus und finde den passenden Vertretungsapotheker.</p>
@@ -115,46 +216,12 @@ export default function CreateJobPost() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-8">
+          
           {/* Basisdaten */}
           <div className="space-y-5">
             <h2 className="text-lg font-bold text-slate-800 flex items-center border-b pb-2">
-              <Briefcase className="w-5 h-5 mr-2 text-indigo-600" /> Basisdaten
+              <Briefcase className="w-5 h-5 mr-2 text-indigo-600" /> Vakanz Details
             </h2>
-            
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Titel der Vakanz</label>
-              <input 
-                type="text" 
-                required
-                value={title}
-                onChange={e => setTitle(e.target.value)}
-                placeholder="z.B. Urlaubsvertretung für 2 Wochen"
-                className="w-full px-4 py-3 rounded-xl border bg-slate-50 text-slate-900 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition-colors" 
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Start (Datum & Uhrzeit)</label>
-                <input 
-                  type="datetime-local" 
-                  required
-                  value={startDate}
-                  onChange={e => setStartDate(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border bg-slate-50 text-slate-900 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition-colors" 
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Ende (Datum & Uhrzeit)</label>
-                <input 
-                  type="datetime-local" 
-                  required
-                  value={endDate}
-                  onChange={e => setEndDate(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border bg-slate-50 text-slate-900 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition-colors" 
-                />
-              </div>
-            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div>
@@ -216,8 +283,159 @@ export default function CreateJobPost() {
             </div>
           </div>
 
+          {/* Schichten */}
+          <div className="space-y-5 pt-4">
+            <h2 className="text-lg font-bold text-slate-800 flex items-center border-b pb-2">
+              <CalendarIcon className="w-5 h-5 mr-2 text-indigo-600" /> Zeiten & Schichten
+            </h2>
+
+            <div className="flex space-x-4 mb-4">
+              <label className="flex items-center cursor-pointer">
+                <input 
+                  type="radio" 
+                  checked={!isMultiDay} 
+                  onChange={() => setIsMultiDay(false)} 
+                  className="w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500" 
+                />
+                <span className="ml-2 text-slate-700 font-medium">Tagesweise (1 Tag)</span>
+              </label>
+              <label className="flex items-center cursor-pointer">
+                <input 
+                  type="radio" 
+                  checked={isMultiDay} 
+                  onChange={() => setIsMultiDay(true)} 
+                  className="w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500" 
+                />
+                <span className="ml-2 text-slate-700 font-medium">Mehrtägig</span>
+              </label>
+            </div>
+
+            {!isMultiDay ? (
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                <div className="md:col-span-1">
+                  <label className="block text-xs font-semibold text-slate-500 mb-1 uppercase tracking-wider">Datum</label>
+                  <input 
+                    type="date" 
+                    required
+                    value={singleDate}
+                    onChange={e => setSingleDate(e.target.value)}
+                    className="w-full px-3 py-2 rounded-lg border bg-white text-slate-900 focus:ring-2 focus:ring-indigo-500 outline-none" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-500 mb-1 uppercase tracking-wider">Start</label>
+                  <input 
+                    type="time" 
+                    required
+                    value={singleStart}
+                    onChange={e => setSingleStart(e.target.value)}
+                    className="w-full px-3 py-2 rounded-lg border bg-white text-slate-900 focus:ring-2 focus:ring-indigo-500 outline-none" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-500 mb-1 uppercase tracking-wider">Ende</label>
+                  <input 
+                    type="time" 
+                    required
+                    value={singleEnd}
+                    onChange={e => setSingleEnd(e.target.value)}
+                    className="w-full px-3 py-2 rounded-lg border bg-white text-slate-900 focus:ring-2 focus:ring-indigo-500 outline-none" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-500 mb-1 uppercase tracking-wider">Pause (Min)</label>
+                  <input 
+                    type="number" 
+                    required
+                    min="0"
+                    value={singlePause}
+                    onChange={e => setSinglePause(parseInt(e.target.value) || 0)}
+                    className="w-full px-3 py-2 rounded-lg border bg-white text-slate-900 focus:ring-2 focus:ring-indigo-500 outline-none" 
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Startdatum</label>
+                    <input 
+                      type="date" 
+                      required
+                      value={multiStartDate}
+                      onChange={e => setMultiStartDate(e.target.value)}
+                      className="w-full px-4 py-3 rounded-xl border bg-slate-50 text-slate-900 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none" 
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Enddatum</label>
+                    <input 
+                      type="date" 
+                      required
+                      value={multiEndDate}
+                      onChange={e => setMultiEndDate(e.target.value)}
+                      className="w-full px-4 py-3 rounded-xl border bg-slate-50 text-slate-900 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none" 
+                    />
+                  </div>
+                </div>
+
+                {shifts.length > 0 && (
+                  <div className="mt-6 border rounded-xl overflow-hidden shadow-sm">
+                    <div className="bg-slate-100 px-4 py-3 border-b flex justify-between items-center">
+                      <span className="font-semibold text-slate-700 text-sm">Tägliche Arbeitszeiten</span>
+                      <span className="text-xs text-slate-500">{shifts.length} Tage ausgewählt</span>
+                    </div>
+                    <div className="divide-y max-h-[400px] overflow-y-auto">
+                      {shifts.map((shift, idx) => (
+                        <div key={idx} className="p-4 bg-white grid grid-cols-1 sm:grid-cols-4 gap-4 items-center hover:bg-slate-50 transition-colors">
+                          <div className="sm:col-span-1 font-medium text-slate-800">
+                            {new Date(shift.date).toLocaleDateString('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit' })}
+                          </div>
+                          <div>
+                            <label className="block text-[10px] uppercase text-slate-500 mb-1 sm:hidden">Start</label>
+                            <input 
+                              type="time" 
+                              required
+                              value={shift.startTime}
+                              onChange={e => updateShift(idx, 'startTime', e.target.value)}
+                              className="w-full px-3 py-2 rounded-lg border text-sm text-slate-900 focus:ring-2 focus:ring-indigo-500 outline-none" 
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-[10px] uppercase text-slate-500 mb-1 sm:hidden">Ende</label>
+                            <input 
+                              type="time" 
+                              required
+                              value={shift.endTime}
+                              onChange={e => updateShift(idx, 'endTime', e.target.value)}
+                              className="w-full px-3 py-2 rounded-lg border text-sm text-slate-900 focus:ring-2 focus:ring-indigo-500 outline-none" 
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-[10px] uppercase text-slate-500 mb-1 sm:hidden">Pause (Min)</label>
+                            <div className="flex items-center">
+                              <input 
+                                type="number" 
+                                required
+                                min="0"
+                                value={shift.pauseMinutes}
+                                onChange={e => updateShift(idx, 'pauseMinutes', parseInt(e.target.value) || 0)}
+                                className="w-full px-3 py-2 rounded-lg border text-sm text-slate-900 focus:ring-2 focus:ring-indigo-500 outline-none" 
+                              />
+                              <span className="ml-2 text-xs text-slate-400 hidden sm:inline-block">Min</span>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
           {/* Konditionen */}
-          <div className="space-y-5">
+          <div className="space-y-5 pt-4">
             <h2 className="text-lg font-bold text-slate-800 flex items-center border-b pb-2">
               <Euro className="w-5 h-5 mr-2 text-indigo-600" /> Konditionen & Spesen
             </h2>
@@ -233,7 +451,7 @@ export default function CreateJobPost() {
                   min="45"
                   value={salary}
                   onChange={e => setSalary(parseFloat(e.target.value))}
-                  className={`w-full pl-12 pr-4 py-3 rounded-xl border bg-slate-50 focus:bg-white focus:ring-2 outline-none transition-colors ${salary < 45 ? 'border-red-300 focus:ring-red-500' : 'focus:ring-indigo-500'}`} 
+                  className={`w-full pl-12 pr-4 py-3 rounded-xl border bg-slate-50 text-slate-900 focus:bg-white focus:ring-2 outline-none transition-colors ${salary < 45 ? 'border-red-300 focus:ring-red-500' : 'focus:ring-indigo-500'}`} 
                 />
               </div>
             </div>
@@ -295,4 +513,3 @@ export default function CreateJobPost() {
     </div>
   );
 }
-
