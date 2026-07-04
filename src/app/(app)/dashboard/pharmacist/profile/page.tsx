@@ -17,7 +17,10 @@ export default function ProfilePage() {
   const [formData, setFormData] = useState({
     fullName: '',
     phone: '',
-    address: '',
+    street: '',
+    houseNumber: '',
+    postalCode: '',
+    city: '',
     maxDistanceKm: 50,
     availableDaysPerWeek: 5
   });
@@ -35,7 +38,10 @@ export default function ProfilePage() {
       setFormData({
         fullName: res.data.fullName || '',
         phone: res.data.phoneNumber || '',
-        address: res.data.address || '',
+        street: res.data.street || '',
+        houseNumber: res.data.houseNumber || '',
+        postalCode: res.data.postalCode || '',
+        city: res.data.city || '',
         maxDistanceKm: res.data.maxDistanceKm || 50,
         availableDaysPerWeek: res.data.availableDaysPerWeek || 5
       });
@@ -164,17 +170,52 @@ export default function ProfilePage() {
                       />
                     </div>
                   </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Adresse</label>
-                    <div className="relative">
+                </div>
+
+                <div className="space-y-4">
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Adresse</label>
+                  <div className="grid grid-cols-4 gap-4">
+                    <div className="col-span-3 relative">
                       <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
                       <input 
                         type="text" 
                         required
-                        value={formData.address}
-                        onChange={e => setFormData({...formData, address: e.target.value})}
+                        placeholder="Straße"
+                        value={formData.street}
+                        onChange={e => setFormData({...formData, street: e.target.value})}
                         className="pl-10 w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-600 focus:border-transparent outline-none transition-all"
+                      />
+                    </div>
+                    <div className="col-span-1">
+                      <input 
+                        type="text" 
+                        required
+                        placeholder="Nr."
+                        value={formData.houseNumber}
+                        onChange={e => setFormData({...formData, houseNumber: e.target.value})}
+                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-600 focus:border-transparent outline-none transition-all"
+                      />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="col-span-1">
+                      <input 
+                        type="text" 
+                        required
+                        placeholder="PLZ"
+                        value={formData.postalCode}
+                        onChange={e => setFormData({...formData, postalCode: e.target.value})}
+                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-600 focus:border-transparent outline-none transition-all"
+                      />
+                    </div>
+                    <div className="col-span-2">
+                      <input 
+                        type="text" 
+                        required
+                        placeholder="Stadt"
+                        value={formData.city}
+                        onChange={e => setFormData({...formData, city: e.target.value})}
+                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-600 focus:border-transparent outline-none transition-all"
                       />
                     </div>
                   </div>

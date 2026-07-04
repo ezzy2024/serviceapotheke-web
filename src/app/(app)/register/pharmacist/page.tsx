@@ -18,7 +18,10 @@ export default function PharmacistWizard() {
     email: '',
     password: '',
     phoneNumber: '',
-    address: '',
+    street: '',
+    houseNumber: '',
+    postalCode: '',
+    city: '',
     maxDistanceKm: 50,
     qualification: 'Approbation'
   });
@@ -28,8 +31,9 @@ export default function PharmacistWizard() {
   const [currentLevel, setCurrentLevel] = useState('Gut');
   const [customSoftware, setCustomSoftware] = useState('');
   
-  const [file, setFile] = useState<File | null>(null);
-
+  const [approbationFile, setApprobationFile] = useState<File | null>(null);
+  const [cvFile, setCvFile] = useState<File | null>(null);
+  const [profilePicFile, setProfilePicFile] = useState<File | null>(null);
   const handleAddWws = () => {
     const sys = currentWws === 'Andere' ? customSoftware : currentWws;
     if (!sys) return;
@@ -58,7 +62,10 @@ export default function PharmacistWizard() {
         email: formData.email,
         password: formData.password,
         phoneNumber: formData.phoneNumber,
-        address: formData.address,
+        street: formData.street,
+        houseNumber: formData.houseNumber,
+        postalCode: formData.postalCode,
+        city: formData.city,
         qualification: formData.qualification,
         wwsProficiency: selectedWwsList.map(w => `${w.system}: ${w.level}`).join(', ') || 'Keine Angabe'
       });
@@ -80,11 +87,13 @@ export default function PharmacistWizard() {
         throw loginErr;
       }
 
-      // 3. Upload Approbation and Geodata
-      if (file) {
+      // 3. Upload Approbation, CV and Profile Picture
+      if (approbationFile || cvFile || profilePicFile) {
         const fileData = new FormData();
-        fileData.append('file', file);
-        await api.post(`/Pharmacist/${userId}/upload-approbation`, fileData);
+        if (approbationFile) fileData.append('approbation', approbationFile);
+        if (cvFile) fileData.append('cv', cvFile);
+        if (profilePicFile) fileData.append('profilePicture', profilePicFile);
+        await api.post(`/Pharmacist/${userId}/upload-documents`, fileData);
       }
 
       await api.put(`/Pharmacist/${userId}/profile`, {
@@ -109,10 +118,12 @@ export default function PharmacistWizard() {
       const loginRes = await api.post('/Pharmacist/login', { email: formData.email, password: formData.password });
       const userId = loginRes.data.id;
 
-      if (file) {
+      if (approbationFile || cvFile || profilePicFile) {
         const fileData = new FormData();
-        fileData.append('file', file);
-        await api.post(`/Pharmacist/${userId}/upload-approbation`, fileData);
+        if (approbationFile) fileData.append('approbation', approbationFile);
+        if (cvFile) fileData.append('cv', cvFile);
+        if (profilePicFile) fileData.append('profilePicture', profilePicFile);
+        await api.post(`/Pharmacist/${userId}/upload-documents`, fileData);
       }
 
       await api.put(`/Pharmacist/${userId}/profile`, { maxDistanceKm: formData.maxDistanceKm });
@@ -257,7 +268,14 @@ export default function PharmacistWizard() {
 
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-1">Vollständige Adresse (für Geocoding)</label>
-                      <input type="text" placeholder="Musterstraße 1, 12345 Berlin" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="w-full px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-indigo-500 outline-none text-slate-900 placeholder:text-slate-400" required />
+                      <div className="grid grid-cols-4 gap-4 mb-2">
+                        <input type="text" placeholder="Straße" value={formData.street} onChange={e => setFormData({...formData, street: e.target.value})} className="col-span-3 px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-indigo-500 outline-none text-slate-900 placeholder:text-slate-400" required />
+                        <input type="text" placeholder="Nr." value={formData.houseNumber} onChange={e => setFormData({...formData, houseNumber: e.target.value})} className="col-span-1 px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-indigo-500 outline-none text-slate-900 placeholder:text-slate-400" required />
+                      </div>
+                      <div className="grid grid-cols-3 gap-4">
+                        <input type="text" placeholder="PLZ" value={formData.postalCode} onChange={e => setFormData({...formData, postalCode: e.target.value})} className="col-span-1 px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-indigo-500 outline-none text-slate-900 placeholder:text-slate-400" required />
+                        <input type="text" placeholder="Stadt" value={formData.city} onChange={e => setFormData({...formData, city: e.target.value})} className="col-span-2 px-4 py-3 rounded-xl border bg-white/50 focus:ring-2 focus:ring-indigo-500 outline-none text-slate-900 placeholder:text-slate-400" required />
+                      </div>
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-1">Maximaler Einsatzradius (km)</label>
@@ -276,27 +294,48 @@ export default function PharmacistWizard() {
                   exit={{ opacity: 0, x: -20 }}
                   className="space-y-4"
                 >
-                  <h3 className="text-xl font-bold text-slate-800 mb-4">Approbationsurkunde</h3>
-                  <p className="text-sm text-slate-500 mb-4">Für die Freischaltung deines Profils benötigen wir einen Nachweis deiner Approbation.</p>
-                  
-                  <div className="mt-2 flex justify-center rounded-2xl border border-dashed border-slate-300 px-6 py-10 bg-slate-50 hover:bg-slate-100 transition-colors">
-                    <div className="text-center">
-                      <Upload className="mx-auto h-12 w-12 text-slate-400" aria-hidden="true" />
-                      <div className="mt-4 flex text-sm leading-6 text-slate-600">
-                        <label htmlFor="file-upload" className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <h3 className="text-xl font-bold text-slate-800">Approbationsurkunde*</h3>
+                      <p className="text-sm text-slate-500">Für die Freischaltung deines Profils benötigen wir einen Nachweis deiner Approbation.</p>
+                      
+                      <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 px-4 py-6 bg-slate-50 hover:bg-slate-100 transition-colors h-40">
+                        <Upload className="mx-auto h-8 w-8 text-slate-400 mb-2" />
+                        <label className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:ring-2 focus-within:ring-indigo-600 hover:text-indigo-500 text-sm px-3 py-1">
                           <span>Datei auswählen</span>
-                          <input id="file-upload" name="file-upload" type="file" className="sr-only" onChange={e => setFile(e.target.files ? e.target.files[0] : null)} />
+                          <input type="file" className="sr-only" onChange={e => setApprobationFile(e.target.files ? e.target.files[0] : null)} />
                         </label>
-                        <p className="pl-1">oder Drag & Drop</p>
+                        <p className="text-xs leading-5 text-slate-500 mt-2">PDF, PNG, JPG (max. 10MB)</p>
                       </div>
-                      <p className="text-xs leading-5 text-slate-500 mt-2">PDF, PNG, JPG bis zu 10MB</p>
+                      {approbationFile && (
+                        <div className="flex items-center text-sm text-green-600 font-medium truncate max-w-full">
+                          <CheckCircle2 className="w-4 h-4 mr-1 shrink-0" /> {approbationFile.name}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="space-y-6">
+                      <div className="space-y-2">
+                        <h3 className="text-lg font-bold text-slate-800">Lebenslauf (Optional)</h3>
+                        <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 px-4 py-4 bg-slate-50 hover:bg-slate-100 transition-colors h-24">
+                          <label className="relative cursor-pointer font-semibold text-indigo-600 text-sm flex items-center justify-center w-full h-full">
+                            <span>{cvFile ? cvFile.name : 'Lebenslauf hochladen'}</span>
+                            <input type="file" className="sr-only" onChange={e => setCvFile(e.target.files ? e.target.files[0] : null)} />
+                          </label>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <h3 className="text-lg font-bold text-slate-800">Profilbild (Optional)</h3>
+                        <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 px-4 py-4 bg-slate-50 hover:bg-slate-100 transition-colors h-24">
+                          <label className="relative cursor-pointer font-semibold text-indigo-600 text-sm flex items-center justify-center w-full h-full">
+                            <span>{profilePicFile ? profilePicFile.name : 'Profilbild hochladen'}</span>
+                            <input type="file" className="sr-only" accept="image/*" onChange={e => setProfilePicFile(e.target.files ? e.target.files[0] : null)} />
+                          </label>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  {file && (
-                    <div className="flex items-center text-sm text-green-600 font-medium mt-4">
-                      <CheckCircle2 className="w-5 h-5 mr-2" /> {file.name} ausgewählt
-                    </div>
-                  )}
                 </motion.div>
               )}
               {step === 4 && (
@@ -356,7 +395,7 @@ export default function PharmacistWizard() {
               ) : (
                 <button
                   onClick={handleRegister}
-                  disabled={isLoading || !file}
+                  disabled={isLoading || !approbationFile}
                   className="flex items-center px-8 py-3 rounded-xl font-bold text-white bg-indigo-600 hover:bg-indigo-700 transition-colors disabled:opacity-50"
                 >
                   {isLoading ? 'Lädt...' : 'Registrierung abschließen'}
