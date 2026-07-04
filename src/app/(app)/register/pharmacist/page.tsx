@@ -119,7 +119,8 @@ export default function PharmacistWizard() {
 
       window.location.href = '/dashboard/pharmacist';
     } catch (err: any) {
-      setError(err.response?.data || 'Ungültiger Code.');
+      const msg = err.response?.data?.message || (typeof err.response?.data === 'string' ? err.response.data : 'Ein Fehler ist aufgetreten.');
+      setError(msg);
       setIsLoading(false);
     }
   };
