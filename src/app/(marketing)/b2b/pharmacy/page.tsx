@@ -1,3 +1,5 @@
+Ôªøexport const dynamic = 'force-dynamic';
+
 import Link from "next/link";
 import { CheckCircle, Zap, Shield, TrendingUp } from "lucide-react";
 
@@ -12,7 +14,7 @@ export default function B2bPharmacyLandingPage() {
               Zero-Touch Invoicing & <span className="text-blue-600">pDL-Umsatz</span>
             </h1>
             <p className="mt-6 max-w-2xl mx-auto text-xl text-gray-500">
-              Die erste A‹G-konforme Plattform f¸r tempor‰re Apothekenvertretung. Komplett automatisierte Abrechnung. Zus‰tzliche Erlˆse durch pharmazeutische Dienstleistungen (pDL).
+              Die erste A√úG-konforme Plattform f√ºr tempor√§re Apothekenvertretung. Komplett automatisierte Abrechnung. Zus√§tzliche Erl√∂se durch pharmazeutische Dienstleistungen (pDL).
             </p>
             <div className="mt-10 flex justify-center gap-4">
               <Link href="/register/pharmacy" className="rounded-md shadow px-8 py-3 text-lg font-medium text-white bg-blue-600 hover:bg-blue-700">
@@ -31,22 +33,22 @@ export default function B2bPharmacyLandingPage() {
               <div className="flex items-center justify-center h-16 w-16 rounded-md bg-blue-100 text-blue-600 mb-6">
                 <Shield className="h-8 w-8" />
               </div>
-              <h3 className="text-2xl font-bold">A‹G-Compliance</h3>
-              <p className="mt-4 text-gray-600">Kein Schein-Selbstst‰ndigkeits-Risiko. Vollst‰ndig gesicherte Arbeitnehmer¸berlassung nach aktuellen rechtlichen Standards.</p>
+              <h3 className="text-2xl font-bold">A√úG-Compliance</h3>
+              <p className="mt-4 text-gray-600">Kein Schein-Selbstst√§ndigkeits-Risiko. Vollst√§ndig gesicherte Arbeitnehmer√ºberlassung nach aktuellen rechtlichen Standards.</p>
             </div>
             <div className="flex flex-col items-center text-center">
               <div className="flex items-center justify-center h-16 w-16 rounded-md bg-blue-100 text-blue-600 mb-6">
                 <Zap className="h-8 w-8" />
               </div>
               <h3 className="text-2xl font-bold">Zero-Touch Invoicing</h3>
-              <p className="mt-4 text-gray-600">Zwei-Rechnungs-Modell (Dual-Invoice). Sie erhalten direkt die gepr¸ften PDFs, keine manuellen Buchungsschritte nˆtig.</p>
+              <p className="mt-4 text-gray-600">Zwei-Rechnungs-Modell (Dual-Invoice). Sie erhalten direkt die gepr√ºften PDFs, keine manuellen Buchungsschritte n√∂tig.</p>
             </div>
             <div className="flex flex-col items-center text-center">
               <div className="flex items-center justify-center h-16 w-16 rounded-md bg-blue-100 text-blue-600 mb-6">
                 <TrendingUp className="h-8 w-8" />
               </div>
               <h3 className="text-2xl font-bold">pDL-Umsatz</h3>
-              <p className="mt-4 text-gray-600">Erschlieﬂen Sie neue Einnahmequellen durch automatisierte Auswertungen von Medikationsanalysen (AMTS) mithilfe unserer KI.</p>
+              <p className="mt-4 text-gray-600">Erschlie√üen Sie neue Einnahmequellen durch automatisierte Auswertungen von Medikationsanalysen (AMTS) mithilfe unserer KI.</p>
             </div>
           </div>
         </div>

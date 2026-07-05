@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import Link from 'next/link';
 import { ShieldCheck, ReceiptText, MapPin, Building, User, ArrowRight, Activity, MonitorSmartphone } from 'lucide-react';
 import FadeIn from '@/components/ui/FadeIn';
