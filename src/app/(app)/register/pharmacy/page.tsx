@@ -46,9 +46,6 @@ export default function PharmacyWizard() {
 
       await api.post('/Pharmacy/register', { ...formData, ...utmData });
 
-      // Clear UTM data after successful registration intent
-      sessionStorage.removeItem("utm_data");
-
       // 2. Try to login
       let pharmacyId = null;
       try {
@@ -84,6 +81,7 @@ export default function PharmacyWizard() {
       setError(err.response?.data?.message || 'Registrierung fehlgeschlagen.');
     } finally {
       setIsLoading(false);
+      sessionStorage.removeItem("utm_data");
     }
   };
 

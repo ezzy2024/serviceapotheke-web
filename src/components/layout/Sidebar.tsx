@@ -19,6 +19,8 @@ export default function Sidebar() {
     { name: 'Übersicht', href: '/dashboard/pharmacy', icon: LayoutDashboard },
     { name: 'Vakanzen', href: '/dashboard/pharmacy/jobs', icon: Briefcase },
     { name: 'Rechnungen', href: '/dashboard/pharmacy/invoices', icon: FileText },
+    { name: 'pDL Analyzer', href: '/dashboard/pharmacy/pdl', icon: FileText },
+    { name: 'aTM Terminals', href: '/dashboard/pharmacy/atm', icon: Radar },
     { name: 'Einstellungen', href: '/dashboard/pharmacy/settings', icon: Settings },
   ];
 
