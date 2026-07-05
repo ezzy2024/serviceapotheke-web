@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ShieldCheck, ReceiptText, MapPin, Building, User, ArrowRight } from 'lucide-react';
+import { ShieldCheck, ReceiptText, MapPin, Building, User, ArrowRight, Activity, MonitorSmartphone } from 'lucide-react';
 import FadeIn from '@/components/ui/FadeIn';
 
 export default function Home() {
@@ -17,9 +17,9 @@ export default function Home() {
           
           <FadeIn delay={0.2}>
             <h1 className="text-5xl md:text-7xl font-extrabold text-zinc-900 tracking-tight mb-8">
-              Vertretung finden. <br className="hidden md:block" />
+              Vertretung & Dienstleistung. <br className="hidden md:block" />
               <span className="text-zinc-400">
-                100% AÜG-sicher & Automatisiert.
+                100% AÜG-sicher & Maximierung des pDL-Umsatzes.
               </span>
             </h1>
           </FadeIn>
@@ -61,9 +61,9 @@ export default function Home() {
             </div>
           </FadeIn>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <FadeIn delay={0.2}>
-              <div className="bg-white rounded-2xl p-8 border border-zinc-200/60 shadow-sm hover:shadow-md transition-shadow">
+              <div className="bg-white rounded-2xl p-8 border border-zinc-200/60 shadow-sm hover:shadow-md transition-shadow h-full">
                 <div className="w-12 h-12 rounded-xl bg-zinc-50 border border-zinc-100 text-zinc-800 flex items-center justify-center mb-6">
                   <ShieldCheck className="w-6 h-6" />
                 </div>
@@ -75,7 +75,7 @@ export default function Home() {
             </FadeIn>
 
             <FadeIn delay={0.3}>
-              <div className="bg-white rounded-2xl p-8 border border-zinc-200/60 shadow-sm hover:shadow-md transition-shadow">
+              <div className="bg-white rounded-2xl p-8 border border-zinc-200/60 shadow-sm hover:shadow-md transition-shadow h-full">
                 <div className="w-12 h-12 rounded-xl bg-zinc-50 border border-zinc-100 text-zinc-800 flex items-center justify-center mb-6">
                   <MapPin className="w-6 h-6" />
                 </div>
@@ -87,13 +87,37 @@ export default function Home() {
             </FadeIn>
 
             <FadeIn delay={0.4}>
-              <div className="bg-white rounded-2xl p-8 border border-zinc-200/60 shadow-sm hover:shadow-md transition-shadow">
+              <div className="bg-white rounded-2xl p-8 border border-zinc-200/60 shadow-sm hover:shadow-md transition-shadow h-full">
                 <div className="w-12 h-12 rounded-xl bg-zinc-50 border border-zinc-100 text-zinc-800 flex items-center justify-center mb-6">
                   <ReceiptText className="w-6 h-6" />
                 </div>
                 <h3 className="text-lg font-bold text-zinc-900 mb-3 tracking-tight">Zero-Touch Invoicing</h3>
                 <p className="text-sm text-zinc-500 leading-relaxed">
                   Sobald die Apotheke den digitalen Stundenzettel freigibt, generiert unsere Engine im Hintergrund eine DIN-konforme PDF-Rechnung und stellt sie beiden Parteien zur Verfügung. Keine Buchhaltungsfehler mehr.
+                </p>
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.5}>
+              <div className="bg-white rounded-2xl p-8 border border-zinc-200/60 shadow-sm hover:shadow-md transition-shadow h-full">
+                <div className="w-12 h-12 rounded-xl bg-zinc-50 border border-zinc-100 text-zinc-800 flex items-center justify-center mb-6">
+                  <Activity className="w-6 h-6" />
+                </div>
+                <h3 className="text-lg font-bold text-zinc-900 mb-3 tracking-tight">pDL-Automatisierung</h3>
+                <p className="text-sm text-zinc-500 leading-relaxed">
+                  Maximieren Sie Ihre Einnahmen. Unsere KI-gestützten AMTS-Analysen und die automatisierte QuestPDF-Dokumentation garantieren die Einhaltung aller MDK-Prüfrichtlinien ohne zeitlichen Mehraufwand.
+                </p>
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.6}>
+              <div className="bg-white rounded-2xl p-8 border border-zinc-200/60 shadow-sm hover:shadow-md transition-shadow h-full">
+                <div className="w-12 h-12 rounded-xl bg-zinc-50 border border-zinc-100 text-zinc-800 flex items-center justify-center mb-6">
+                  <MonitorSmartphone className="w-6 h-6" />
+                </div>
+                <h3 className="text-lg font-bold text-zinc-900 mb-3 tracking-tight">Assistierte Telemedizin (aTM)</h3>
+                <p className="text-sm text-zinc-500 leading-relaxed">
+                  Skalieren Sie Ihre lokale Reichweite. Mit unserer sicheren Kiosk-Terminal-Integration erschließen Sie neue Patienten-Touchpoints durch DSGVO-konforme Telepharmazie-Lösungen direkt vor Ort.
                 </p>
               </div>
             </FadeIn>
