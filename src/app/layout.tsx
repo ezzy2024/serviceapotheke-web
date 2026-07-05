@@ -12,6 +12,8 @@ export const metadata: Metadata = {
   description: "Next-Gen Freelance Pharmacist Platform",
 };
 
+import UtmTracker from "@/components/UtmTracker";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -20,6 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
       <body className="font-sans min-h-full flex flex-col">
+        <UtmTracker />
         {children}
       </body>
     </html>

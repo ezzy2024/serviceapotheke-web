@@ -38,7 +38,16 @@ export default function PharmacyWizard() {
     setError('');
     try {
       // 1. Register base account
-      await api.post('/Pharmacy/register', formData);
+      let utmData = {};
+      try {
+        const storedUtm = sessionStorage.getItem("utm_data");
+        if (storedUtm) utmData = JSON.parse(storedUtm);
+      } catch(e) {}
+
+      await api.post('/Pharmacy/register', { ...formData, ...utmData });
+
+      // Clear UTM data after successful registration intent
+      sessionStorage.removeItem("utm_data");
 
       // 2. Try to login
       let pharmacyId = null;
