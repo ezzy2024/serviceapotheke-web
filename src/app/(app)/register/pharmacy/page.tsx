@@ -37,46 +37,52 @@ export default function PharmacyWizard() {
     setIsLoading(true);
     setError('');
     try {
-      // 1. Register base account
-      let utmData = {};
+      const submitData = new FormData();
+      
+      // 1. Append all text fields
+      Object.entries(formData).forEach(([key, value]) => {
+        if (key !== 'documentFile' && value !== null && value !== '') {
+          // ensure correct case for C# DTO binding (capitalize first letter if needed, though ASP.NET Core handles camelCase usually, let's keep it robust)
+          submitData.append(key, value as string);
+        }
+      });
+
+      // 2. Append document
+      if (formData.documentFile) {
+        submitData.append('documentFile', formData.documentFile);
+      }
+
+      // 3. Append UTM parameters
       try {
         const storedUtm = sessionStorage.getItem("utm_data");
-        if (storedUtm) utmData = JSON.parse(storedUtm);
+        if (storedUtm) {
+          const utmData = JSON.parse(storedUtm);
+          if (utmData.utmSource) submitData.append("UtmSource", utmData.utmSource);
+          if (utmData.utmMedium) submitData.append("UtmMedium", utmData.utmMedium);
+          if (utmData.utmCampaign) submitData.append("UtmCampaign", utmData.utmCampaign);
+          if (utmData.utmTerm) submitData.append("UtmTerm", utmData.utmTerm);
+        }
       } catch(e) {}
 
-      await api.post('/Pharmacy/register', { ...formData, ...utmData });
+      // Execute atomic registration
+      await api.post('/Pharmacy/register', submitData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
 
-      // 2. Try to login
-      let pharmacyId = null;
+      // 4. Try to login
       try {
-        const loginRes = await api.post('/Pharmacy/login', {
+        await api.post('/Pharmacy/login', {
           email: formData.email,
           password: formData.password,
         });
-        pharmacyId = loginRes.data.id;
+        window.location.href = '/dashboard/pharmacy';
       } catch (loginErr: any) {
         if (loginErr.response?.status === 401 && loginErr.response?.data?.message?.includes('E-Mail-Adresse')) {
           setStep(4);
-          setIsLoading(false);
           return;
         }
         throw loginErr;
       }
-
-      // 3. Upload Document
-      if (pharmacyId && formData.documentFile) {
-        const docData = new FormData();
-        docData.append('license', formData.documentFile);
-        try {
-          await api.post(`/Document/pharmacy/${pharmacyId}`, docData, {
-            headers: { 'Content-Type': 'multipart/form-data' }
-          });
-        } catch (uploadErr) {
-          console.error('Failed to upload document', uploadErr);
-        }
-      }
-
-      window.location.href = '/dashboard/pharmacy';
     } catch (err: any) {
       setError(err.response?.data?.message || 'Registrierung fehlgeschlagen.');
     } finally {
