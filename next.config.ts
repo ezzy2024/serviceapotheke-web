@@ -1,16 +1,22 @@
 import type { NextConfig } from "next";
+import withPWAInit from "next-pwa";
+
+const withPWA = withPWAInit({
+  dest: "public",
+  disable: process.env.NODE_ENV === "development",
+});
 
 const nextConfig: NextConfig = {
-  output: 'standalone',
+  output: "standalone",
+  turbopack: {},
   async rewrites() {
     return [
       {
-        source: '/api/:path*',
-        // Destination can be an environment variable, but for now we hardcode the known backend
-        destination: 'https://api.serviceapotheke.tech/api/:path*',
+        source: "/api/:path*",
+        destination: "https://api.serviceapotheke.tech/api/:path*",
       },
     ];
   },
 };
 
-export default nextConfig;
+export default withPWA(nextConfig);

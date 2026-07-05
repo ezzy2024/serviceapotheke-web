@@ -1,0 +1,21 @@
+{
+  "name": "ServiceApotheke Kiosk",
+  "short_name": "aTM Kiosk",
+  "description": "DSGVO-konforme Assistierte Telemedizin",
+  "start_url": "/kiosk/start",
+  "display": "kiosk",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
