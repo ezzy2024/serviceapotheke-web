@@ -12,7 +12,7 @@ export default function ForPharmacies() {
     <div className="bg-white min-h-screen font-sans">
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-b from-gray-50 to-white pt-32 pb-24 border-b border-gray-100">
-        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
+        <div className="absolute inset-0 bg-[url(/grid.svg)] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
@@ -115,7 +115,7 @@ export default function ForPharmacies() {
 
       {/* CTA Bottom */}
       <section className="bg-gradient-to-br from-blue-900 to-gray-900 py-32 text-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-10"></div>
+        <div className="absolute inset-0 bg-[url(/grid.svg)] bg-center opacity-10"></div>
         <div className="max-w-3xl mx-auto px-4 relative z-10">
           <FadeIn delay={0.1}>
             <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-6 tracking-tight">Inserieren Sie Ihre erste Vakanz in unter 3 Minuten.</h2>

@@ -31,7 +31,7 @@ export default function ModernLandingPage() {
       {/* Hero Section */}
       <main className="flex-1">
         <section className="relative overflow-hidden bg-gradient-to-b from-gray-50 to-white pt-24 pb-32">
-          <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
+          <div className="absolute inset-0 bg-[url(/grid.svg)] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-sm font-medium mb-8 border border-blue-100">
               <span className="flex h-2 w-2 rounded-full bg-blue-600"></span>

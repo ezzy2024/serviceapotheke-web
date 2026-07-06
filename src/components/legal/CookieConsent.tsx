@@ -2,16 +2,20 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useHasHydrated } from '@/hooks/useHasHydrated';
 
 export function CookieConsent() {
   const [isVisible, setIsVisible] = useState(false);
+  const hasHydrated = useHasHydrated();
 
   useEffect(() => {
-    const consent = localStorage.getItem('cookie-consent');
-    if (!consent) {
-      setIsVisible(true);
+    if (hasHydrated) {
+      const consent = localStorage.getItem('cookie-consent');
+      if (!consent) {
+        setIsVisible(true);
+      }
     }
-  }, []);
+  }, [hasHydrated]);
 
   const handleAccept = () => {
     localStorage.setItem('cookie-consent', 'accepted');
