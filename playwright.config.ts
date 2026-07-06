@@ -7,7 +7,9 @@ export default defineConfig({
   workers: 1,
   reporter: 'list',
   use: {
-    trace: 'on-first-retry',
+    video: 'on',
+    screenshot: 'on',
+    trace: 'on',
     baseURL: process.env.BASE_URL || 'http://localhost:3000',
   },
   projects: [

@@ -64,4 +64,10 @@ test.describe('Autonomous E2E Verification Pipeline', () => {
       expect(setCookie).toContain('sa_auth_v2');
     }
   });
+
+  test('Visual Topology Audit', async ({ page }) => {
+    await page.goto(TARGET_URL);
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveScreenshot('landing-page-baseline.png', { maxDiffPixels: 100, fullPage: true });
+  });
 });
