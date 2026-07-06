@@ -7,10 +7,10 @@ export default function MarketingNavbar() {
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0 flex items-center">
             <Link href="/" className="flex items-center space-x-2 group">
-              <div className="w-8 h-8 bg-zinc-900 text-white rounded-lg flex items-center justify-center font-bold text-lg shadow-sm transition-transform group-hover:scale-105">
+              <div className="w-8 h-8 bg-blue-600 text-white rounded-lg flex items-center justify-center font-bold text-lg shadow-sm transition-transform group-hover:scale-105">
                 S
               </div>
-              <span className="font-extrabold text-xl tracking-tight text-zinc-900">
+              <span className="font-extrabold text-xl tracking-tight text-gray-900">
                 ServiceApotheke
               </span>
             </Link>
@@ -28,13 +28,13 @@ export default function MarketingNavbar() {
           <div className="flex items-center space-x-4">
             <Link 
               href="/login" 
-              className="text-sm font-medium text-zinc-600 hover:text-zinc-900 transition-colors hidden sm:block"
+              className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors hidden sm:block"
             >
               Login
             </Link>
             <Link 
               href="/register" 
-              className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-zinc-900 hover:bg-zinc-800 shadow-sm transition-all hover:shadow-md"
+              className="inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold rounded-full text-white bg-blue-600 hover:bg-blue-700 shadow-sm transition-all hover:shadow-md hover:shadow-blue-600/20"
             >
               Loslegen
             </Link>

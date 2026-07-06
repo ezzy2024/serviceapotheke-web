@@ -9,48 +9,57 @@ export const metadata = {
 
 export default function ForPharmacists() {
   return (
-    <div className="bg-white min-h-screen">
-      {/* Hero */}
-      <section className="bg-zinc-50 pt-32 pb-24 border-b border-zinc-200/60 relative overflow-hidden">
+    <div className="bg-white min-h-screen font-sans">
+      {/* Hero Section */}
+      <section className="relative overflow-hidden bg-gradient-to-b from-gray-50 to-white pt-32 pb-24 border-b border-gray-100">
+        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <FadeIn delay={0.1}>
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-zinc-900 mb-6 tracking-tight">
-                  Ihre Expertise. <br className="hidden md:block" />
-                  <span className="text-zinc-400">Ihre Bedingungen.</span>
-                </h1>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-sm font-medium mb-6 border border-blue-100">
+                  <span className="flex h-2 w-2 rounded-full bg-blue-600"></span>
+                  Honorarvertretung ohne Bürokratie
+                </div>
               </FadeIn>
               <FadeIn delay={0.2}>
-                <p className="text-base md:text-lg text-zinc-500 mb-8 leading-relaxed max-w-xl">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight leading-tight">
+                  Ihre Expertise. <br className="hidden md:block" />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">Ihre Bedingungen.</span>
+                </h1>
+              </FadeIn>
+              <FadeIn delay={0.3}>
+                <p className="text-lg text-gray-600 mb-8 leading-relaxed max-w-xl">
                   Konzentrieren Sie sich auf Ihre pharmazeutische Arbeit. Wir übernehmen die lästige Administration: Verträge, AÜG-Nachweise und die gesamte Rechnungsstellung – vollautomatisiert.
                 </p>
               </FadeIn>
-              <FadeIn delay={0.3}>
-                <Link 
-                  href="/register/pharmacist" 
-                  className="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold rounded-lg text-white bg-zinc-900 hover:bg-zinc-800 shadow-sm transition-all hover:shadow-md"
-                >
-                  Als Freelancer starten
-                </Link>
+              <FadeIn delay={0.4}>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Link 
+                    href="/register/pharmacist" 
+                    className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold rounded-full text-white bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-600/20 transition-all hover:-translate-y-0.5"
+                  >
+                    Als Freelancer starten
+                  </Link>
+                </div>
               </FadeIn>
             </div>
             
             <div className="hidden md:block relative">
-              <FadeIn delay={0.4} direction="left">
-                <div className="bg-white p-8 rounded-2xl shadow-sm border border-zinc-200/60 relative w-full max-w-md mx-auto">
+              <FadeIn delay={0.5} direction="left">
+                <div className="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-xl border border-gray-100 relative w-full max-w-md mx-auto hover:border-emerald-200 transition-colors">
                   <div className="flex items-center space-x-4 mb-6">
-                    <div className="w-10 h-10 bg-zinc-50 border border-zinc-100 text-zinc-800 rounded-lg flex items-center justify-center">
-                      <Banknote className="w-5 h-5" />
+                    <div className="w-12 h-12 bg-emerald-50 border border-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center">
+                      <Banknote className="w-6 h-6" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-zinc-900 text-sm">Auszahlung initiiert</h3>
-                      <p className="text-xs text-zinc-500">Zero-Touch Invoicing erfolgreich</p>
+                      <h3 className="font-bold text-gray-900">Auszahlung initiiert</h3>
+                      <p className="text-sm text-gray-500">Zero-Touch Invoicing erfolgreich</p>
                     </div>
                   </div>
-                  <div className="space-y-3">
-                    <div className="h-2 bg-zinc-100 rounded-full w-full"></div>
-                    <div className="h-2 bg-zinc-100 rounded-full w-3/4"></div>
+                  <div className="space-y-4">
+                    <div className="h-3 bg-gray-100 rounded-full w-full"></div>
+                    <div className="h-3 bg-emerald-100 rounded-full w-3/4"></div>
                   </div>
                 </div>
               </FadeIn>
@@ -59,43 +68,44 @@ export default function ForPharmacists() {
         </div>
       </section>
 
-      {/* Benefits */}
-      <section className="py-32">
+      {/* Benefits Grid */}
+      <section className="py-32 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeIn delay={0.1}>
             <div className="text-center mb-20">
-              <h2 className="text-3xl font-extrabold text-zinc-900 tracking-tight">Die beste Plattform für Freelancer</h2>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">Die beste Plattform für Freelancer</h2>
+              <p className="text-gray-600 mt-4 max-w-2xl mx-auto text-lg">Entwickelt für maximale Unabhängigkeit und Effizienz.</p>
             </div>
           </FadeIn>
 
           <div className="grid md:grid-cols-3 gap-8">
             <FadeIn delay={0.2}>
-              <div className="bg-white p-8 rounded-2xl border border-zinc-200/60 shadow-sm hover:shadow-md transition-shadow">
-                <div className="w-10 h-10 bg-zinc-50 border border-zinc-100 text-zinc-800 rounded-lg flex items-center justify-center mb-6">
-                  <Map className="w-5 h-5" />
+              <div className="bg-gray-50 p-8 rounded-3xl border border-gray-100 hover:border-blue-200 hover:bg-blue-50/50 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 h-full flex flex-col">
+                <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-6">
+                  <Map className="w-6 h-6" />
                 </div>
-                <h3 className="text-base font-bold text-zinc-900 mb-3">Haversine Shift-Radar</h3>
-                <p className="text-sm text-zinc-500 leading-relaxed">Definieren Sie Ihren Aktionsradius. Unser Algorithmus benachrichtigt Sie nur über lukrative Schichten in Ihrer direkten Umgebung.</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Haversine Shift-Radar</h3>
+                <p className="text-gray-600 leading-relaxed flex-grow">Definieren Sie Ihren Aktionsradius. Unser Algorithmus benachrichtigt Sie exklusiv über lukrative Schichten in Ihrer direkten Umgebung.</p>
               </div>
             </FadeIn>
 
             <FadeIn delay={0.3}>
-              <div className="bg-white p-8 rounded-2xl border border-zinc-200/60 shadow-sm hover:shadow-md transition-shadow">
-                <div className="w-10 h-10 bg-zinc-50 border border-zinc-100 text-zinc-800 rounded-lg flex items-center justify-center mb-6">
-                  <FileCheck2 className="w-5 h-5" />
+              <div className="bg-gray-50 p-8 rounded-3xl border border-gray-100 hover:border-emerald-200 hover:bg-emerald-50/50 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 h-full flex flex-col">
+                <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center mb-6">
+                  <FileCheck2 className="w-6 h-6" />
                 </div>
-                <h3 className="text-base font-bold text-zinc-900 mb-3">Zero-Touch Invoicing</h3>
-                <p className="text-sm text-zinc-500 leading-relaxed">Sobald die Apotheke Ihre gearbeiteten Stunden im Dashboard bestätigt, generiert unser System automatisch Ihre Rechnung und sendet sie ab.</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Zero-Touch Invoicing</h3>
+                <p className="text-gray-600 leading-relaxed flex-grow">Sobald die Apotheke Ihre gearbeiteten Stunden im Dashboard bestätigt, generiert unser System automatisch Ihre Rechnung und sendet sie ab.</p>
               </div>
             </FadeIn>
 
             <FadeIn delay={0.4}>
-              <div className="bg-white p-8 rounded-2xl border border-zinc-200/60 shadow-sm hover:shadow-md transition-shadow">
-                <div className="w-10 h-10 bg-zinc-50 border border-zinc-100 text-zinc-800 rounded-lg flex items-center justify-center mb-6">
-                  <CheckCircle2 className="w-5 h-5" />
+              <div className="bg-gray-50 p-8 rounded-3xl border border-gray-100 hover:border-cyan-200 hover:bg-cyan-50/50 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 h-full flex flex-col">
+                <div className="w-12 h-12 bg-cyan-100 text-cyan-600 rounded-xl flex items-center justify-center mb-6">
+                  <CheckCircle2 className="w-6 h-6" />
                 </div>
-                <h3 className="text-base font-bold text-zinc-900 mb-3">Unabhängigkeit Garantiert</h3>
-                <p className="text-sm text-zinc-500 leading-relaxed">Sie sind Ihr eigener Chef. Das System fragt aktiv Ihren "Independent Contractor" Status ab, um Scheinselbstständigkeit rechtssicher auszuschließen.</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Unabhängigkeit Garantiert</h3>
+                <p className="text-gray-600 leading-relaxed flex-grow">Sie sind Ihr eigener Chef. Das System fragt aktiv Ihren Status als freier Mitarbeiter ab, um Scheinselbstständigkeit rechtssicher auszuschließen.</p>
               </div>
             </FadeIn>
           </div>
@@ -103,17 +113,19 @@ export default function ForPharmacists() {
       </section>
 
       {/* CTA Bottom */}
-      <section className="bg-zinc-50 border-t border-zinc-200/60 py-32 text-center">
-        <div className="max-w-3xl mx-auto px-4">
+      <section className="bg-gradient-to-br from-blue-900 to-gray-900 py-32 text-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-10"></div>
+        <div className="max-w-3xl mx-auto px-4 relative z-10">
           <FadeIn delay={0.1}>
-            <h2 className="text-2xl md:text-3xl font-extrabold text-zinc-900 mb-6 tracking-tight">Ihre erste Schicht wartet.</h2>
+            <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-6 tracking-tight">Ihre erste Schicht wartet.</h2>
+            <p className="text-blue-100 text-lg mb-10">Treten Sie dem modernsten Netzwerk für pharmazeutische Fachkräfte bei.</p>
           </FadeIn>
           <FadeIn delay={0.2}>
             <Link 
               href="/register/pharmacist" 
-              className="inline-flex items-center px-6 py-3 bg-zinc-900 text-white font-semibold rounded-lg shadow-sm hover:bg-zinc-800 transition-colors"
+              className="inline-flex items-center px-8 py-4 bg-white text-blue-900 font-bold rounded-full shadow-xl hover:bg-gray-50 hover:scale-105 transition-all"
             >
-              Jetzt Account erstellen <CheckCircle2 className="w-4 h-4 ml-2" />
+              Account erstellen <CheckCircle2 className="w-5 h-5 ml-2 text-emerald-500" />
             </Link>
           </FadeIn>
         </div>
