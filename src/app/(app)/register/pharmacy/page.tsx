@@ -65,9 +65,7 @@ export default function PharmacyWizard() {
       } catch(e) {}
 
       // Execute atomic registration
-      await api.post('/Pharmacy/register', submitData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
+      await api.post('/Pharmacy/register', submitData);
 
       // 4. Try to login
       try {

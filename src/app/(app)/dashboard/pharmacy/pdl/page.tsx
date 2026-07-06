@@ -40,9 +40,7 @@ export default function PdlDashboardPage() {
     const formData = new FormData();
     formData.append('file', file);
     try {
-      const res = await api.post('/pdl/ingest', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
+      const res = await api.post('/pdl/ingest', formData);
       showToast(`${res.data.processed} Patienten verarbeitet. ${res.data.newlyEligible} AMTS-berechtigt.`, 'success');
       fetchPatients();
     } catch (err: any) {
