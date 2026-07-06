@@ -44,32 +44,32 @@ export const RegistrationFlow: React.FC = () => {
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md animate-in fade-in">
-      <h2 className="text-2xl font-bold mb-6">Apotheke & Freelancer Registrierung</h2>
+      <h2 className="text-2xl font-bold mb-6 text-slate-900">Apotheke & Freelancer Registrierung</h2>
       
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <div>
-          <label className="block text-sm font-medium mb-1">Apothekenname</label>
+          <label className="block text-sm font-medium mb-1 text-slate-700">Apothekenname</label>
           <input
             {...register('pharmacyName')}
-            className={`w-full p-2 border rounded ${errors.pharmacyName ? 'border-red-500' : 'border-gray-300'}`}
+              className={`w-full p-2 border rounded text-slate-900 bg-white focus:border-blue-500 focus:ring-blue-500 ${errors.pharmacyName ? 'border-red-500' : 'border-slate-300'}`}
           />
           {errors.pharmacyName && <span className="text-red-500 text-sm">{errors.pharmacyName.message}</span>}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium mb-1">E-Mail</label>
+            <label className="block text-sm font-medium mb-1 text-slate-700">E-Mail</label>
             <input
               {...register('email')}
-              className={`w-full p-2 border rounded ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
+              className={`w-full p-2 border rounded text-slate-900 bg-white focus:border-blue-500 focus:ring-blue-500 ${errors.email ? 'border-red-500' : 'border-slate-300'}`}
             />
             {errors.email && <span className="text-red-500 text-sm">{errors.email.message}</span>}
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Telefon</label>
+            <label className="block text-sm font-medium mb-1 text-slate-700">Telefon</label>
             <input
               {...register('phone')}
-              className={`w-full p-2 border rounded ${errors.phone ? 'border-red-500' : 'border-gray-300'}`}
+              className={`w-full p-2 border rounded text-slate-900 bg-white focus:border-blue-500 focus:ring-blue-500 ${errors.phone ? 'border-red-500' : 'border-slate-300'}`}
             />
             {errors.phone && <span className="text-red-500 text-sm">{errors.phone.message}</span>}
           </div>
@@ -77,28 +77,28 @@ export const RegistrationFlow: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium mb-1">Straße & Hausnummer</label>
+            <label className="block text-sm font-medium mb-1 text-slate-700">Straße & Hausnummer</label>
             <input
               {...register('street')}
-              className={`w-full p-2 border rounded ${errors.street ? 'border-red-500' : 'border-gray-300'}`}
+              className={`w-full p-2 border rounded text-slate-900 bg-white focus:border-blue-500 focus:ring-blue-500 ${errors.street ? 'border-red-500' : 'border-slate-300'}`}
             />
             {errors.street && <span className="text-red-500 text-sm">{errors.street.message}</span>}
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">PLZ</label>
+            <label className="block text-sm font-medium mb-1 text-slate-700">PLZ</label>
             <input
               {...register('zipCode')}
-              className={`w-full p-2 border rounded ${errors.zipCode ? 'border-red-500' : 'border-gray-300'}`}
+              className={`w-full p-2 border rounded text-slate-900 bg-white focus:border-blue-500 focus:ring-blue-500 ${errors.zipCode ? 'border-red-500' : 'border-slate-300'}`}
             />
             {errors.zipCode && <span className="text-red-500 text-sm">{errors.zipCode.message}</span>}
           </div>
         </div>
 
         <div className="mt-4 p-4 bg-blue-50 rounded-lg">
-          <h3 className="font-semibold mb-2">AÜG Compliance</h3>
+          <h3 className="font-semibold mb-2 text-slate-900">AÜG Compliance</h3>
           <label className="flex items-start gap-2">
             <input type="checkbox" {...register('augCompliance')} className="mt-1" />
-            <span className="text-sm">
+            <span className="text-sm text-slate-700">
               Ich bestätige, dass ich die Richtlinien des Arbeitnehmerüberlassungsgesetzes (AÜG) zur Kenntnis genommen habe.
             </span>
           </label>

@@ -42,8 +42,8 @@ export const PdlIngestionFlow: React.FC = () => {
 
   return (
     <div className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow-md animate-in fade-in">
-      <h2 className="text-2xl font-bold mb-4">pDL (MiniExcel) Upload</h2>
-      <p className="text-gray-600 mb-6 text-sm">
+      <h2 className="text-2xl font-bold mb-4 text-slate-900">pDL (MiniExcel) Upload</h2>
+      <p className="text-slate-600 mb-6 text-sm">
         Bitte laden Sie Ihre ausgefüllte MiniExcel pDL-Tabelle hier hoch. Unser System extrahiert automatisch die relevanten Pharmazentrischen Dienstleistungen für die Abrechnung.
       </p>
 
@@ -67,8 +67,8 @@ export const PdlIngestionFlow: React.FC = () => {
             <svg className="w-10 h-10 text-gray-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
             </svg>
-            <p className="text-sm font-medium text-gray-700">Excel-Datei hierher ziehen oder klicken</p>
-            <p className="text-xs text-gray-500 mt-1">.xlsx, .xls bis zu 5MB</p>
+            <p className="text-sm font-medium text-slate-600">Excel-Datei hierher ziehen oder klicken</p>
+            <p className="text-xs text-slate-600 mt-1">.xlsx, .xls bis zu 5MB</p>
           </div>
         </div>
         
