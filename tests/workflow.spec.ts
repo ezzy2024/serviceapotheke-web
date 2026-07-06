@@ -39,7 +39,7 @@ test.describe('Autonomous E2E Verification Pipeline', () => {
     // Convert FormData to standard multi-part payload for Playwright request
     const response = await request.post(apiUrl, {
       multipart: {
-        Email: 'playwright-test@serviceapotheke.tech',
+        Email: `playwright-test-${Date.now()}@serviceapotheke.tech`,
         Password: 'TestPass123!',
         PharmacyName: 'E2E Test Apotheke',
         ZipCode: '47798',
@@ -58,5 +58,10 @@ test.describe('Autonomous E2E Verification Pipeline', () => {
     // Accept 200 (Success) or 400 (Already registered).
     const status = response.status();
     expect([200, 400, 409]).toContain(status);
+    
+    if (status === 200) {
+      const setCookie = response.headers()['set-cookie'];
+      expect(setCookie).toContain('sa_auth_v2');
+    }
   });
 });

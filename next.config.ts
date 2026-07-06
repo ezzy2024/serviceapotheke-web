@@ -10,6 +10,9 @@ const withPWA = withPWAInit({
 const nextConfig: NextConfig = {
   output: "standalone",
   turbopack: {},
+  generateBuildId: async () => {
+    return 'release-' + Date.now();
+  },
   async rewrites() {
     return [
       {
