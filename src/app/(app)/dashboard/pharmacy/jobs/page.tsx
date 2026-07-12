@@ -59,19 +59,19 @@ export default function PharmacyJobs() {
   };
 
   if (isLoading) {
-    return <div className="flex justify-center p-12"><div className="animate-spin w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full"></div></div>;
+    return <div className="flex justify-center p-12"><div className="animate-spin w-8 h-8 border-4 border-cyan-600 border-t-transparent rounded-full"></div></div>;
   }
 
   return (
     <div>
       <div className="flex justify-between items-end mb-8">
         <div>
-          <h1 className="text-3xl font-extrabold text-slate-800">Vakanzen & Bewerbungen</h1>
+          <h1 className="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-cyan-600">Vakanzen & Bewerbungen</h1>
           <p className="text-slate-500 mt-2">Verwalte deine ausgeschriebenen Schichten und wähle Vertretungsapotheker aus.</p>
         </div>
         <Link 
           href="/dashboard/pharmacy/jobs/create" 
-          className="flex items-center px-6 py-3 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition-colors shadow-sm"
+          className="flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold rounded-xl hover:from-blue-700 hover:to-cyan-600 transition-all shadow-md hover:shadow-lg"
         >
           <Plus className="w-5 h-5 mr-2" />
           Neue Vakanz inserieren
@@ -87,18 +87,22 @@ export default function PharmacyJobs() {
           </div>
         ) : (
           jobs.map(job => (
-            <div key={job.id} className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-              <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-                <div>
+            <div key={job.id} className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+              <div className="p-6 border-b border-slate-100 flex items-center bg-white">
+                <div className="flex flex-col items-center justify-center bg-blue-50 border border-blue-100 text-blue-700 rounded-xl w-16 h-16 mr-6 shadow-sm">
+                  <span className="text-xs font-bold uppercase tracking-wider">{new Date(job.startDate).toLocaleString('de-DE', { month: 'short' })}</span>
+                  <span className="text-2xl font-black">{new Date(job.startDate).getDate()}</span>
+                </div>
+                <div className="flex-1">
                   <h2 className="text-xl font-bold text-slate-800">{job.title}</h2>
                   <div className="flex items-center text-slate-500 mt-1 text-sm">
-                    <Calendar className="w-4 h-4 mr-2" />
+                    <Calendar className="w-4 h-4 mr-1.5" />
                     {new Date(job.startDate).toLocaleDateString('de-DE')} - {new Date(job.endDate).toLocaleDateString('de-DE')}
                     <span className="mx-2">•</span>
-                    {job.salary} €/h
+                    <span className="font-semibold text-slate-700">{job.salary} €/h</span>
                   </div>
                 </div>
-                <div className="inline-flex px-3 py-1 rounded-full text-sm font-semibold bg-blue-100 text-blue-800">
+                <div className="inline-flex px-3 py-1 rounded-full text-sm font-semibold bg-cyan-50 text-cyan-700 border border-cyan-100">
                   {job.status}
                 </div>
               </div>
@@ -111,9 +115,9 @@ export default function PharmacyJobs() {
                 ) : (
                   <div className="space-y-3">
                     {job.applications.map((app: any) => (
-                      <div key={app.id} className="flex items-center justify-between p-4 rounded-xl border border-slate-200 bg-white hover:border-indigo-200 transition-colors">
+                      <div key={app.id} className="flex items-center justify-between p-4 rounded-xl border border-slate-200 bg-slate-50/50 hover:border-cyan-300 hover:bg-white transition-all shadow-sm">
                         <div className="flex items-center">
-                          <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 mr-4">
+                          <div className="w-10 h-10 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-600 mr-4">
                             <User className="w-5 h-5" />
                           </div>
                           <div>
@@ -126,7 +130,7 @@ export default function PharmacyJobs() {
                           {app.status === 'Pending' && (
                             <button 
                               onClick={() => openAugModal(app.id)}
-                              className="px-4 py-2 bg-indigo-50 text-indigo-700 hover:bg-indigo-600 hover:text-white rounded-lg font-semibold text-sm transition-colors"
+                              className="px-4 py-2 bg-white border border-cyan-200 text-cyan-700 hover:bg-cyan-50 hover:border-cyan-300 rounded-lg font-semibold text-sm transition-colors shadow-sm"
                             >
                               Akzeptieren
                             </button>
@@ -164,7 +168,7 @@ export default function PharmacyJobs() {
                   type="checkbox" 
                   checked={augConsent}
                   onChange={(e) => setAugConsent(e.target.checked)}
-                  className="mt-1 w-5 h-5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                  className="mt-1 w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
                 />
                 <span className="ml-3 text-sm text-slate-700 leading-relaxed font-medium">
                   "Ich bestätige rechtsverbindlich, dass der Auftragnehmer ausschließlich als freier Mitarbeiter (Honorarvertretung) beauftragt wird. Es erfolgt keine Eingliederung in die Betriebsstruktur und es besteht kein fachliches Weisungsrecht. Dies stellt ausdrücklich keine Arbeitnehmerüberlassung (AÜG) dar."
@@ -182,7 +186,7 @@ export default function PharmacyJobs() {
               <button 
                 onClick={handleAcceptApplication}
                 disabled={!augConsent || isAccepting}
-                className="px-5 py-2.5 rounded-xl font-bold text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 transition-colors flex items-center"
+                className="px-5 py-2.5 rounded-xl font-bold text-white bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 disabled:opacity-50 transition-all flex items-center shadow-md hover:shadow-lg"
               >
                 {isAccepting ? 'Wird verarbeitet...' : 'Rechtsverbindlich beauftragen'}
               </button>

@@ -14,6 +14,11 @@ export default function AtmDashboardPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [toast, setToast] = useState<{message: string, type: 'success' | 'error'} | null>(null);
 
+  // Developer Mode Simulator
+  const [isDevMode, setIsDevMode] = useState(false);
+  const [simulatedCode, setSimulatedCode] = useState('');
+  const [isGenerating, setIsGenerating] = useState(false);
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -72,6 +77,20 @@ export default function AtmDashboardPage() {
     }
   };
 
+  const simulateKioskInitiate = async () => {
+    setIsGenerating(true);
+    try {
+      // Simulate the terminal's call to the unauthenticated endpoint
+      const res = await api.post('/atm/kiosk/initiate');
+      setSimulatedCode(res.data.code);
+      showToast('Simulator: Kiosk-Code generiert', 'success');
+    } catch (err) {
+      showToast('Simulator Fehler', 'error');
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -94,10 +113,53 @@ export default function AtmDashboardPage() {
 
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-indigo-800">Assistierte Telemedizin (aTM)</h1>
+          <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-cyan-600">Assistierte Telemedizin (aTM)</h1>
           <p className="text-slate-600 mt-1">Hardware-Pairing und Abrechnungsübersicht für Telepharmazie-Terminals.</p>
         </div>
+        <div className="flex items-center gap-2">
+          <label className="flex items-center gap-2 text-sm text-slate-500 cursor-pointer">
+            <input 
+              type="checkbox" 
+              checked={isDevMode} 
+              onChange={e => setIsDevMode(e.target.checked)}
+              className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+            />
+            Developer Mode
+          </label>
+        </div>
       </div>
+
+      {isDevMode && (
+        <motion.div 
+          initial={{ opacity: 0, height: 0 }} 
+          animate={{ opacity: 1, height: 'auto' }} 
+          className="bg-slate-900 rounded-2xl p-6 text-white shadow-lg border border-slate-700"
+        >
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-lg font-bold text-cyan-400 flex items-center gap-2">
+                <MonitorSmartphone className="w-5 h-5" />
+                Terminal Simulator (Dev Mode)
+              </h3>
+              <p className="text-slate-400 text-sm mt-1">Simuliert die Code-Generierung eines physischen aTM-Kiosks.</p>
+            </div>
+            <div className="flex items-center gap-4">
+              {simulatedCode && (
+                <div className="px-4 py-2 bg-slate-800 border border-slate-700 rounded-xl font-mono text-xl tracking-widest text-cyan-300">
+                  {simulatedCode}
+                </div>
+              )}
+              <button 
+                onClick={simulateKioskInitiate}
+                disabled={isGenerating}
+                className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl font-medium transition-colors disabled:opacity-50"
+              >
+                {isGenerating ? 'Generiert...' : 'Code Generieren'}
+              </button>
+            </div>
+          </div>
+        </motion.div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
@@ -140,7 +202,7 @@ export default function AtmDashboardPage() {
             <button 
               type="submit" 
               disabled={isPairing || pairingCode.length !== 6}
-              className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-xl transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
+              className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-semibold rounded-xl transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
             >
               {isPairing ? <Loader2 className="w-5 h-5 animate-spin" /> : <ShieldCheck className="w-5 h-5" />}
               Kopplung autorisieren
