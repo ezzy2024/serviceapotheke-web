@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/AuthContext';
@@ -108,6 +108,17 @@ export default function InvoicesPage() {
                         >
                           <Download className="w-4 h-4" />
                           PDF
+                        </a>
+                      )}
+                      {invoice.pdfFilePath && invoice.type === 'PharmacistServiceInvoice' && (
+                        <a 
+                          href={`${process.env.NEXT_PUBLIC_API_URL?.replace('/api', '')}/api/InvoiceDownload/${invoice.id}/zugferd`} 
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 rounded-xl transition-all font-medium text-sm ml-2"
+                        >
+                          <FileText className="w-4 h-4" />
+                          XML
                         </a>
                       )}
                     </td>

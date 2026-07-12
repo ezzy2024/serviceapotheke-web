@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/AuthContext';
 import api from '@/lib/api';
-import { Euro, TrendingUp, Clock, Calendar, Download, Building, AlertTriangle, FileEdit, X, Loader2, CheckCircle } from 'lucide-react';
+import { Euro, TrendingUp, Clock, Calendar, Download, Building, AlertTriangle, FileEdit, X, Loader2, CheckCircle, FileText } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function EarningsPage() {
@@ -218,6 +218,15 @@ export default function EarningsPage() {
                           title="Service-Rechnung herunterladen"
                         >
                           <Download className="w-4 h-4" /> PDF
+                        </button>
+                      )}
+                      {item.status === 'Approved' && item.invoiceId && (
+                        <button
+                          onClick={() => window.open(`${process.env.NEXT_PUBLIC_API_URL?.replace('/api', '')}/api/InvoiceDownload/${item.invoiceId}/zugferd`, '_blank')}
+                          className="p-2 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 rounded-lg transition-colors flex items-center justify-center text-sm font-medium gap-1"
+                          title="ZUGFeRD XML herunterladen"
+                        >
+                          <FileText className="w-4 h-4" /> XML
                         </button>
                       )}
                     </div>
