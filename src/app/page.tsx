@@ -236,7 +236,7 @@ export default function Home() {
                 </div>
                 <Link 
                   href="/onboarding"
-                  onClick={() => trackConversion('pharmacy_cta_clicked')}
+                  onClick={() => trackConversion('pharmacy_cta_clicked', 'pharmacy')}
                   className="btn-primary-cta w-full sm:w-auto text-center inline-block text-lg"
                 >
                   Für Ihre Apotheke
@@ -284,7 +284,7 @@ export default function Home() {
                 </div>
                 <Link 
                   href="/onboarding"
-                  onClick={() => trackConversion('pharmacist_cta_clicked')}
+                  onClick={() => trackConversion('pharmacist_cta_clicked', 'pharmacist')}
                   className="btn-primary-cta w-full sm:w-auto text-center inline-block text-lg"
                 >
                   Jetzt registrieren

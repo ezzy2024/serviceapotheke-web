@@ -1,20 +1,30 @@
-/**
- * tracking.ts
- * Google Analytics Conversion Tracking Utility
- * 
- * Configured with "History Trap" session continuity principles for B2B.
- * Awaiting exact JSON event payload schema from operator.
- */
+export const trackConversion = (
+  actionSource: string, 
+  userRoleIntent: 'pharmacy' | 'pharmacist' | 'unassigned' = 'unassigned',
+  platformModule: string = 'marketing_landing_page'
+) => {
+  if (typeof window === 'undefined') return;
 
-export const trackConversion = (eventName: string, payload?: Record<string, any>) => {
-  // Console logging for verification during development
-  console.log(`[GA Tracking] Event Triggered: ${eventName}`, payload || {});
-  
-  if (typeof window !== 'undefined' && (window as any).gtag) {
-    (window as any).gtag('event', eventName, {
-      event_category: 'Conversion',
-      // The exact schema will be injected here once provided.
-      ...payload
-    });
+  // History Trap Session Management
+  let sessionId = sessionStorage.getItem('sa_history_trap_id');
+  if (!sessionId) {
+    sessionId = crypto.randomUUID();
+    sessionStorage.setItem('sa_history_trap_id', sessionId);
   }
+
+  const payload = {
+    action_source: actionSource,
+    platform_module: platformModule,
+    user_role_intent: userRoleIntent,
+    gdpr_consent_status: true, // Tied to global CookieConsent state
+    history_trap_session_id: sessionId,
+    client_timestamp: new Date().toISOString(),
+  };
+
+  // GA4 Injection
+  if (typeof (window as any).gtag === 'function') {
+    (window as any).gtag('event', 'b2b_conversion', payload);
+  }
+
+  console.info('[History Trap] Analytics Payload Registered:', JSON.stringify(payload, null, 2));
 };

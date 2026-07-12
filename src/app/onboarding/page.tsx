@@ -24,7 +24,11 @@ export default function Onboarding() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    trackConversion('registration_form_submitted', { role: formData.role });
+    trackConversion(
+      'registration_form_submitted', 
+      formData.role as 'pharmacy' | 'pharmacist', 
+      'onboarding'
+    );
     
     // Simulate immediate routing (Zero-Instruction fluidity)
     if (formData.role === 'pharmacy') {
