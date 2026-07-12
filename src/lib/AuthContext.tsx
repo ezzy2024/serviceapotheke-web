@@ -43,7 +43,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (pathname === '/login' || pathname === '/register') {
         redirectBasedOnRole(res.data.role);
       }
-    } catch (error) {
+    } catch (error: any) {
+      console.error('[AuthContext] /Auth/me Ping Failed:', error.response?.status, error.message);
       setUser(null);
       // If we are on a protected route, api interceptor handles redirect
       // but we can also be explicit here
