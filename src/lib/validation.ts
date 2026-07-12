@@ -1,4 +1,4 @@
-﻿import { z } from 'zod';
+import { z } from 'zod';
 
 const emailSchema = z.string()
   .email('Ungültige E-Mail-Adresse')
@@ -31,7 +31,7 @@ export const pharmacySchema = z.object({
   pharmacyName: z.string().min(3, 'Apothekenname erforderlich'),
   street: z.string().min(3, 'Straße erforderlich'),
   houseNumber: z.string().min(1, 'Hausnummer erforderlich'),
-  plz: plzSchema,
+  postalCode: plzSchema,
   city: z.string().min(2, 'Stadt erforderlich'),
   email: emailSchema,
   password: passwordSchema,
