@@ -1,132 +1,105 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import { useIdentificationStore } from '@/store/useIdentificationStore';
-import { trackConversion } from '@/lib/tracking';
-import { useRouter } from 'next/navigation';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/Button";
+import { useToast } from "@/components/ui/Toast";
 
-export default function Onboarding() {
-  const [isHydrated, setIsHydrated] = useState(false);
-  const { setWorkflow } = useIdentificationStore();
+type IntentRole = "pharmacy" | "pharmacist" | "consumer" | null;
+
+export default function OnboardingEngine() {
   const router = useRouter();
+  const toast = useToast();
+  
+  const [role, setRole] = useState<IntentRole>(null);
+  const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    role: 'pharmacy' // 'pharmacy' or 'pharmacist'
-  });
+  const handleContinue = async () => {
+    if (!role) {
+      toast.error("Bitte wählen Sie eine Rolle aus.");
+      return;
+    }
+    if (!email || !email.includes("@")) {
+      toast.error("Bitte geben Sie eine gültige E-Mail-Adresse ein.");
+      return;
+    }
 
-  useEffect(() => {
-    setIsHydrated(true);
-    // Track page view
-    trackConversion('onboarding_page_viewed');
-  }, []);
+    setIsLoading(true);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    trackConversion(
-      'registration_form_submitted', 
-      formData.role as 'pharmacy' | 'pharmacist', 
-      'onboarding'
-    );
-    
-    // Simulate immediate routing (Zero-Instruction fluidity)
-    if (formData.role === 'pharmacy') {
-      setWorkflow('PHARMACY_REGISTRATION');
-      router.push('/register/pharmacy');
-    } else {
-      setWorkflow('PHARMACY_REGISTRATION'); // Assuming Pharmacist uses the same sub-flow or different route
-      router.push('/register/pharmacist');
+    try {
+      // Encode payload to pass via query params (or could use short-lived cookie)
+      const queryParams = new URLSearchParams({ email, intent: role }).toString();
+
+      // Routing handoff based on intent
+      if (role === "pharmacy") {
+        router.push(`/register/pharmacy?${queryParams}`);
+      } else if (role === "pharmacist") {
+        router.push(`/register/pharmacist?${queryParams}`);
+      } else if (role === "consumer") {
+        router.push(`/register?${queryParams}`); // Maps to (b2c)/register
+      }
+    } catch (error) {
+      toast.error("Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.");
+      setIsLoading(false);
     }
   };
 
-  if (!isHydrated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <div className="animate-pulse flex flex-col items-center">
-          <div className="h-12 w-12 bg-blue-200 rounded-full mb-4"></div>
-          <div className="h-4 w-32 bg-blue-200 rounded"></div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
-      <div className="max-w-md w-full glass-card p-8 sm:p-10">
-        <div className="text-center mb-8">
-          <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-2xl mx-auto mb-4 shadow-lg shadow-blue-600/30">
-            S
-          </div>
-          <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
-            Kostenlos starten
-          </h1>
-          <p className="text-slate-500 mt-2">
-            Richten Sie Ihr ServiceApotheke-Konto in weniger als einer Minute ein.
-          </p>
+      <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 space-y-8">
+        
+        <div className="text-center space-y-2">
+          <h1 className="text-3xl font-bold text-slate-900">Willkommen bei ServiceApotheke</h1>
+          <p className="text-slate-500">Bitte wählen Sie, wie Sie unsere Plattform nutzen möchten.</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label htmlFor="name" className="block text-sm font-semibold text-slate-700 mb-2">Vollständiger Name</label>
-            <input 
-              type="text" 
-              id="name"
-              required
-              value={formData.name}
-              onChange={(e) => setFormData({...formData, name: e.target.value})}
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all bg-white/50" 
-              placeholder="Dr. Max Mustermann" 
-            />
-          </div>
-
-          <div>
-            <label htmlFor="email" className="block text-sm font-semibold text-slate-700 mb-2">E-Mail Adresse</label>
-            <input 
-              type="email" 
-              id="email"
-              required
-              value={formData.email}
-              onChange={(e) => setFormData({...formData, email: e.target.value})}
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all bg-white/50" 
-              placeholder="max@apotheke.de" 
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-2">Ich bin ein...</label>
-            <div className="grid grid-cols-2 gap-4">
-              <button
-                type="button"
-                onClick={() => setFormData({...formData, role: 'pharmacy'})}
-                className={`py-3 px-4 rounded-xl border-2 transition-all font-medium ${formData.role === 'pharmacy' ? 'border-blue-600 bg-blue-50 text-blue-700' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
-              >
-                Apotheken-<br/>Betreiber
-              </button>
-              <button
-                type="button"
-                onClick={() => setFormData({...formData, role: 'pharmacist'})}
-                className={`py-3 px-4 rounded-xl border-2 transition-all font-medium ${formData.role === 'pharmacist' ? 'border-blue-600 bg-blue-50 text-blue-700' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
-              >
-                Apotheker /<br/>PTA
-              </button>
-            </div>
-          </div>
-
+        <div className="space-y-4">
           <button 
-            type="submit" 
-            className="btn-primary-cta w-full text-lg mt-4 flex items-center justify-center gap-2"
+            onClick={() => setRole("consumer")}
+            className={`w-full p-4 border-2 rounded-xl text-left transition-all ${role === "consumer" ? "border-blue-600 bg-blue-50" : "border-slate-200 hover:border-blue-300"}`}
           >
-            Jetzt registrieren
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </svg>
+            <h3 className="font-semibold text-slate-900 text-lg">Ich bin Patient / Kunde</h3>
+            <p className="text-sm text-slate-500 mt-1">E-Rezepte einlösen, Medikamente bestellen & Gesundheitsdaten verwalten.</p>
           </button>
 
-          <p className="text-center text-sm text-slate-500">
-            Mit der Registrierung akzeptieren Sie unsere AGB und Datenschutzbestimmungen.
-          </p>
-        </form>
+          <button 
+            onClick={() => setRole("pharmacist")}
+            className={`w-full p-4 border-2 rounded-xl text-left transition-all ${role === "pharmacist" ? "border-blue-600 bg-blue-50" : "border-slate-200 hover:border-blue-300"}`}
+          >
+            <h3 className="font-semibold text-slate-900 text-lg">Ich bin Apotheker / PTA</h3>
+            <p className="text-sm text-slate-500 mt-1">Schichten finden, AÜG-Verträge verwalten & Profil erstellen.</p>
+          </button>
+
+          <button 
+            onClick={() => setRole("pharmacy")}
+            className={`w-full p-4 border-2 rounded-xl text-left transition-all ${role === "pharmacy" ? "border-blue-600 bg-blue-50" : "border-slate-200 hover:border-blue-300"}`}
+          >
+            <h3 className="font-semibold text-slate-900 text-lg">Wir sind eine Apotheke</h3>
+            <p className="text-sm text-slate-500 mt-1">Personal finden, Dienstpläne organisieren & Compliance sichern.</p>
+          </button>
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-slate-700">E-Mail Adresse</label>
+          <input 
+            type="email" 
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="ihre.email@beispiel.de"
+            className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 outline-none"
+          />
+        </div>
+
+        <Button 
+          onClick={handleContinue} 
+          isLoading={isLoading}
+          size="lg"
+          className="w-full"
+        >
+          Weiter
+        </Button>
+
       </div>
     </div>
   );

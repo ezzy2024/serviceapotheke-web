@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { CheckCircle2, Shield, Users, Zap, BarChart3, Lock } from "lucide-react";
 import { CookieConsent } from '@/components/legal/CookieConsent';
 import { trackConversion } from '@/lib/tracking';
+import Chatbot from '@/components/Chatbot';
 
 export default function Home() {
   return (
@@ -88,25 +89,20 @@ export default function Home() {
         <section className="border-y border-slate-200/50 bg-slate-50/50 py-12">
           <div className="container mx-auto max-w-6xl px-4 text-center">
             <p className="text-sm font-semibold text-slate-500 uppercase tracking-widest mb-8">
-              Vertraut von führenden Apotheken in ganz Deutschland
+              Entwickelt für die moderne Apotheke
             </p>
             <div className="flex flex-wrap justify-center gap-8 md:gap-16 items-center">
               <div className="flex flex-col items-center">
-                <span className="text-4xl font-extrabold text-slate-900">500+</span>
-                <span className="text-sm text-slate-500 mt-1">Aktive Apotheken</span>
+                <span className="text-4xl font-extrabold text-slate-900">100%</span>
+                <span className="text-sm text-slate-500 mt-1">Digitaler Workflow</span>
               </div>
-              <div className="w-px h-12 bg-slate-300 hidden md:block"></div>
               <div className="flex flex-col items-center">
-                <span className="text-4xl font-extrabold text-slate-900">10.000+</span>
-                <span className="text-sm text-slate-500 mt-1">Vermittelte Schichten</span>
+                <span className="text-4xl font-extrabold text-slate-900">DSGVO</span>
+                <span className="text-sm text-slate-500 mt-1">Strengster Datenschutz</span>
               </div>
-              <div className="w-px h-12 bg-slate-300 hidden md:block"></div>
               <div className="flex flex-col items-center">
-                <div className="flex items-center gap-2 text-emerald-600">
-                  <Shield className="w-8 h-8" />
-                  <span className="text-2xl font-extrabold">AÜG</span>
-                </div>
-                <span className="text-sm text-slate-500 mt-1">Zertifizierte Sicherheit</span>
+                <span className="text-4xl font-extrabold text-slate-900">ISO</span>
+                <span className="text-sm text-slate-500 mt-1">27001 Konformität</span>
               </div>
             </div>
           </div>
@@ -359,6 +355,9 @@ export default function Home() {
 
       {/* Legal Cookie Consent */}
       <CookieConsent />
+      
+      {/* AI Chatbot */}
+      <Chatbot />
     </div>
   );
 }

@@ -78,7 +78,7 @@ export default function AdminDashboardPage() {
       )}
 
       <div>
-        <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-800 to-indigo-900 flex items-center gap-3">
+        <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-800 to-blue-900 flex items-center gap-3">
           <ShieldCheck className="w-8 h-8 text-blue-700" />
           Globales Admin-Dashboard
         </h1>

@@ -60,7 +60,7 @@ export default function Header() {
         <div className="relative">
           <button 
             onClick={() => setShowDropdown(!showDropdown)}
-            className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-colors relative"
+            className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-colors relative"
           >
             <Bell className="w-5 h-5" />
             {unreadCount > 0 && (
@@ -73,7 +73,7 @@ export default function Header() {
               <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
                 <h3 className="font-semibold text-slate-800">Benachrichtigungen</h3>
                 {unreadCount > 0 && (
-                  <button onClick={markAllAsRead} className="text-xs text-indigo-600 hover:text-indigo-800 font-medium">
+                  <button onClick={markAllAsRead} className="text-xs text-blue-600 hover:text-blue-800 font-medium">
                     Alle als gelesen markieren
                   </button>
                 )}
@@ -88,10 +88,10 @@ export default function Header() {
                     <div 
                       key={n.id} 
                       onClick={() => markAsRead(n.id)}
-                      className={`p-4 border-b border-slate-50 hover:bg-slate-50 cursor-pointer transition-colors ${!n.isRead ? 'bg-indigo-50/30' : ''}`}
+                      className={`p-4 border-b border-slate-50 hover:bg-slate-50 cursor-pointer transition-colors ${!n.isRead ? 'bg-blue-50/30' : ''}`}
                     >
                       <div className="flex items-start">
-                        <div className={`mt-1 w-2 h-2 rounded-full mr-3 shrink-0 ${!n.isRead ? 'bg-indigo-500' : 'bg-transparent'}`}></div>
+                        <div className={`mt-1 w-2 h-2 rounded-full mr-3 shrink-0 ${!n.isRead ? 'bg-blue-500' : 'bg-transparent'}`}></div>
                         <div>
                           <p className="text-sm font-semibold text-slate-800">{n.title}</p>
                           <p className="text-xs text-slate-600 mt-1 line-clamp-2">{n.message}</p>

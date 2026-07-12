@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 };
 
 import UtmTracker from "@/components/UtmTracker";
+import { ToastContainer } from "@/components/ui/Toast";
 
 export default function RootLayout({
   children,
@@ -23,6 +24,7 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
       <body className="font-sans min-h-full flex flex-col">
         <UtmTracker />
+        <ToastContainer />
         {children}
       </body>
     </html>
