@@ -79,56 +79,56 @@ export default function PharmacyDashboard() {
       <ComplianceWidget type="pharmacy" data={(user || {}) as any} />
 
       {/* Header */}
-      <header className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-blue-100 to-cyan-50 rounded-full blur-3xl -mr-20 -mt-20 opacity-60"></div>
+      <header className="bg-white p-8 border-2 border-ink shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-bone rounded-full -mr-20 -mt-20 border-4 border-ink"></div>
         <div className="relative z-10">
-          <p className="text-sm font-bold tracking-widest uppercase text-blue-600 mb-2">Apotheken OS</p>
-          <h1 className="text-3xl font-extrabold text-slate-800">Command Center</h1>
-          <p className="text-slate-500 mt-1">Dein t�glicher �berblick �ber Personal, Vakanzen und Operations.</p>
+          <p className="text-sm font-black tracking-widest uppercase text-ink mb-2">Apotheken OS</p>
+          <h1 className="text-4xl font-black text-ink uppercase tracking-tight">Command Center</h1>
+          <p className="text-ink/80 font-semibold mt-1">Dein tglicher berblick ber Personal, Vakanzen und Operations.</p>
         </div>
       </header>
 
       {/* Executive Stat Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Link href="/dashboard/pharmacy/jobs" className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:border-blue-300 hover:shadow-md transition-all group">
+        <Link href="/dashboard/pharmacy/jobs" className="bg-white p-6 border-2 border-ink shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all group block">
           <div className="flex justify-between items-start mb-4">
-            <div className="p-3 bg-blue-50 rounded-xl group-hover:bg-blue-100 transition-colors">
-              <Briefcase className="w-6 h-6 text-blue-600" />
+            <div className="p-3 bg-bone border-2 border-ink">
+              <Briefcase className="w-6 h-6 text-ink" />
             </div>
           </div>
-          <p className="text-3xl font-extrabold text-slate-800">{stats.activeJobs}</p>
-          <p className="text-sm font-medium text-slate-500 mt-1">Offene Vakanzen</p>
+          <p className="text-4xl font-black text-ink">{stats.activeJobs}</p>
+          <p className="text-sm font-bold uppercase tracking-wide text-ink mt-2">Offene Vakanzen</p>
         </Link>
 
-        <Link href="/dashboard/pharmacy/jobs" className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:border-cyan-300 hover:shadow-md transition-all group">
+        <Link href="/dashboard/pharmacy/jobs" className="bg-white p-6 border-2 border-ink shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all group block">
           <div className="flex justify-between items-start mb-4">
-            <div className="p-3 bg-cyan-50 rounded-xl group-hover:bg-cyan-100 transition-colors">
-              <Users className="w-6 h-6 text-cyan-600" />
+            <div className="p-3 bg-bone border-2 border-ink">
+              <Users className="w-6 h-6 text-ink" />
             </div>
           </div>
-          <p className="text-3xl font-extrabold text-slate-800">{stats.pendingApplications}</p>
-          <p className="text-sm font-medium text-slate-500 mt-1">Neue Bewerbungen</p>
+          <p className="text-4xl font-black text-ink">{stats.pendingApplications}</p>
+          <p className="text-sm font-bold uppercase tracking-wide text-ink mt-2">Neue Bewerbungen</p>
         </Link>
 
-        <Link href="/dashboard/pharmacy/dienstplan" className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:border-blue-300 hover:shadow-md transition-all group">
+        <Link href="/dashboard/pharmacy/dienstplan" className="bg-white p-6 border-2 border-ink shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all group block">
           <div className="flex justify-between items-start mb-4">
-            <div className="p-3 bg-slate-50 rounded-xl group-hover:bg-blue-50 transition-colors">
-              <CheckCircle className="w-6 h-6 text-slate-600 group-hover:text-blue-600" />
+            <div className="p-3 bg-bone border-2 border-ink">
+              <CheckCircle className="w-6 h-6 text-ink" />
             </div>
           </div>
-          <p className="text-3xl font-extrabold text-slate-800">{staffOnDuty.length}</p>
-          <p className="text-sm font-medium text-slate-500 mt-1">Personal heute im Dienst</p>
+          <p className="text-4xl font-black text-ink">{staffOnDuty.length}</p>
+          <p className="text-sm font-bold uppercase tracking-wide text-ink mt-2">Personal im Dienst</p>
         </Link>
 
-        <div className="bg-gradient-to-br from-red-50 to-orange-50 p-6 rounded-2xl shadow-sm border border-red-100 relative overflow-hidden">
+        <div className="bg-red-400 p-6 border-2 border-ink shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] relative overflow-hidden">
           <div className="flex justify-between items-start mb-4 relative z-10">
-            <div className="p-3 bg-white/60 rounded-xl">
-              <AlertTriangle className="w-6 h-6 text-red-600" />
+            <div className="p-3 bg-white border-2 border-ink">
+              <AlertTriangle className="w-6 h-6 text-ink" />
             </div>
           </div>
-          <p className="text-3xl font-extrabold text-red-900 relative z-10">{inventoryAlerts.length}</p>
-          <p className="text-sm font-medium text-red-700 mt-1 relative z-10">Inventar Warnungen</p>
-          <div className="absolute -bottom-4 -right-4 text-red-500/10">
+          <p className="text-4xl font-black text-ink relative z-10">{inventoryAlerts.length}</p>
+          <p className="text-sm font-bold uppercase tracking-wide text-ink mt-2 relative z-10">Inventar Warnungen</p>
+          <div className="absolute -bottom-4 -right-4 text-ink opacity-10">
             <Package className="w-32 h-32" />
           </div>
         </div>
@@ -139,107 +139,106 @@ export default function PharmacyDashboard() {
         
         {/* Left Column */}
         <div className="space-y-8">
-          <section className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col h-full">
-            <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-              <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
-                <CheckCircle className="w-5 h-5 text-blue-600" /> Personal im Dienst
+          <section className="bg-white border-2 border-ink shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden flex flex-col h-full">
+            <div className="p-6 border-b-2 border-ink flex justify-between items-center bg-bone">
+              <h2 className="text-xl font-black uppercase tracking-tight text-ink flex items-center gap-2">
+                <CheckCircle className="w-6 h-6" /> Personal im Dienst
               </h2>
-              <Link href="/dashboard/pharmacy/dienstplan" className="text-sm font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1">
-                Dienstplan �ffnen <ArrowRight className="w-4 h-4" />
+              <Link href="/dashboard/pharmacy/dienstplan" className="text-sm font-black uppercase tracking-wide text-ink hover:underline flex items-center gap-1">
+                Dienstplan ffnen <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
-            <div className="p-0 flex-1">
+            <div className="p-0 flex-1 bg-white">
               {staffOnDuty.length > 0 ? (
-                <ul className="divide-y divide-slate-100">
+                <ul className="divide-y-2 divide-ink">
                   {staffOnDuty.map((staff, idx) => (
-                    <li key={idx} className="p-4 hover:bg-slate-50 transition-colors flex justify-between items-center">
+                    <li key={idx} className="p-4 hover:bg-bone transition-colors flex justify-between items-center">
                       <div>
-                        <p className="font-bold text-slate-800">{staff.name}</p>
-                        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">{staff.role}</p>
+                        <p className="font-black text-ink">{staff.name}</p>
+                        <p className="text-xs font-bold text-ink/70 uppercase tracking-wider mt-1">{staff.role}</p>
                       </div>
-                      <div className="bg-blue-50 text-blue-700 px-3 py-1 rounded-lg text-sm font-medium border border-blue-100">
+                      <div className="bg-ink text-bone px-3 py-1 text-sm font-black tracking-wide border-2 border-ink">
                         {staff.time}
                       </div>
                     </li>
                   ))}
                 </ul>
               ) : (
-                <div className="p-12 text-center text-slate-500">
-                  <p>Kein Personal f�r heute eingeteilt.</p>
+                <div className="p-12 text-center text-ink font-bold">
+                  <p>Kein Personal fr heute eingeteilt.</p>
                 </div>
               )}
             </div>
           </section>
         </div>
-
-        {/* Right Column */}
+            {/* Right Column */}
         <div className="space-y-8">
-          <section className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-            <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-              <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
-                <Package className="w-5 h-5 text-slate-600" /> Inventar Warnungen
+          <section className="bg-white border-2 border-ink shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
+            <div className="p-6 border-b-2 border-ink flex justify-between items-center bg-red-400">
+              <h2 className="text-xl font-black text-ink uppercase tracking-tight flex items-center gap-2">
+                <Package className="w-6 h-6" /> Inventar Warnungen
               </h2>
             </div>
-            <ul className="divide-y divide-slate-100">
+            <ul className="divide-y-2 divide-ink">
               {inventoryAlerts.map(alert => (
-                <li key={alert.id} className="p-4 hover:bg-slate-50 transition-colors flex justify-between items-center">
+                <li key={alert.id} className="p-4 hover:bg-bone transition-colors flex justify-between items-center bg-white">
                   <div>
-                    <p className="font-bold text-slate-800">{alert.name}</p>
-                    <p className="text-xs text-slate-500">{alert.zone}</p>
+                    <p className="font-black text-ink">{alert.name}</p>
+                    <p className="text-xs font-bold text-ink/70 mt-1 uppercase tracking-wide">{alert.zone}</p>
                   </div>
-                  <div className={`px-3 py-1 rounded-full text-xs font-bold ${
-                    alert.status === 'critical' ? 'bg-red-100 text-red-700 border border-red-200' : 'bg-orange-100 text-orange-700 border border-orange-200'
+                  <div className={`px-3 py-1 text-xs font-black uppercase tracking-wide border-2 border-ink ${
+                    alert.status === 'critical' ? 'bg-red-400 text-ink' : 'bg-yellow-400 text-ink'
                   }`}>
-                    {alert.stock} St�ck
+                    {alert.stock} Stck
                   </div>
                 </li>
               ))}
             </ul>
           </section>
 
-          <section className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-            <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-              <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
-                <Clock className="w-5 h-5 text-slate-600" /> Offene Aufgaben
+          <section className="bg-white border-2 border-ink shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
+            <div className="p-6 border-b-2 border-ink flex justify-between items-center bg-bone">
+              <h2 className="text-xl font-black text-ink uppercase tracking-tight flex items-center gap-2">
+                <Clock className="w-6 h-6" /> Offene Aufgaben
               </h2>
             </div>
-            <ul className="divide-y divide-slate-100">
+            <ul className="divide-y-2 divide-ink">
               {openTasks.map(task => (
-                <li key={task.id} className="p-4 hover:bg-slate-50 transition-colors flex justify-between items-center">
+                <li key={task.id} className="p-4 hover:bg-bone transition-colors flex justify-between items-center bg-white">
                   <div className="flex items-center gap-3">
-                    <input type="checkbox" className="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500" />
-                    <p className="font-semibold text-slate-700">{task.title}</p>
+                    <input type="checkbox" className="w-5 h-5 border-2 border-ink text-ink focus:ring-ink rounded-none bg-white" />
+                    <p className="font-bold text-ink">{task.title}</p>
                   </div>
-                  <p className="text-sm font-medium text-slate-500">{task.time}</p>
+                  <p className="text-sm font-black text-ink">{task.time}</p>
                 </li>
               ))}
             </ul>
-          </section>
+          </section>      </section>
 
           {/* Security & Compliance Widget */}
-          <section className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl shadow-sm border border-slate-700 overflow-hidden text-white">
-            <div className="p-6 border-b border-slate-700 flex justify-between items-center bg-slate-900/50">
-              <h2 className="text-lg font-bold flex items-center gap-2">
-                <ShieldCheck className="w-5 h-5 text-green-400" /> System & Compliance
+          <section className="bg-ink border-2 border-ink shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden text-bone">
+            <div className="p-6 border-b-2 border-bone/30 flex justify-between items-center bg-ink">
+              <h2 className="text-xl font-black uppercase tracking-tight flex items-center gap-2">
+                <ShieldCheck className="w-6 h-6 text-green-400" /> System & Compliance
               </h2>
             </div>
             <div className="p-6 space-y-4">
               <div className="flex justify-between items-center">
                 <div>
-                  <p className="font-semibold text-slate-200">ISO 27001 Status</p>
-                  <p className="text-xs text-slate-400">ISMS Zertifizierung aktiv</p>
+                  <p className="font-black">ISO 27001 Status</p>
+                  <p className="text-xs font-bold text-bone/70 uppercase tracking-wide mt-1">ISMS Zertifizierung aktiv</p>
                 </div>
-                <div className="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-xs font-bold border border-green-500/30">
+                <div className="bg-green-400 text-ink px-3 py-1 font-black text-xs uppercase tracking-wide border-2 border-green-400">
                   Compliant
                 </div>
               </div>
               
               <div className="flex justify-between items-center">
                 <div>
-                  <p className="font-semibold text-slate-200">Datenschutz & Cookies</p>
-                  <p className="text-xs text-slate-400">DSGVO-konforme Caches & E2E</p>
+                  <p className="font-black">Datenschutz & Cookies</p>
+                  <p className="text-xs font-bold text-bone/70 uppercase tracking-wide mt-1">DSGVO-konforme Caches & E2E</p>
                 </div>
-                <div className="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-xs font-bold border border-green-500/30">
+                <div className="bg-green-400 text-ink px-3 py-1 font-black text-xs uppercase tracking-wide border-2 border-green-400">
                   Gesichert
                 </div>
               </div>

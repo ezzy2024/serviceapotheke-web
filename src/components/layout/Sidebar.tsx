@@ -38,10 +38,10 @@ export default function Sidebar() {
   if (!user) return null;
 
   return (
-    <div className="w-64 bg-white border-r border-slate-200 h-full flex flex-col">
-      <div className="p-6">
-        <h1 className="text-2xl font-extrabold text-blue-600 tracking-tight">
-          SA<span className="text-slate-800">.tech</span>
+    <div className="w-64 bg-bone border-r-2 border-ink h-full flex flex-col">
+      <div className="p-6 border-b-2 border-ink bg-white">
+        <h1 className="text-3xl font-black text-ink tracking-tight uppercase">
+          SA<span className="text-blue-600">.tech</span>
         </h1>
       </div>
 
@@ -53,27 +53,27 @@ export default function Sidebar() {
             <Link
               key={link.name}
               href={link.href}
-              className={`flex items-center px-4 py-3 rounded-xl transition-all duration-200 group ${
+              className={`flex items-center px-4 py-3 font-bold uppercase tracking-wide text-sm transition-all duration-200 group border-2 border-transparent ${
                 isActive 
-                  ? 'bg-blue-50 text-blue-700 font-semibold shadow-sm' 
-                  : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                  ? 'bg-ink text-bone shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] border-ink' 
+                  : 'text-ink hover:bg-white hover:border-ink hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]'
               }`}
             >
-              <Icon className={`w-5 h-5 mr-3 transition-colors ${isActive ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600'}`} />
+              <Icon className={`w-5 h-5 mr-3 transition-colors ${isActive ? 'text-bone' : 'text-ink'}`} />
               {link.name}
             </Link>
           );
         })}
       </nav>
 
-      <div className="p-4 border-t border-slate-100">
-        <div className="flex items-center p-2 rounded-xl bg-slate-50 border border-slate-100">
-          <div className="w-8 h-8 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-700 font-bold mr-3">
+      <div className="p-4 border-t-2 border-ink bg-white">
+        <div className="flex items-center p-3 bg-bone border-2 border-ink shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+          <div className="w-8 h-8 rounded-full bg-ink flex items-center justify-center text-bone font-black mr-3">
             {user.email?.charAt(0).toUpperCase()}
           </div>
           <div className="overflow-hidden">
-            <p className="text-sm font-semibold text-slate-700 truncate">{user.role}</p>
-            <p className="text-xs text-slate-500 truncate">{user.email}</p>
+            <p className="text-sm font-black text-ink uppercase truncate">{user.role}</p>
+            <p className="text-xs text-ink/70 font-semibold truncate">{user.email}</p>
           </div>
         </div>
       </div>
