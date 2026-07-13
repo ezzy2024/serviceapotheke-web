@@ -8,6 +8,8 @@ import * as XLSX from 'xlsx';
 import { useE2EE } from '@/lib/E2EEContext';
 import { encryptData, decryptData } from '@/lib/crypto';
 import VaultUnlockModal from '@/components/VaultUnlockModal';
+import { pdf } from '@react-pdf/renderer';
+import { PdlReportDocument } from '@/components/PdlReportDocument';
 
 export default function PdlDashboardPage() {
   const [patients, setPatients] = useState<any[]>([]);
@@ -98,11 +100,55 @@ export default function PdlDashboardPage() {
   const handleAnalyze = async (patientId: number) => {
     setAnalyzingIds(prev => new Set(prev).add(patientId));
     try {
-      await api.post(`/pdl/analyze/${patientId}`);
-      showToast('AMTS-Analyse erfolgreich abgeschlossen. PDF generiert.', 'success');
-      fetchPatients(); // Reload to get PDF url
+      const patient = patients.find(p => p.id === patientId);
+      if (!patient) throw new Error("Patient not found locally");
+      if (!encryptionKey) throw new Error("Encryption key not found");
+
+      // 1. Transmit decrypted matrix to Next.js proxy
+      const proxyRes = await fetch('/api/ai/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(patient)
+      });
+      
+      if (!proxyRes.ok) throw new Error("LLM Analysis failed");
+      const analysis = await proxyRes.json();
+
+      // 2. Generate PDF locally via @react-pdf/renderer
+      const date = new Date().toLocaleDateString('de-DE');
+      const blob = await pdf(<PdlReportDocument patient={patient} analysis={analysis} date={date} />).toBlob();
+      
+      // Convert Blob to Base64 to save and display later
+      const dataUri = await new Promise<string>((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.readAsDataURL(blob);
+      });
+      const base64Pdf = dataUri.split(',')[1];
+
+      // 3. Encrypt the analysis and pdf for backend storage
+      const reportPayload = JSON.stringify({ analysis, pdf: base64Pdf });
+      const { ciphertextBase64, ivBase64 } = await encryptData(encryptionKey, reportPayload);
+
+      // 4. Send to backend
+      await api.post(`/pdl/services`, {
+        patientId,
+        serviceType: 'AMTS_POLYMEDIKATION',
+        ciphertextBase64,
+        ivBase64
+      });
+
+      // Update patient locally with PDF URL
+      setPatients(prev => prev.map(p => {
+        if (p.id === patientId) {
+          return { ...p, hasAnalysis: true, latestPdfUrl: dataUri }; 
+        }
+        return p;
+      }));
+      
+      showToast('AMTS-Analyse und PDF-Generierung erfolgreich abgeschlossen.', 'success');
     } catch (err: any) {
-      showToast(err.response?.data?.error || 'Analyse fehlgeschlagen.', 'error');
+      showToast(err.message || err.response?.data?.error || 'Analyse fehlgeschlagen.', 'error');
     } finally {
       setAnalyzingIds(prev => {
         const next = new Set(prev);
@@ -227,9 +273,10 @@ export default function PdlDashboardPage() {
                       )}
                       {p.hasAnalysis && p.latestPdfUrl && (
                         <a 
-                          href={process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') + p.latestPdfUrl} 
+                          href={p.latestPdfUrl?.startsWith('data:') ? p.latestPdfUrl : (process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') + p.latestPdfUrl)} 
                           target="_blank"
                           rel="noreferrer"
+                          download={`PDL_AMTS_Report_${p.kdnNr}.pdf`}
                           className="inline-flex items-center gap-2 px-4 py-2 bg-green-50 text-green-700 hover:bg-green-100 border border-green-200 rounded-xl transition-all font-medium text-sm"
                         >
                           <Download className="w-4 h-4" />
