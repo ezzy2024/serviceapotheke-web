@@ -35,7 +35,11 @@ api.interceptors.request.use(
       try {
         const token = await fetchCsrfToken();
         if (token) {
-          config.headers['X-CSRF-TOKEN'] = token;
+          if (config.headers && typeof config.headers.set === 'function') {
+            config.headers.set('X-CSRF-TOKEN', token);
+          } else {
+            config.headers['X-CSRF-TOKEN'] = token;
+          }
         }
       } catch (e) {
         console.warn('Failed to fetch CSRF token', e);
