@@ -349,7 +349,7 @@ export default function Home() {
           </div>
         </div>
         <div className="container mx-auto max-w-6xl px-4 mt-16 pt-8 border-t border-slate-800 text-sm flex flex-col md:flex-row items-center justify-between">
-          <p>&copy; {new Date().getFullYear()} ServiceApotheke GmbH. Alle Rechte vorbehalten.</p>
+          <p>&copy; {new Date().getFullYear()} ServiceApotheke Einzelunternehmer. Alle Rechte vorbehalten.</p>
         </div>
       </footer>
 
