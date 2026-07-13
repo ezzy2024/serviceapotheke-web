@@ -1,170 +1,118 @@
-'use client';
+import { ShiftSidebarFilters } from '@/components/dashboard/ShiftRadar/ShiftSidebarFilters';
+import { ShiftFilterChips } from '@/components/dashboard/ShiftRadar/ShiftFilterChips';
+import { HaversinePriorityCard } from '@/components/dashboard/ShiftRadar/HaversinePriorityCard';
+import { ShiftCard } from '@/components/dashboard/ShiftRadar/ShiftCard';
+import { LayoutGrid, List } from 'lucide-react';
 
-import { useState, useEffect } from 'react';
-import { useAuth } from '@/lib/AuthContext';
-import api from '@/lib/api';
-import { MapPin, Calendar, Clock, Building, Search, ShieldAlert, Euro } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { useToast } from '@/components/ui/Toast';
-import { ComplianceWidget } from '@/components/ui/ComplianceWidget';
-
-export default function PharmacistRadar() {
-  const { user } = useAuth();
-  const [matches, setMatches] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [complianceLock, setComplianceLock] = useState(false);
-  const [applyingJobId, setApplyingJobId] = useState<number | null>(null);
-  const toast = useToast();
-
-  useEffect(() => {
-    if (user?.id) {
-      fetchMatches();
+export default function ShiftRadarPage() {
+  // Mock payload mimicking the MatchingController output
+  const shifts = [
+    {
+      pharmacyName: "Stadt-Apotheke München",
+      initials: "SAM",
+      title: "Notdienstvertretung gesucht (Nachtschicht)",
+      description: "Wir suchen eine zuverlässige Vertretung für den kommenden Notdienst. WWS: CGM Lauer. Erfahrung vorausgesetzt.",
+      hourlyRate: "120,00",
+      dates: ["14. Aug 2026", "15. Aug 2026"],
+      distance: "4.5 km",
+      rating: "4.8",
+      reviews: "12",
+      isSponsored: true
+    },
+    {
+      pharmacyName: "Apotheke am Markt",
+      initials: "AAM",
+      title: "Urlaubsvertretung für 2 Wochen",
+      description: "Freundliches Team sucht Unterstützung während der Sommerferien. Flexible Arbeitszeiten nach Absprache möglich.",
+      hourlyRate: "95,00",
+      dates: ["01. Sep - 14. Sep 2026"],
+      distance: "12.8 km",
+      rating: "4.5",
+      reviews: "8",
+      isSponsored: false
+    },
+    {
+      pharmacyName: "Paracelsus Apotheke",
+      initials: "PAR",
+      title: "Krankheitsausfall: Kurzfristige Vertretung",
+      description: "Dringend! Wir benötigen heute Nachmittag und morgen Unterstützung am HV. ADG Kenntnisse von Vorteil.",
+      hourlyRate: "110,00",
+      dates: ["Heute, 14:00 - 18:00"],
+      distance: "2.1 km",
+      rating: "5.0",
+      reviews: "34",
+      isSponsored: false
     }
-  }, [user]);
-
-  const fetchMatches = async () => {
-    try {
-      const res = await api.get(`/Matching/available-shifts`);
-      setMatches(res.data);
-      setComplianceLock(false);
-    } catch (error: any) {
-      if (error.response?.status === 403 && error.response?.data?.code === 'COMPLIANCE_LOCK') {
-        setComplianceLock(true);
-      } else {
-        toast.error('Schichten konnten nicht geladen werden.');
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleApply = async (jobId: number) => {
-    setApplyingJobId(jobId);
-    try {
-      await api.post(`/Allocation/${jobId}/apply`, {
-        pharmacistId: parseInt(user!.id)
-      });
-      setMatches(prev => prev.filter(m => m.id !== jobId));
-      toast.success('Erfolgreich beworben!');
-    } catch (error: any) {
-      const msg = error.response?.data?.message || 'Bewerbung fehlgeschlagen.';
-      toast.error(msg);
-    } finally {
-      setApplyingJobId(null);
-    }
-  };
-
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
-      </div>
-    );
-  }
+  ];
 
   return (
-    <div>
-      <div className="mb-8">
-        <h1 className="text-3xl font-extrabold text-slate-800 flex items-center">
-          <div className="p-2 bg-gradient-to-br from-blue-600 to-cyan-500 rounded-xl mr-3 shadow-lg">
-            <Search className="w-6 h-6 text-white" />
-          </div>
-          Shift-Radar
-        </h1>
-        <p className="text-slate-500 mt-2">
-          Wir haben {matches.length} passende Vakanzen in deinem Einsatzradius (Haversine-Distanz) gefunden.
-        </p>
+    <div className="min-h-screen bg-slate-50 font-['Outfit',sans-serif]">
+      {/* Container for the Chips */}
+      <div className="max-w-[1320px] mx-auto px-6 lg:px-8 pt-6">
+        <ShiftFilterChips />
       </div>
 
-      <ComplianceWidget type="pharmacist" data={(user || {}) as any} />
+      <main className="max-w-[1320px] mx-auto px-6 lg:px-8 py-6 lg:py-8 grid grid-cols-1 lg:grid-cols-[268px_1fr] gap-6 items-start">
+        
+        {/* Sidebar */}
+        <ShiftSidebarFilters />
 
-      {complianceLock ? (
-        <div className="mt-8 bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl p-12 text-center border border-red-100 shadow-sm">
-          <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm border border-red-100">
-            <ShieldAlert className="w-10 h-10 text-red-500" />
-          </div>
-          <h3 className="text-xl font-bold text-slate-800 mb-2">Compliance-Sperre Aktiv</h3>
-          <p className="text-slate-600 max-w-lg mx-auto mb-6">
-            Dein Zugang zum Shift-Radar ist blockiert, da entweder deine Approbationsurkunde noch nicht verifiziert wurde, oder du keinen aktiven AÜG-Vertrag unterzeichnet hast. 
-          </p>
-          <button className="px-6 py-3 bg-red-600 text-white rounded-xl font-bold hover:bg-red-700 transition-colors shadow-lg">
-            Jetzt Compliance-Daten vervollständigen
-          </button>
-        </div>
-      ) : matches.length === 0 ? (
-        <div className="mt-8 bg-white rounded-2xl p-12 text-center border border-slate-200 shadow-sm">
-          <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Search className="w-10 h-10 text-slate-300" />
-          </div>
-          <h3 className="text-lg font-bold text-slate-800">Keine Schichten gefunden</h3>
-          <p className="text-slate-500 mt-1 max-w-md mx-auto">
-            Aktuell gibt es in deinem Radius keine offenen Vakanzen, die zu deinen Kriterien passen.
-          </p>
-        </div>
-      ) : (
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {matches.map((job, idx) => {
-            const isApplying = applyingJobId === job.id;
-            const startDate = job.startTime ? new Date(job.startTime) : null;
-            const endDate = job.endTime ? new Date(job.endTime) : null;
+        {/* Results Area */}
+        <div className="min-w-0">
+          
+          {/* Header Controls */}
+          <div className="flex items-center justify-between mb-4 gap-3">
+            <div className="text-sm text-slate-600">
+              <strong className="text-slate-900 font-bold">142 Vakanzen</strong> für Ihr Profil
+            </div>
             
-            return (
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.1 }}
-                key={job.id} 
-                className="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition-shadow flex flex-col overflow-hidden relative"
-              >
-                <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-600 to-cyan-500"></div>
-                <div className="p-6 flex-1 pt-8">
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-cyan-100 text-cyan-800 border border-cyan-200">
-                      {job.distanceKm} km Entfernung
-                    </div>
-                    <div className="text-lg font-extrabold text-blue-600 flex items-center">
-                      {job.hourlyRate} <Euro className="w-4 h-4 ml-1" /> / h
-                    </div>
-                  </div>
-                  
-                  <h3 className="text-xl font-bold text-slate-800 mb-1">{job.title}</h3>
-                  <div className="flex items-center text-slate-500 text-sm mb-4">
-                    <Building className="w-4 h-4 mr-1" /> {job.pharmacy.name}
-                  </div>
+            <div className="flex items-center gap-2">
+              <div className="flex border-[1.5px] border-slate-200 rounded-md overflow-hidden">
+                <button className="px-2.5 py-1.5 bg-slate-900 flex items-center justify-center transition-colors">
+                  <List className="w-4 h-4 text-white" />
+                </button>
+                <button className="px-2.5 py-1.5 bg-transparent hover:bg-slate-50 flex items-center justify-center transition-colors">
+                  <LayoutGrid className="w-4 h-4 text-slate-400" />
+                </button>
+              </div>
+            </div>
+          </div>
 
-                  <div className="space-y-2 mb-6">
-                    <div className="flex items-center text-sm text-slate-600">
-                      <Calendar className="w-4 h-4 mr-2 text-slate-400" />
-                      {startDate ? startDate.toLocaleDateString('de-DE') : 'TBA'} 
-                      {endDate && startDate?.getTime() !== endDate.getTime() ? ` - ${endDate.toLocaleDateString('de-DE')}` : ''}
-                    </div>
-                    {startDate && (
-                      <div className="flex items-center text-sm text-slate-600">
-                        <Clock className="w-4 h-4 mr-2 text-slate-400" />
-                        {startDate.toLocaleTimeString('de-DE', {hour: '2-digit', minute:'2-digit'})} Uhr
-                      </div>
-                    )}
-                    <div className="flex items-center text-sm text-slate-600">
-                      <MapPin className="w-4 h-4 mr-2 text-slate-400" />
-                      {job.pharmacy.postalCode} {job.pharmacy.city}
-                    </div>
-                  </div>
-                </div>
+          {/* Premium Match */}
+          <HaversinePriorityCard />
 
-                <div className="p-4 bg-slate-50 border-t border-slate-100">
-                  <button 
-                    onClick={() => handleApply(job.id)}
-                    disabled={isApplying}
-                    className="w-full flex items-center justify-center py-3 px-4 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-blue-600 to-cyan-500 hover:opacity-90 transition-all shadow-md disabled:opacity-50"
-                  >
-                    {isApplying ? 'Wird übermittelt...' : 'Verbindlich bewerben'}
-                  </button>
-                </div>
-              </motion.div>
-            );
-          })}
+          <div className="flex items-center gap-2.5 my-5 text-[11px] font-semibold uppercase tracking-[0.6px] text-slate-400">
+            <div className="flex-1 h-px bg-slate-200"></div>
+            Weitere Vakanzen
+            <div className="flex-1 h-px bg-slate-200"></div>
+          </div>
+
+          {/* Shift Cards Feed */}
+          <div className="flex flex-col gap-2">
+            {shifts.map((shift, idx) => (
+              <ShiftCard key={idx} {...shift} />
+            ))}
+          </div>
+
+          {/* Pagination */}
+          <div className="flex justify-center items-center gap-1.5 mt-8">
+             <button className="w-9 h-9 flex items-center justify-center rounded-md text-[13px] font-bold border-[1.5px] border-red-600 bg-red-600 text-white shadow-sm">
+               1
+             </button>
+             <button className="w-9 h-9 flex items-center justify-center rounded-md text-[13px] font-medium border-[1.5px] border-slate-200 bg-white text-slate-700 hover:border-red-600 hover:text-red-600 transition-colors">
+               2
+             </button>
+             <button className="w-9 h-9 flex items-center justify-center rounded-md text-[13px] font-medium border-[1.5px] border-slate-200 bg-white text-slate-700 hover:border-red-600 hover:text-red-600 transition-colors">
+               3
+             </button>
+             <span className="text-slate-400 px-1">...</span>
+             <button className="w-9 h-9 flex items-center justify-center rounded-md text-[13px] font-medium border-[1.5px] border-slate-200 bg-white text-slate-700 hover:border-red-600 hover:text-red-600 transition-colors">
+               14
+             </button>
+          </div>
+
         </div>
-      )}
+      </main>
     </div>
   );
 }
