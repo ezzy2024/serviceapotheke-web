@@ -107,6 +107,9 @@ export default function PharmacyWizard() {
     } catch (err: any) {
       if (err.errors) {
         toast.error(err.errors[0].message);
+      } else if (err.response?.data?.errors) {
+        const firstError = Object.values(err.response.data.errors)[0] as string[];
+        toast.error(firstError[0]);
       } else {
         const msg = err.response?.data?.message || (typeof err.response?.data === 'string' ? err.response.data : 'Ein Fehler ist aufgetreten.');
         toast.error(msg);
@@ -225,7 +228,7 @@ export default function PharmacyWizard() {
                 </div>
                 <div className="mt-8 flex justify-between">
                   <Button onClick={() => setStep(1)} variant="secondary">
-                    <ArrowLeft className="mr-2 w-4 h-4" /> Zur�ck
+                    <ArrowLeft className="mr-2 w-4 h-4" /> Zurück
                   </Button>
                   <Button onClick={handleNext} variant="primary">
                     Weiter <ArrowRight className="ml-2 w-4 h-4" />
@@ -248,10 +251,10 @@ export default function PharmacyWizard() {
                 </div>
                 <div className="mt-8 flex justify-between">
                   <Button onClick={() => setStep(2)} variant="secondary">
-                    <ArrowLeft className="mr-2 w-4 h-4" /> Zur�ck
+                    <ArrowLeft className="mr-2 w-4 h-4" /> Zurück
                   </Button>
                   <Button onClick={handleRegister} isLoading={isLoading} variant="primary">
-                    <CheckCircle2 className="mr-2 w-4 h-4" /> Registrierung abschlie�en
+                    <CheckCircle2 className="mr-2 w-4 h-4" /> Registrierung abschließen
                   </Button>
                 </div>
               </motion.div>

@@ -285,7 +285,7 @@ export default function PharmacistWizard() {
                 </div>
                 <div className="mt-8 flex justify-between">
                   <Button onClick={() => setStep(1)} variant="secondary">
-                    <ArrowLeft className="mr-2 w-4 h-4" /> Zur�ck
+                    <ArrowLeft className="mr-2 w-4 h-4" /> Zurück
                   </Button>
                   <Button onClick={handleNext} variant="primary">
                     Weiter <ArrowRight className="ml-2 w-4 h-4" />
@@ -319,10 +319,10 @@ export default function PharmacistWizard() {
                 </div>
                 <div className="mt-8 flex justify-between">
                   <Button onClick={() => setStep(2)} variant="secondary">
-                    <ArrowLeft className="mr-2 w-4 h-4" /> Zur�ck
+                    <ArrowLeft className="mr-2 w-4 h-4" /> Zurück
                   </Button>
                   <Button onClick={handleSubmit} isLoading={isLoading} variant="primary">
-                    <CheckCircle2 className="mr-2 w-4 h-4" /> Registrierung abschlie�en
+                    <CheckCircle2 className="mr-2 w-4 h-4" /> Registrierung abschließen
                   </Button>
                 </div>
               </motion.div>

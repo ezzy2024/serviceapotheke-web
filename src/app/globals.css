@@ -3,14 +3,27 @@
 @source "../components";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* KAPSEL Brutalist Tokens */
+  --background: #f1ede2; /* Bone */
+  --foreground: #0c1410; /* Ink */
+  --color-bone: #f1ede2;
+  --color-ink: #0c1410;
+  --color-lime: #d8ff3a;
+  --color-persimmon: #ff5a3d;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-inter);
+  --color-bone: var(--color-bone);
+  --color-ink: var(--color-ink);
+  --color-lime: var(--color-lime);
+  --color-persimmon: var(--color-persimmon);
+  
+  --font-sans: var(--font-bricolage), sans-serif;
+  --font-bricolage: var(--font-bricolage), sans-serif;
+  --font-instrument: var(--font-instrument), serif;
+  --font-jetbrains: var(--font-jetbrains), monospace;
 }
 
 body {

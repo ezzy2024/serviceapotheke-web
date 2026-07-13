@@ -11,25 +11,27 @@ export function HaversinePriorityCard({
   description = "Perfektes Match! Diese Apotheke sucht eine Urlaubsvertretung und nutzt CGM Lauer, was mit Ihrem Profil übereinstimmt."
 }) {
   return (
-    <div className="bg-gradient-to-br from-[#1A3A2E] to-[#0E2018] rounded-[14px] p-4 mb-4 flex gap-3.5 items-start shadow-[0_4px_12px_rgba(26,31,48,0.10),0_2px_4px_rgba(26,31,48,0.06)]">
+    <div className="bg-ink border-2 border-ink p-5 mb-5 flex gap-4 items-start shadow-[6px_6px_0px_0px_rgba(216,255,58,1)] transition-transform hover:-translate-y-1 hover:shadow-[8px_8px_0px_0px_rgba(216,255,58,1)]">
       
-      {/* Avatar / Icon */}
-      <div className="w-11 h-11 shrink-0 bg-white/10 rounded-full flex items-center justify-center border-2 border-white/20">
-        <ShieldCheck className="w-5 h-5 text-white/90" />
+      {/* Brutalist Avatar / Icon block */}
+      <div className="w-14 h-14 shrink-0 bg-lime flex items-center justify-center border-2 border-ink">
+        <ShieldCheck className="w-8 h-8 text-ink" strokeWidth={2.5} />
       </div>
 
-      <div className="flex-1">
-        <div className="text-[10px] font-bold uppercase tracking-[0.8px] text-[#6EE4A6] mb-1">
+      <div className="flex-1 font-sans">
+        <div className="text-[12px] font-bold uppercase tracking-[1px] text-lime mb-2 font-jetbrains">
           Haversine Priority Match • {matchScore}
         </div>
-        <div className="text-[13px] font-semibold text-white mb-1.5 leading-snug">
-          {title} ({distance})
+        <div className="text-[18px] font-black text-bone mb-2 uppercase leading-tight font-sans tracking-wide">
+          {title} <span className="font-jetbrains text-lime">({distance})</span>
         </div>
-        <a href="#" className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-md py-2 px-2.5 hover:bg-white/10 transition-colors group">
-          <div className="text-xs text-white/85 flex-1 font-medium line-clamp-2">
-            {pharmacyName}: {description}
+        <a href="#" className="block bg-bone text-ink border-2 border-ink py-2.5 px-4 hover:bg-lime transition-colors group">
+          <div className="flex items-center gap-3">
+            <div className="text-[14px] flex-1 font-bold line-clamp-2 uppercase">
+              {pharmacyName}: <span className="font-instrument italic normal-case text-[16px]">{description}</span>
+            </div>
+            <ArrowRight className="w-6 h-6 text-ink group-hover:translate-x-1 transition-transform shrink-0" strokeWidth={2.5} />
           </div>
-          <ArrowRight className="w-4 h-4 text-[#6EE4A6] group-hover:translate-x-0.5 transition-transform" />
         </a>
       </div>
     </div>
