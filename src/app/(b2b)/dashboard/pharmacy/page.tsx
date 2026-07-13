@@ -213,7 +213,7 @@ export default function PharmacyDashboard() {
                 </li>
               ))}
             </ul>
-          </section>      </section>
+          </section>
 
           {/* Security & Compliance Widget */}
           <section className="bg-ink border-2 border-ink shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden text-bone">

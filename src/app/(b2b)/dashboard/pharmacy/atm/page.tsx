@@ -139,8 +139,6 @@ export default function AtmDashboardPage() {
     );
   }
 
-  }
-
   return (
     <>
       <VaultUnlockModal isOpen={!isUnlocked} onSuccess={() => {}} />
