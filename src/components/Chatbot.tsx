@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Loader2 } from 'lucide-react';
@@ -13,7 +13,7 @@ type Message = {
 export default function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { id: '1', role: 'bot', text: 'Hallo! Fragen zu Öffnungszeiten, Rezepten oder Produkten? Ich helfe gerne weiter.' }
+    { id: '1', role: 'bot', text: 'Hallo! Suchen Sie nach Vertretungsschichten, möchten Sie pDL-Services extern anbieten oder Termine für aTM buchen? Ich helfe Ihnen gerne weiter.' }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);

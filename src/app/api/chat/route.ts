@@ -7,15 +7,17 @@ export async function POST(req: Request) {
     const apiKey = process.env.GEMINI_API_KEY || '';
     if (!apiKey) {
       const lowerMessage = message.toLowerCase();
-      let mockReply = 'Hallo! Wie kann ich Ihnen bezüglich Rezepten, Öffnungszeiten oder unseren Services weiterhelfen?';
+      let mockReply = 'Hallo! Interessieren Sie sich für Vertretungsangebote, pDL-Einsätze in Heimen oder unsere aTM-Services?';
       if (lowerMessage.includes('hallo') || lowerMessage.includes('hi')) {
-        mockReply = 'Hallo! Wie kann ich Ihnen heute in der Service Apotheke helfen?';
-      } else if (lowerMessage.includes('öffnungszeit')) {
-        mockReply = 'Wir haben von Montag bis Freitag zwischen 08:00 und 18:30 Uhr für Sie geöffnet. Samstags sind wir von 09:00 bis 13:00 Uhr für Sie da.';
-      } else if (lowerMessage.includes('rezept')) {
-        mockReply = 'Sie können Ihr e-Rezept bequem über unsere Plattform einlösen oder Ihre Gesundheitskarte in der Apotheke einlesen. Wir bereiten dann alles für Sie vor!';
+        mockReply = 'Hallo! Suchen Sie als Apotheker nach Vertretungsschichten, oder möchten Sie als Apotheke Personal organisieren?';
+      } else if (lowerMessage.includes('apotheker') || lowerMessage.includes('vertretung')) {
+        mockReply = 'Als Apotheker können Sie sich registrieren, um lukrative Vertretungsangebote zu finden oder pDL-Services im Auftrag von Apotheken (z.B. in Heimen) zu übernehmen.';
+      } else if (lowerMessage.includes('atm') || lowerMessage.includes('kunde') || lowerMessage.includes('patient') || lowerMessage.includes('notdienst')) {
+        mockReply = 'Für Patienten bieten wir aktuell das Buchen von aTM-Terminen (Arzneimitteltherapiesicherheit) sowie den Notdienstplan an.';
+      } else if (lowerMessage.includes('pdl') || lowerMessage.includes('heim')) {
+        mockReply = 'Apotheker können als externe Dienstleister pDL-Services (wie Heimbesuche) für angeschlossene Apotheken übernehmen. Apotheken können diese Einsätze über unsere Plattform verwalten.';
       } else {
-        mockReply = 'Ich bin momentan im Demo-Modus. Bitte stellen Sie Fragen zu Rezepten oder Öffnungszeiten, oder kontaktieren Sie uns direkt!';
+        mockReply = 'Ich bin momentan im Demo-Modus. Bitte stellen Sie Fragen zu Vertretungsangeboten, pDL, aTM oder dem Notdienstplan!';
       }
       await new Promise(resolve => setTimeout(resolve, 800));
       return NextResponse.json({ reply: mockReply });
@@ -29,7 +31,7 @@ export async function POST(req: Request) {
     // System instruction
     contents.push({
       role: 'user',
-      parts: [{ text: "You are a helpful assistant for 'Apotheke am Markt' (ServiceApotheke). You answer questions about pharmacy services, opening hours, prescriptions, and medical products. Be concise and professional in German." }]
+      parts: [{ text: "You are a helpful assistant for 'ServiceApotheke' (a B2B SaaS platform for pharmacies and pharmacists). You help pharmacists register for 'Vertretungsangebote' (locum shifts), offer 'aTM' (Arzneimitteltherapiesicherheit) as an external service, or perform 'pDL' (pharmazeutische Dienstleistungen) externally in nursing homes. You help pharmacies find locums and manage pDL/aTM. Patients can only book aTM appointments or view the Notdienstplan. Be concise and professional in German. Do NOT answer generic medical questions or provide opening hours." }]
     });
     contents.push({
       role: 'model',
