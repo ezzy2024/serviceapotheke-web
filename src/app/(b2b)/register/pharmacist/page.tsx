@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -41,6 +41,8 @@ export default function PharmacistWizard() {
   const [cvFile, setCvFile] = useState<File | null>(null);
   const [profilePicFile, setProfilePicFile] = useState<File | null>(null);
 
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
   const [otp, setOtp] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -51,9 +53,19 @@ export default function PharmacistWizard() {
     if (step === 1) {
       try {
         await pharmacistSchema.parseAsync(formData);
+        setErrors({});
         setStep(2);
       } catch (err: any) {
-        toast.error(err.errors?.[0]?.message || 'Ung�ltige Eingaben in Schritt 1');
+        const newErrors: Record<string, string> = {};
+        if (err.errors) {
+          err.errors.forEach((e: any) => {
+            if (e.path && e.path.length > 0) {
+              newErrors[e.path[0]] = e.message;
+            }
+          });
+        }
+        setErrors(newErrors);
+        toast.error('Bitte überprüfen Sie Ihre Eingaben in den markierten Feldern.');
       }
     } else if (step === 2) {
       setStep(3);
@@ -102,7 +114,7 @@ export default function PharmacistWizard() {
         if (loginErr.response?.status === 401 && loginErr.response?.data?.message?.includes('E-Mail-Adresse')) {
           setStep(4);
           setIsLoading(false);
-          toast.info('Bitte best�tigen Sie Ihre E-Mail-Adresse.');
+          toast.info('Bitte bestätigen Sie Ihre E-Mail-Adresse.');
           return;
         }
         throw loginErr;
@@ -153,7 +165,7 @@ export default function PharmacistWizard() {
 
       await api.put(`/Pharmacist/${userId}/profile`, { maxDistanceKm: formData.maxDistanceKm });
 
-      toast.success('E-Mail best�tigt und Registrierung abgeschlossen!');
+      toast.success('E-Mail bestätigt und Registrierung abgeschlossen!');
       window.location.href = '/dashboard/pharmacist';
     } catch (err: any) {
       const msg = err.response?.data?.message || (typeof err.response?.data === 'string' ? err.response.data : 'Ein Fehler ist aufgetreten.');
@@ -175,50 +187,59 @@ export default function PharmacistWizard() {
           <AnimatePresence mode="wait">
             {step === 1 && (
               <motion.div key="step1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-                <h3 className="text-xl font-bold text-slate-800 mb-6">Pers�nliche Daten & Account</h3>
+                <h3 className="text-xl font-bold text-slate-800 mb-6">Persönliche Daten & Account</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                   <div>
                     <label className="block text-sm font-medium text-slate-700">Vorname</label>
-                    <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} className="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border" />
+                    <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} className={`mt-1 block w-full rounded-lg shadow-sm p-2 border focus:ring-blue-500 focus:border-blue-500 ${errors.firstName ? 'border-red-500 bg-red-50' : 'border-slate-300'}`} />
+                    {errors.firstName && <p className="mt-1 text-xs text-red-500">{errors.firstName}</p>}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-slate-700">Nachname</label>
-                    <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} className="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border" />
+                    <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} className={`mt-1 block w-full rounded-lg shadow-sm p-2 border focus:ring-blue-500 focus:border-blue-500 ${errors.lastName ? 'border-red-500 bg-red-50' : 'border-slate-300'}`} />
+                    {errors.lastName && <p className="mt-1 text-xs text-red-500">{errors.lastName}</p>}
                   </div>
                 </div>
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-slate-700">E-Mail Adresse</label>
-                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} className="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border" />
+                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} className={`mt-1 block w-full rounded-lg shadow-sm p-2 border focus:ring-blue-500 focus:border-blue-500 ${errors.email ? 'border-red-500 bg-red-50' : 'border-slate-300'}`} />
+                    {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email}</p>}
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-slate-700">Passwort</label>
-                      <input type="password" name="password" value={formData.password} onChange={handleInputChange} className="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border" />
+                      <input type="password" name="password" value={formData.password} onChange={handleInputChange} className={`mt-1 block w-full rounded-lg shadow-sm p-2 border focus:ring-blue-500 focus:border-blue-500 ${errors.password ? 'border-red-500 bg-red-50' : 'border-slate-300'}`} />
+                      {errors.password && <p className="mt-1 text-xs text-red-500">{errors.password}</p>}
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-slate-700">Passwort best�tigen</label>
-                      <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleInputChange} className="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border" />
+                      <label className="block text-sm font-medium text-slate-700">Passwort bestätigen</label>
+                      <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleInputChange} className={`mt-1 block w-full rounded-lg shadow-sm p-2 border focus:ring-blue-500 focus:border-blue-500 ${errors.confirmPassword ? 'border-red-500 bg-red-50' : 'border-slate-300'}`} />
+                      {errors.confirmPassword && <p className="mt-1 text-xs text-red-500">{errors.confirmPassword}</p>}
                     </div>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div className="sm:col-span-2">
-                      <label className="block text-sm font-medium text-slate-700">Stra�e</label>
-                      <input type="text" name="street" value={formData.street} onChange={handleInputChange} className="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border" />
+                      <label className="block text-sm font-medium text-slate-700">Straße</label>
+                      <input type="text" name="street" value={formData.street} onChange={handleInputChange} className={`mt-1 block w-full rounded-lg shadow-sm p-2 border focus:ring-blue-500 focus:border-blue-500 ${errors.street ? 'border-red-500 bg-red-50' : 'border-slate-300'}`} />
+                      {errors.street && <p className="mt-1 text-xs text-red-500">{errors.street}</p>}
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-slate-700">Hausnummer</label>
-                      <input type="text" name="houseNumber" value={formData.houseNumber} onChange={handleInputChange} className="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border" />
+                      <input type="text" name="houseNumber" value={formData.houseNumber} onChange={handleInputChange} className={`mt-1 block w-full rounded-lg shadow-sm p-2 border focus:ring-blue-500 focus:border-blue-500 ${errors.houseNumber ? 'border-red-500 bg-red-50' : 'border-slate-300'}`} />
+                      {errors.houseNumber && <p className="mt-1 text-xs text-red-500">{errors.houseNumber}</p>}
                     </div>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-slate-700">PLZ</label>
-                      <input type="text" name="postalCode" value={formData.postalCode} onChange={handleInputChange} className="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border" />
+                      <input type="text" name="postalCode" value={formData.postalCode} onChange={handleInputChange} className={`mt-1 block w-full rounded-lg shadow-sm p-2 border focus:ring-blue-500 focus:border-blue-500 ${errors.postalCode ? 'border-red-500 bg-red-50' : 'border-slate-300'}`} />
+                      {errors.postalCode && <p className="mt-1 text-xs text-red-500">{errors.postalCode}</p>}
                     </div>
                     <div className="sm:col-span-2">
                       <label className="block text-sm font-medium text-slate-700">Stadt</label>
-                      <input type="text" name="city" value={formData.city} onChange={handleInputChange} className="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border" />
+                      <input type="text" name="city" value={formData.city} onChange={handleInputChange} className={`mt-1 block w-full rounded-lg shadow-sm p-2 border focus:ring-blue-500 focus:border-blue-500 ${errors.city ? 'border-red-500 bg-red-50' : 'border-slate-300'}`} />
+                      {errors.city && <p className="mt-1 text-xs text-red-500">{errors.city}</p>}
                     </div>
                   </div>
                 </div>
