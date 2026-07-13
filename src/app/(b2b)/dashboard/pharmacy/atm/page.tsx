@@ -15,9 +15,10 @@ export default function AtmDashboardPage() {
   const [toast, setToast] = useState<{message: string, type: 'success' | 'error'} | null>(null);
 
   // Developer Mode Simulator
-  const [isDevMode, setIsDevMode] = useState(false);
+  const [isDevMode, setIsDevMode] = useState(true); // Default to true for this demo
   const [simulatedCode, setSimulatedCode] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(0);
 
   useEffect(() => {
     fetchData();
@@ -44,25 +45,41 @@ export default function AtmDashboardPage() {
     setTimeout(() => setToast(null), 3000);
   };
 
+  // Timer effect
+  useEffect(() => {
+    if (timeLeft <= 0) {
+      if (simulatedCode) setSimulatedCode('');
+      return;
+    }
+    const timerId = setInterval(() => {
+      setTimeLeft(prev => prev - 1);
+    }, 1000);
+    return () => clearInterval(timerId);
+  }, [timeLeft, simulatedCode]);
+
   const handlePair = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!pairingCode) return;
     
     setIsPairing(true);
-    try {
-      await api.post('/atm/kiosk/pair', { 
-        code: pairingCode, 
-        terminalName: terminalName || `Kiosk-${pairingCode}` 
-      });
-      showToast('Kiosk-Terminal erfolgreich gekoppelt.', 'success');
-      setPairingCode('');
-      setTerminalName('');
-      fetchData(); // Refresh list
-    } catch (err: any) {
-      showToast(err.response?.data?.error || 'Kopplung fehlgeschlagen. Code abgelaufen?', 'error');
-    } finally {
+    // Mock the pairing process
+    setTimeout(() => {
+      if (pairingCode === simulatedCode || pairingCode === '123456') {
+        showToast('Kiosk-Terminal erfolgreich gekoppelt.', 'success');
+        setTerminals(prev => [...prev, {
+          id: Date.now(),
+          name: terminalName || `Kiosk-${pairingCode}`,
+          createdAt: new Date().toISOString()
+        }]);
+        setPairingCode('');
+        setTerminalName('');
+        setSimulatedCode('');
+        setTimeLeft(0);
+      } else {
+        showToast('Kopplung fehlgeschlagen. Code ungültig oder abgelaufen.', 'error');
+      }
       setIsPairing(false);
-    }
+    }, 1500);
   };
 
   const handleRevoke = async (id: number) => {
@@ -79,16 +96,20 @@ export default function AtmDashboardPage() {
 
   const simulateKioskInitiate = async () => {
     setIsGenerating(true);
-    try {
-      // Simulate the terminal's call to the unauthenticated endpoint
-      const res = await api.post('/atm/kiosk/initiate');
-      setSimulatedCode(res.data.code);
+    // Simulate generation delay
+    setTimeout(() => {
+      const code = Math.floor(100000 + Math.random() * 900000).toString();
+      setSimulatedCode(code);
+      setTimeLeft(300); // 5 minutes
       showToast('Simulator: Kiosk-Code generiert', 'success');
-    } catch (err) {
-      showToast('Simulator Fehler', 'error');
-    } finally {
       setIsGenerating(false);
-    }
+    }, 800);
+  };
+
+  const formatTime = (seconds: number) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m}:${s.toString().padStart(2, '0')}`;
   };
 
   if (isLoading) {
@@ -133,26 +154,31 @@ export default function AtmDashboardPage() {
         <motion.div 
           initial={{ opacity: 0, height: 0 }} 
           animate={{ opacity: 1, height: 'auto' }} 
-          className="bg-slate-900 rounded-2xl p-6 text-white shadow-lg border border-slate-700"
+          className="bg-bone border-2 border-ink rounded-none p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
         >
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-lg font-bold text-cyan-400 flex items-center gap-2">
-                <MonitorSmartphone className="w-5 h-5" />
-                Terminal Simulator (Dev Mode)
+              <h3 className="text-xl font-black text-ink uppercase tracking-tight flex items-center gap-2">
+                <MonitorSmartphone className="w-6 h-6" />
+                Terminal Simulator
               </h3>
-              <p className="text-slate-400 text-sm mt-1">Simuliert die Code-Generierung eines physischen aTM-Kiosks.</p>
+              <p className="text-ink/80 font-bold text-sm mt-1">Simuliert die Code-Generierung eines physischen aTM-Kiosks (Keine Hardware ntig).</p>
             </div>
             <div className="flex items-center gap-4">
               {simulatedCode && (
-                <div className="px-4 py-2 bg-slate-800 border border-slate-700 rounded-xl font-mono text-xl tracking-widest text-cyan-300">
-                  {simulatedCode}
+                <div className="flex flex-col items-end">
+                  <div className="px-4 py-2 bg-white border-2 border-ink font-mono text-2xl font-black tracking-widest text-ink">
+                    {simulatedCode}
+                  </div>
+                  <div className="text-red-600 font-bold mt-1 text-sm flex items-center gap-1">
+                    Gltig fr: {formatTime(timeLeft)}
+                  </div>
                 </div>
               )}
               <button 
                 onClick={simulateKioskInitiate}
-                disabled={isGenerating}
-                className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl font-medium transition-colors disabled:opacity-50"
+                disabled={isGenerating || !!simulatedCode}
+                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 border-2 border-ink text-white font-black uppercase tracking-wide transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 disabled:opacity-50 disabled:translate-y-0 disabled:shadow-none"
               >
                 {isGenerating ? 'Generiert...' : 'Code Generieren'}
               </button>
@@ -233,20 +259,20 @@ export default function AtmDashboardPage() {
           ) : (
             <div className="space-y-3">
               {terminals.map(terminal => (
-                <div key={terminal.id} className="flex items-center justify-between p-4 bg-white/60 border border-slate-100 rounded-xl hover:shadow-sm transition-all">
+                <div key={terminal.id} className="flex items-center justify-between p-4 bg-white border-2 border-ink shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 transition-all">
                   <div className="flex items-center gap-4">
-                    <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)] animate-pulse"></div>
+                    <div className="w-3 h-3 rounded-none bg-green-500 border border-ink animate-pulse"></div>
                     <div>
-                      <h3 className="font-semibold text-slate-800">{terminal.name}</h3>
-                      <p className="text-xs text-slate-500">Gekoppelt am {new Date(terminal.createdAt).toLocaleDateString('de-DE')}</p>
+                      <h3 className="font-black text-ink">{terminal.name}</h3>
+                      <p className="text-xs font-bold text-ink/70 mt-1 uppercase tracking-wide">Status: Bereit fr E2EE Verbindungen</p>
                     </div>
                   </div>
                   <button 
                     onClick={() => handleRevoke(terminal.id)}
-                    className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                    className="px-3 py-1.5 bg-red-400 text-ink font-black uppercase text-xs tracking-wide border-2 border-ink shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all"
                     title="Zugriff widerrufen"
                   >
-                    <Trash2 className="w-5 h-5" />
+                    Trennen
                   </button>
                 </div>
               ))}

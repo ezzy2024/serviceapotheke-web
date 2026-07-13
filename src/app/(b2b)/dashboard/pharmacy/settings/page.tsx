@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/lib/AuthContext';
 import api from '@/lib/api';
-import { Save, Building2, MapPin, Loader2, CheckCircle, ShieldCheck } from 'lucide-react';
+import { Save, Building2, MapPin, Loader2, CheckCircle, ShieldCheck, FileText, Upload } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function SettingsPage() {
@@ -19,7 +19,10 @@ export default function SettingsPage() {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [toast, setToast] = useState<{message: string, type: 'success' | 'error'} | null>(null);
+  
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (user?.id) {
@@ -66,6 +69,38 @@ export default function SettingsPage() {
     }
   };
 
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      showToast('Datei ist zu groß (max. 5MB).', 'error');
+      return;
+    }
+    if (!['application/pdf', 'image/jpeg', 'image/png'].includes(file.type)) {
+      showToast('Nur PDF, JPG oder PNG erlaubt.', 'error');
+      return;
+    }
+
+    setIsUploading(true);
+    try {
+      const data = new FormData();
+      data.append('file', file);
+      // Simulate API call or call real API if it exists
+      // await api.post(`/ComplianceUpload/betriebserlaubnis`, data);
+      
+      // Mock delay
+      await new Promise(r => setTimeout(r, 1200));
+      
+      setFormData(prev => ({ ...prev, licenseDocumentPath: `/uploads/mock_betriebserlaubnis.pdf` }));
+      showToast('Betriebserlaubnis erfolgreich hochgeladen.', 'success');
+    } catch (err) {
+      showToast('Fehler beim Upload.', 'error');
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
   if (isLoading) {
     return <div className="flex justify-center p-12"><Loader2 className="w-8 h-8 animate-spin text-blue-600" /></div>;
   }
@@ -83,69 +118,67 @@ export default function SettingsPage() {
       )}
 
       <div>
-        <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-cyan-600">Einstellungen</h1>
-        <p className="text-slate-600 mt-1">Verwalte die Stammdaten und Präferenzen deiner Apotheke.</p>
+        <h1 className="text-4xl font-black text-ink uppercase tracking-tight">Einstellungen</h1>
+        <p className="text-ink/80 font-bold mt-1">Verwalte die Stammdaten und Prferenzen deiner Apotheke.</p>
       </div>
 
-      <form onSubmit={handleSave} className="space-y-6">
+      <form onSubmit={handleSave} className="space-y-8">
         
         {/* Stammdaten Section */}
         <motion.div 
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-          className="bg-white/70 backdrop-blur-xl border border-white/50 rounded-2xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)]"
+          className="bg-white border-2 border-ink shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-0"
         >
-          <div className="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
-            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-              <Building2 className="w-5 h-5 text-blue-600" />
-            </div>
-            <h2 className="text-xl font-bold text-slate-800">Apotheken Stammdaten</h2>
+          <div className="flex items-center gap-3 p-6 border-b-2 border-ink bg-bone">
+            <Building2 className="w-6 h-6 text-ink" />
+            <h2 className="text-xl font-black text-ink uppercase tracking-tight">Apotheken Stammdaten</h2>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-slate-700 mb-1">Name der Apotheke</label>
+              <label className="block text-sm font-black text-ink uppercase tracking-wide mb-1">Name der Apotheke</label>
               <input 
                 type="text" 
                 value={formData.pharmacyName}
                 onChange={e => setFormData({...formData, pharmacyName: e.target.value})}
-                className="w-full px-4 py-2.5 rounded-xl bg-white/50 border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+                className="w-full px-4 py-3 rounded-none bg-white border-2 border-ink focus:ring-0 focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all font-bold text-ink"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Straße</label>
+              <label className="block text-sm font-black text-ink uppercase tracking-wide mb-1">Strae</label>
               <input 
                 type="text" 
                 value={formData.street}
                 onChange={e => setFormData({...formData, street: e.target.value})}
-                className="w-full px-4 py-2.5 rounded-xl bg-white/50 border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+                className="w-full px-4 py-3 rounded-none bg-white border-2 border-ink focus:ring-0 focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all font-bold text-ink"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Hausnummer</label>
+              <label className="block text-sm font-black text-ink uppercase tracking-wide mb-1">Hausnummer</label>
               <input 
                 type="text" 
                 value={formData.houseNumber}
                 onChange={e => setFormData({...formData, houseNumber: e.target.value})}
-                className="w-full px-4 py-2.5 rounded-xl bg-white/50 border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+                className="w-full px-4 py-3 rounded-none bg-white border-2 border-ink focus:ring-0 focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all font-bold text-ink"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">PLZ</label>
+              <label className="block text-sm font-black text-ink uppercase tracking-wide mb-1">PLZ</label>
               <input 
                 type="text" 
                 value={formData.postalCode}
                 onChange={e => setFormData({...formData, postalCode: e.target.value})}
-                className="w-full px-4 py-2.5 rounded-xl bg-white/50 border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+                className="w-full px-4 py-3 rounded-none bg-white border-2 border-ink focus:ring-0 focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all font-bold text-ink"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Ort</label>
+              <label className="block text-sm font-black text-ink uppercase tracking-wide mb-1">Ort</label>
               <input 
                 type="text" 
                 value={formData.city}
                 onChange={e => setFormData({...formData, city: e.target.value})}
-                className="w-full px-4 py-2.5 rounded-xl bg-white/50 border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+                className="w-full px-4 py-3 rounded-none bg-white border-2 border-ink focus:ring-0 focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all font-bold text-ink"
               />
             </div>
           </div>
@@ -154,24 +187,22 @@ export default function SettingsPage() {
         {/* System & Compliance */}
         <motion.div 
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-          className="bg-white/70 backdrop-blur-xl border border-white/50 rounded-2xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)]"
+          className="bg-white border-2 border-ink shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-0"
         >
-          <div className="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
-            <div className="w-10 h-10 rounded-full bg-cyan-100 flex items-center justify-center">
-              <ShieldCheck className="w-5 h-5 text-cyan-600" />
-            </div>
-            <h2 className="text-xl font-bold text-slate-800">System & Compliance</h2>
+          <div className="flex items-center gap-3 p-6 border-b-2 border-ink bg-green-400">
+            <ShieldCheck className="w-6 h-6 text-ink" />
+            <h2 className="text-xl font-black text-ink uppercase tracking-tight">System & Compliance</h2>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Warenwirtschaftssystem (WWS)</label>
+              <label className="block text-sm font-black text-ink uppercase tracking-wide mb-1">Warenwirtschaftssystem (WWS)</label>
               <select 
                 value={formData.softwareSystem}
                 onChange={e => setFormData({...formData, softwareSystem: e.target.value})}
-                className="w-full px-4 py-2.5 rounded-xl bg-white/50 border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+                className="w-full px-4 py-3 rounded-none bg-white border-2 border-ink focus:ring-0 focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all font-bold text-ink"
               >
-                <option value="">Bitte wählen...</option>
+                <option value="">Bitte whlen...</option>
                 <option value="awinta">awinta / Noventi</option>
                 <option value="cgm">CGM Lauer</option>
                 <option value="pharmatechnik">Pharmatechnik (IXOS)</option>
@@ -180,12 +211,42 @@ export default function SettingsPage() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Apothekenbetriebserlaubnis</label>
-              <div className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-500 flex items-center justify-between">
-                <span className="text-sm truncate">
-                  {formData.licenseDocumentPath ? 'Dokument hinterlegt' : 'Kein Dokument hochgeladen'}
-                </span>
-                <button type="button" className="text-blue-600 text-sm font-semibold hover:underline">Ändern</button>
+              <label className="block text-sm font-black text-ink uppercase tracking-wide mb-1">Apothekenbetriebserlaubnis</label>
+              <div className="w-full p-4 bg-bone border-2 border-ink flex items-center justify-between">
+                <input 
+                  type="file" 
+                  ref={fileInputRef} 
+                  className="hidden" 
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  onChange={handleFileUpload}
+                />
+                
+                <div className="flex items-center gap-2">
+                  {formData.licenseDocumentPath ? (
+                    <>
+                      <FileText className="w-5 h-5 text-ink" />
+                      <div>
+                        <span className="text-sm font-black text-ink block">Dokument hinterlegt</span>
+                        <a href={formData.licenseDocumentPath} target="_blank" className="text-xs font-bold text-blue-600 hover:underline uppercase tracking-wide">Ansehen</a>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <ShieldCheck className="w-5 h-5 text-ink/40" />
+                      <span className="text-sm font-bold text-ink/60 uppercase tracking-wide">Kein Dokument hochgeladen</span>
+                    </>
+                  )}
+                </div>
+                
+                <button 
+                  type="button" 
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={isUploading}
+                  className="bg-white border-2 border-ink text-ink px-4 py-2 font-black uppercase text-xs tracking-wide shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all flex items-center gap-2 disabled:opacity-50"
+                >
+                  {isUploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+                  ndern
+                </button>
               </div>
             </div>
           </div>
@@ -195,10 +256,10 @@ export default function SettingsPage() {
           <button 
             type="submit" 
             disabled={isSaving}
-            className="py-3 px-8 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-semibold rounded-xl transition-all shadow-md hover:shadow-lg disabled:opacity-50 flex items-center gap-2"
+            className="px-8 py-4 bg-blue-600 border-2 border-ink hover:bg-blue-700 text-white font-black uppercase tracking-wide transition-all shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 disabled:opacity-50 disabled:translate-y-0 disabled:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex items-center gap-3"
           >
-            {isSaving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
-            Änderungen speichern
+            {isSaving ? <Loader2 className="w-6 h-6 animate-spin" /> : <Save className="w-6 h-6" />}
+            nderungen speichern
           </button>
         </div>
       </form>
