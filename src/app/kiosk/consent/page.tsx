@@ -75,7 +75,7 @@ export default function KioskConsentPage() {
                 value={patientName}
                 onChange={e => setPatientName(e.target.value)}
                 className="w-full border rounded-lg p-3" 
-                placeholder="Max Mustermann"
+                placeholder="Dein Name"
               />
             </div>
             <div>
