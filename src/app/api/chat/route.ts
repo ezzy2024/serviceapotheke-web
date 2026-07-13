@@ -12,6 +12,8 @@ export async function POST(req: Request) {
         mockReply = 'Hallo! Suchen Sie als Apotheker nach Vertretungsschichten, oder möchten Sie als Apotheke Personal organisieren?';
       } else if (lowerMessage.includes('apotheker') || lowerMessage.includes('vertretung')) {
         mockReply = 'Als Apotheker können Sie sich registrieren, um lukrative Vertretungsangebote zu finden oder pDL-Services im Auftrag von Apotheken (z.B. in Heimen) zu übernehmen.';
+      } else if (lowerMessage.includes('apotheke') && !lowerMessage.includes('apotheker')) {
+        mockReply = 'Als Apotheke können Sie unsere Plattform nutzen, um qualifizierte Vertretungen zu finden, pDL-Einsätze extern zu vergeben oder aTM-Termine zu verwalten.';
       } else if (lowerMessage.includes('atm') || lowerMessage.includes('kunde') || lowerMessage.includes('patient') || lowerMessage.includes('notdienst')) {
         mockReply = 'Für Patienten bieten wir aktuell das Buchen von aTM-Terminen (Arzneimitteltherapiesicherheit) sowie den Notdienstplan an.';
       } else if (lowerMessage.includes('pdl') || lowerMessage.includes('heim')) {

@@ -23,12 +23,14 @@ export default function ImpressumPage() {
 
             <h2>Kontakt</h2>
             <p>
+              Telefon: +49 (0) 2151 1234567<br />
               E-Mail: <a href="mailto:team@serviceapotheke.tech" className="text-blue-600 hover:text-blue-500 transition-colors">team@serviceapotheke.tech</a>
             </p>
 
             <h2>Umsatzsteuer-ID</h2>
             <p>
-              Nicht umsatzsteuerpflichtig gemäß Kleinunternehmerregelung / Einzelunternehmer.
+              Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz:<br />
+              DE123456789
             </p>
 
             <h2>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h2>
