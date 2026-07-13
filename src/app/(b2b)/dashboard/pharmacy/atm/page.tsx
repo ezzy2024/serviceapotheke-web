@@ -2,8 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import api from '@/lib/api';
-import { MonitorSmartphone, Link as LinkIcon, Trash2, FileText, CheckCircle, ShieldCheck, Loader2 } from 'lucide-react';
+import { MonitorSmartphone, Link as LinkIcon, Trash2, FileText, CheckCircle, ShieldCheck, Loader2, Lock } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useE2EE } from '@/lib/E2EEContext';
+import { decryptData } from '@/lib/crypto';
+import VaultUnlockModal from '@/components/VaultUnlockModal';
 
 export default function AtmDashboardPage() {
   const [pairingCode, setPairingCode] = useState('');
@@ -20,9 +23,13 @@ export default function AtmDashboardPage() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
 
+  const { isUnlocked, encryptionKey } = useE2EE();
+
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (isUnlocked && encryptionKey) {
+      fetchData();
+    }
+  }, [isUnlocked, encryptionKey]);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -32,7 +39,19 @@ export default function AtmDashboardPage() {
         api.get('/atm/kiosk/ledger')
       ]);
       setTerminals(terminalsRes.data);
-      setLedger(ledgerRes.data);
+      
+      const decryptedLedger = [];
+      for (const record of ledgerRes.data) {
+        if (record.ciphertextBase64 && record.ivBase64 && encryptionKey) {
+          const decryptedStr = await decryptData(encryptionKey, record.ciphertextBase64, record.ivBase64);
+          const parsed = JSON.parse(decryptedStr);
+          decryptedLedger.push({ ...parsed, id: record.id, reportPath: record.reportPath });
+        } else {
+          // Fallback or unencrypted for backwards compatibility during testing
+          decryptedLedger.push(record);
+        }
+      }
+      setLedger(decryptedLedger);
     } catch (err) {
       showToast('Fehler beim Laden der aTM-Daten.', 'error');
     } finally {
@@ -120,17 +139,22 @@ export default function AtmDashboardPage() {
     );
   }
 
+  }
+
   return (
-    <div className="max-w-6xl mx-auto space-y-8">
-      {/* Toast Notification */}
-      {toast && (
-        <div className={`fixed top-4 right-4 z-50 p-4 rounded-xl shadow-lg border backdrop-blur-md flex items-center gap-3 transition-all ${
-          toast.type === 'success' ? 'bg-green-500/20 border-green-500/30 text-green-900' : 'bg-red-500/20 border-red-500/30 text-red-900'
-        }`}>
-          {toast.type === 'success' ? <CheckCircle className="w-5 h-5 text-green-600" /> : <div className="w-5 h-5 rounded-full bg-red-600 flex items-center justify-center text-white text-xs font-bold">!</div>}
-          <p className="font-medium">{toast.message}</p>
-        </div>
-      )}
+    <>
+      <VaultUnlockModal isOpen={!isUnlocked} onSuccess={() => {}} />
+
+      <div className={`max-w-6xl mx-auto space-y-8 ${!isUnlocked ? 'filter blur-md pointer-events-none' : ''}`}>
+        {/* Toast Notification */}
+        {toast && (
+          <div className={`fixed top-4 right-4 z-50 p-4 rounded-xl shadow-lg border backdrop-blur-md flex items-center gap-3 transition-all ${
+            toast.type === 'success' ? 'bg-green-500/20 border-green-500/30 text-green-900' : 'bg-red-500/20 border-red-500/30 text-red-900'
+          }`}>
+            {toast.type === 'success' ? <CheckCircle className="w-5 h-5 text-green-600" /> : <div className="w-5 h-5 rounded-full bg-red-600 flex items-center justify-center text-white text-xs font-bold">!</div>}
+            <p className="font-medium">{toast.message}</p>
+          </div>
+        )}
 
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
@@ -349,8 +373,9 @@ export default function AtmDashboardPage() {
             </tbody>
           </table>
         </div>
-      </motion.div>
+        </motion.div>
 
-    </div>
+      </div>
+    </>
   );
 }

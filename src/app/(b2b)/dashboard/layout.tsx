@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 import Sidebar from '@/components/layout/Sidebar';
 import Header from '@/components/layout/Header';
 import { useAuth } from '@/lib/AuthContext';
+import { E2EEProvider } from '@/lib/E2EEContext';
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   const { isLoading, user } = useAuth();
@@ -21,20 +22,22 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   if (!user) return null;
 
   return (
-    <div className="h-screen flex overflow-hidden bg-bone">
-      <div className="hidden md:flex flex-shrink-0">
-        <Sidebar />
-      </div>
+    <E2EEProvider>
+      <div className="h-screen flex overflow-hidden bg-bone">
+        <div className="hidden md:flex flex-shrink-0">
+          <Sidebar />
+        </div>
 
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <Header />
-        
-        <main className="flex-1 overflow-y-auto p-6 lg:p-8">
-          <div className="max-w-7xl mx-auto">
-            {children}
-          </div>
-        </main>
+        <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+          <Header />
+          
+          <main className="flex-1 overflow-y-auto p-6 lg:p-8">
+            <div className="max-w-7xl mx-auto">
+              {children}
+            </div>
+          </main>
+        </div>
       </div>
-    </div>
+    </E2EEProvider>
   );
 }

@@ -2,8 +2,12 @@
 
 import { useState, useEffect, useRef } from 'react';
 import api from '@/lib/api';
-import { UploadCloud, CheckCircle, FileText, Loader2, Play, Download, AlertTriangle } from 'lucide-react';
+import { UploadCloud, CheckCircle, FileText, Loader2, Play, Download, AlertTriangle, Lock } from 'lucide-react';
 import { motion } from 'framer-motion';
+import * as XLSX from 'xlsx';
+import { useE2EE } from '@/lib/E2EEContext';
+import { encryptData, decryptData } from '@/lib/crypto';
+import VaultUnlockModal from '@/components/VaultUnlockModal';
 
 export default function PdlDashboardPage() {
   const [patients, setPatients] = useState<any[]>([]);
@@ -13,16 +17,32 @@ export default function PdlDashboardPage() {
   const [toast, setToast] = useState<{message: string, type: 'success' | 'error'} | null>(null);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  const { isUnlocked, encryptionKey } = useE2EE();
 
   useEffect(() => {
-    fetchPatients();
-  }, []);
+    if (isUnlocked && encryptionKey) {
+      fetchPatients();
+    }
+  }, [isUnlocked, encryptionKey]);
 
   const fetchPatients = async () => {
     setIsLoading(true);
     try {
       const res = await api.get('/pdl/patients');
-      setPatients(res.data);
+      // Decrypt incoming data
+      const decryptedPatients = [];
+      for (const record of res.data) {
+        if (record.ciphertextBase64 && record.ivBase64 && encryptionKey) {
+          const decryptedStr = await decryptData(encryptionKey, record.ciphertextBase64, record.ivBase64);
+          const parsed = JSON.parse(decryptedStr);
+          decryptedPatients.push({ ...parsed, id: record.id, hasAnalysis: record.hasAnalysis, latestPdfUrl: record.latestPdfUrl });
+        } else {
+          // Fallback or unencrypted for backwards compatibility during testing
+          decryptedPatients.push(record);
+        }
+      }
+      setPatients(decryptedPatients);
     } catch (err) {
       showToast('Fehler beim Laden der Patienten.', 'error');
     } finally {
@@ -36,12 +56,30 @@ export default function PdlDashboardPage() {
   };
 
   const handleFileUpload = async (file: File) => {
+    if (!encryptionKey) {
+      showToast('Tresor muss entsperrt sein.', 'error');
+      return;
+    }
     setIsUploading(true);
-    const formData = new FormData();
-    formData.append('file', file);
+    
     try {
-      const res = await api.post('/pdl/ingest', formData);
-      showToast(`${res.data.processed} Patienten verarbeitet. ${res.data.newlyEligible} AMTS-berechtigt.`, 'success');
+      // 1. Client-Side Parse
+      const data = await file.arrayBuffer();
+      const workbook = XLSX.read(data);
+      const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json(firstSheet);
+      
+      // 2. Client-Side Encrypt
+      const encryptedPayloads = [];
+      for (const row of rows) {
+        const stringified = JSON.stringify(row);
+        const { ciphertextBase64, ivBase64 } = await encryptData(encryptionKey, stringified);
+        encryptedPayloads.push({ ciphertextBase64, ivBase64 });
+      }
+
+      // 3. Transmit to backend
+      const res = await api.post('/pdl/ingest', encryptedPayloads);
+      showToast(`${res.data.processed} Patienten verschlsselt und bertragen.`, 'success');
       fetchPatients();
     } catch (err: any) {
       showToast(err.response?.data?.error || 'Upload fehlgeschlagen.', 'error');
@@ -75,8 +113,11 @@ export default function PdlDashboardPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto space-y-8">
-      {/* Toast */}
+    <>
+      <VaultUnlockModal isOpen={!isUnlocked} onSuccess={() => {}} />
+      
+      <div className={`max-w-7xl mx-auto space-y-8 ${!isUnlocked ? 'filter blur-md pointer-events-none' : ''}`}>
+        {/* Toast */}
       {toast && (
         <div className={`fixed top-4 right-4 z-50 p-4 rounded-xl shadow-lg border backdrop-blur-md flex items-center gap-3 transition-all ${
           toast.type === 'success' ? 'bg-green-500/20 border-green-500/30 text-green-900' : 'bg-red-500/20 border-red-500/30 text-red-900'
@@ -203,6 +244,7 @@ export default function PdlDashboardPage() {
           </div>
         )}
       </div>
-    </div>
+      </div>
+    </>
   );
 }
