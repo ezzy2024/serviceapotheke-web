@@ -5,6 +5,22 @@ export async function POST(req: Request) {
     const { message, history } = await req.json();
 
     const apiKey = process.env.GEMINI_API_KEY || '';
+    if (!apiKey) {
+      const lowerMessage = message.toLowerCase();
+      let mockReply = 'Hallo! Wie kann ich Ihnen bezüglich Rezepten, Öffnungszeiten oder unseren Services weiterhelfen?';
+      if (lowerMessage.includes('hallo') || lowerMessage.includes('hi')) {
+        mockReply = 'Hallo! Wie kann ich Ihnen heute in der Service Apotheke helfen?';
+      } else if (lowerMessage.includes('öffnungszeit')) {
+        mockReply = 'Wir haben von Montag bis Freitag zwischen 08:00 und 18:30 Uhr für Sie geöffnet. Samstags sind wir von 09:00 bis 13:00 Uhr für Sie da.';
+      } else if (lowerMessage.includes('rezept')) {
+        mockReply = 'Sie können Ihr e-Rezept bequem über unsere Plattform einlösen oder Ihre Gesundheitskarte in der Apotheke einlesen. Wir bereiten dann alles für Sie vor!';
+      } else {
+        mockReply = 'Ich bin momentan im Demo-Modus. Bitte stellen Sie Fragen zu Rezepten oder Öffnungszeiten, oder kontaktieren Sie uns direkt!';
+      }
+      await new Promise(resolve => setTimeout(resolve, 800));
+      return NextResponse.json({ reply: mockReply });
+    }
+
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
     // Map history to Gemini format

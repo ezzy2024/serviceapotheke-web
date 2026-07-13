@@ -13,7 +13,7 @@ export default function FuerApothekenPage() {
           Die digitale SaaS-Plattform für Ihr Apotheken-Management. Fokussieren Sie sich auf Ihre Expertise, wir automatisieren die Bürokratie und das Dokumentenmanagement.
         </p>
         <Link 
-          href="/onboarding"
+          href="/register/pharmacy"
           className="bg-white text-blue-600 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-50 transition-all"
         >
           Plattform betreten
@@ -57,7 +57,7 @@ export default function FuerApothekenPage() {
           Bereit für das neue Betriebssystem Ihrer Apotheke?
         </h2>
         <Link 
-          href="/onboarding"
+          href="/register/pharmacy"
           className="bg-blue-600 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-blue-700 transition-all"
         >
           Jetzt kostenlos registrieren

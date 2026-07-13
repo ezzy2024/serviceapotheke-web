@@ -231,7 +231,7 @@ export default function Home() {
                   </ul>
                 </div>
                 <Link 
-                  href="/onboarding"
+                  href="/register/pharmacy"
                   onClick={() => trackConversion('pharmacy_cta_clicked', 'pharmacy')}
                   className="btn-primary-cta w-full sm:w-auto text-center inline-block text-lg"
                 >
@@ -279,7 +279,7 @@ export default function Home() {
                   </ul>
                 </div>
                 <Link 
-                  href="/onboarding"
+                  href="/register/pharmacist"
                   onClick={() => trackConversion('pharmacist_cta_clicked', 'pharmacist')}
                   className="btn-primary-cta w-full sm:w-auto text-center inline-block text-lg"
                 >
