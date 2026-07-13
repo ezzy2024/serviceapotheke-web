@@ -10,7 +10,7 @@ test.describe('Autonomous E2E Verification Pipeline', () => {
     await expect(rootElement).toBeVisible();
     
     // Verify Tailwind CSS application (check computed styles of a primary button)
-    const primaryButton = page.locator('button').first();
+    const primaryButton = page.locator('a:has-text("Loslegen")').first();
     if (await primaryButton.isVisible()) {
       const display = await primaryButton.evaluate((el) => window.getComputedStyle(el).display);
       expect(display).not.toBe('none');
@@ -19,12 +19,11 @@ test.describe('Autonomous E2E Verification Pipeline', () => {
 
   test('Security & DSGVO: Cookie Consent Trapping', async ({ page }) => {
     await page.goto(TARGET_URL);
-    const consentBanner = page.locator('text=Cookie'); // Adjust selector based on actual text/ID
-    
     // Banner must trap user on first visit
-    if (await consentBanner.isVisible()) {
-      await consentBanner.locator('button:has-text("Akzeptieren")').click();
-      await expect(consentBanner).toBeHidden();
+    const acceptBtn = page.locator('button:has-text("Akzeptieren")');
+    if (await acceptBtn.isVisible()) {
+      await acceptBtn.click();
+      await expect(acceptBtn).toBeHidden();
       
       // Verify local storage persistence
       const storageState = await page.evaluate(() => localStorage.getItem('cookie-consent'));
@@ -42,11 +41,11 @@ test.describe('Autonomous E2E Verification Pipeline', () => {
         Email: `playwright-test-${Date.now()}@serviceapotheke.tech`,
         Password: 'TestPass123!',
         PharmacyName: 'E2E Test Apotheke',
-        ZipCode: '47798',
+        PostalCode: '47798',
         City: 'Krefeld',
         Street: 'Teststraße 1',
-        WwsType: 'CGM Lauer',
-        LicenseDocument: {
+        SoftwareSystem: 'CGM Lauer',
+        documentFile: {
           name: 'dummy.pdf',
           mimeType: 'application/pdf',
           buffer: Buffer.from('mock pdf content')
