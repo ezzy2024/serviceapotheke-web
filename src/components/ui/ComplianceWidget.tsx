@@ -1,10 +1,10 @@
-﻿import { ShieldCheck, FileText, AlertTriangle } from 'lucide-react';
+import { ShieldCheck, FileText, AlertTriangle } from 'lucide-react';
 
 interface ComplianceWidgetProps {
   type: 'pharmacist' | 'pharmacy';
   data: {
     isApprobationVerified?: boolean;
-    augContractStatus?: string;
+    freelanceContractStatus?: string;
     ustIdValidationStatus?: string;
     hasActiveConsent?: boolean;
   };
@@ -35,17 +35,17 @@ export const ComplianceWidget = ({ type, data }: ComplianceWidgetProps) => {
           </div>
         </div>
 
-        {/* AÜG Contract */}
+        {/* Freelancer Contract */}
         <div className="flex items-start gap-3 p-3 bg-slate-50 rounded-lg">
-          {data.augContractStatus === 'Signed' ? (
+          {data.freelanceContractStatus === 'Signed' ? (
             <FileText className="w-5 h-5 text-green-500 mt-0.5" />
           ) : (
             <AlertTriangle className="w-5 h-5 text-amber-500 mt-0.5" />
           )}
           <div>
-            <p className="font-semibold text-slate-700 text-sm">AÜG Rahmenvertrag</p>
+            <p className="font-semibold text-slate-700 text-sm">Freelancer Dienstvertrag (auf Rechnung)</p>
             <p className="text-xs text-slate-500">
-              {data.augContractStatus === 'Signed' ? 'Unterzeichnet' : data.augContractStatus || 'Nicht initiiert'}
+              {data.freelanceContractStatus === 'Signed' ? 'Unterzeichnet' : data.freelanceContractStatus || 'Nicht initiiert'}
             </p>
           </div>
         </div>

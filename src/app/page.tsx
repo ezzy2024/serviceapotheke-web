@@ -42,7 +42,7 @@ export default function Home() {
                 <div className="space-y-4">
                   <div className="compliance-badge shadow-sm">
                     <CheckCircle2 className="w-4 h-4" />
-                    <span>AÜG-konform & DSGVO-zertifiziert</span>
+                    <span>Freelance-Dienstvertrag & DSGVO-zertifiziert</span>
                   </div>
                   <h1 className="text-5xl lg:text-7xl font-extrabold text-slate-900 leading-tight tracking-tight">
                     Apotheken-Management,<br />
@@ -145,9 +145,9 @@ export default function Home() {
                 <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center text-white mb-4 group-hover:shadow-lg group-hover:scale-105 transition-all duration-300">
                   <Shield className="w-7 h-7" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-2">AÜG-Compliance</h3>
+                <h3 className="text-xl font-bold text-slate-900 mb-2">Freelancer-Compliance</h3>
                 <p className="text-slate-600 leading-relaxed">
-                  Automatische Compliance-Checks für Arbeitnehmerüberlassung. Immer regelkonform.
+                  Automatische Compliance-Checks für Honorarvertretungen. Immer regelkonform.
                 </p>
               </div>
 
@@ -220,7 +220,7 @@ export default function Home() {
                       <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 flex-shrink-0">
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
-                      <span className="text-lg font-medium text-slate-700">AÜG-Compliance-Checks</span>
+                      <span className="text-lg font-medium text-slate-700">Freelancer-Compliance-Checks</span>
                     </li>
                     <li className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 flex-shrink-0">
@@ -333,14 +333,14 @@ export default function Home() {
             </p>
           </div>
           <div>
-            <h4 className="text-white font-semibold mb-6 uppercase tracking-wider text-sm">Unternehmen</h4>
+            <h2 className="text-white font-semibold mb-6 uppercase tracking-wider text-sm">Unternehmen</h2>
             <ul className="space-y-4 text-sm font-medium">
               <li><Link href="/ueber-uns" className="hover:text-blue-400 transition-colors">Über uns</Link></li>
               <li><Link href="/kontakt" className="hover:text-blue-400 transition-colors">Kontakt</Link></li>
             </ul>
           </div>
           <div>
-            <h4 className="text-white font-semibold mb-6 uppercase tracking-wider text-sm">Rechtliches</h4>
+            <h2 className="text-white font-semibold mb-6 uppercase tracking-wider text-sm">Rechtliches</h2>
             <ul className="space-y-4 text-sm font-medium">
               <li><Link href="/impressum" className="hover:text-blue-400 transition-colors">Impressum</Link></li>
               <li><Link href="/datenschutz" className="hover:text-blue-400 transition-colors">Datenschutz</Link></li>
@@ -349,7 +349,7 @@ export default function Home() {
           </div>
         </div>
         <div className="container mx-auto max-w-6xl px-4 mt-16 pt-8 border-t border-slate-800 text-sm flex flex-col md:flex-row items-center justify-between">
-          <p>&copy; {new Date().getFullYear()} ServiceApotheke Einzelunternehmer. Alle Rechte vorbehalten.</p>
+          <p>&copy; {new Date().getFullYear()} ServiceApotheke – Ezzeldin Hassan. Alle Rechte vorbehalten.</p>
         </div>
       </footer>
 
