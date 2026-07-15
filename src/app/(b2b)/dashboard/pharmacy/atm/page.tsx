@@ -131,6 +131,15 @@ export default function AtmDashboardPage() {
     return `${m}:${s.toString().padStart(2, '0')}`;
   };
 
+  if (!isUnlocked) {
+    return (
+      <VaultUnlockModal 
+        isOpen={true} 
+        onSuccess={() => {}} 
+      />
+    );
+  }
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
