@@ -63,6 +63,7 @@ jobs:
         ASPNETCORE_ENVIRONMENT: "Testing"
         ASPNETCORE_URLS: "http://127.0.0.1:5000"
         DB_ENCRYPTION_KEY: "fallback_key_for_testing_123"
+        PORT: "5000"
       run: |
         cd backend-repo
         dotnet run --no-launch-profile &
