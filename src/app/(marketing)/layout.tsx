@@ -38,7 +38,7 @@ export default function MarketingLayout({ children }: { children: ReactNode }) {
           </div>
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-8 border-t border-gray-800 text-sm flex flex-col md:flex-row items-center justify-between">
-          <p>&copy; {new Date().getFullYear()} ServiceApotheke Einzelunternehmer. Alle Rechte vorbehalten.</p>
+          <p>&copy; {new Date().getFullYear()} ServiceApotheke – Ezzeldin Hassan (Einzelunternehmer). Alle Rechte vorbehalten.</p>
           <div className="flex gap-4 mt-4 md:mt-0">
             <div className="w-5 h-5 bg-gray-700 rounded-full hover:bg-gray-500 transition-colors cursor-pointer"></div>
             <div className="w-5 h-5 bg-gray-700 rounded-full hover:bg-gray-500 transition-colors cursor-pointer"></div>

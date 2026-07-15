@@ -3,7 +3,7 @@ import * as Sentry from "@sentry/nextjs";
 Sentry.init({
   dsn: "https://d6ba61a089c71782ac433acc3796540b@o4511604042891264.ingest.de.sentry.io/4511735316086864",
   tracesSampleRate: 0.1,
-  debug: true,
+  debug: false,
   beforeSend(event) {
     if (event.user) {
       delete event.user.email;
