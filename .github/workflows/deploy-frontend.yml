@@ -61,9 +61,10 @@ jobs:
       env:
         ConnectionStrings__DefaultConnection: "Host=localhost;Port=5432;Database=serviceapotheke_test;Username=testuser;Password=testpassword"
         ASPNETCORE_ENVIRONMENT: "Testing"
+        ASPNETCORE_URLS: "http://127.0.0.1:5000"
       run: |
         cd backend-repo
-        dotnet run --urls="http://127.0.0.1:5000" &
+        dotnet run --no-launch-profile &
         # Hard fail if the backend doesn't start within 180 seconds
         npx wait-on http-get://127.0.0.1:5000/api/health -t 180000
         
