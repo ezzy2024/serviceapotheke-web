@@ -64,8 +64,8 @@ jobs:
       run: |
         cd backend-repo
         dotnet run --urls="http://127.0.0.1:5000" &
-        # Hard fail if the backend doesn't start within 90 seconds
-        npx wait-on http://127.0.0.1:5000/api/health -t 90000
+        # Hard fail if the backend doesn't start within 180 seconds
+        npx wait-on http-get://127.0.0.1:5000/api/health -t 180000
         
     - name: Install dependencies
       run: npm install
