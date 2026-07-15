@@ -89,7 +89,6 @@ test.describe('Live E2E Flow', () => {
     await page.fill('input[name="firstName"]', 'E2E');
     await page.fill('input[name="lastName"]', 'Tester');
     await page.fill('input[name="email"]', testEmail);
-    await page.fill('input[name="phone"]', '01511234567');
     await page.fill('input[name="password"]', testPassword);
     await page.fill('input[name="confirmPassword"]', testPassword);
     await page.fill('input[name="street"]', 'Teststraße');
@@ -139,10 +138,7 @@ test.describe('Live E2E Flow', () => {
     
     // Step 1: Pharmacy Info
     await page.fill('input[name="pharmacyName"]', 'E2E Apotheke');
-    await page.fill('input[name="ownerFirstName"]', 'E2E');
-    await page.fill('input[name="ownerLastName"]', 'Owner');
     await page.fill('input[name="email"]', testEmail);
-    await page.fill('input[name="phone"]', '01511234567');
     await page.fill('input[name="password"]', testPassword);
     await page.fill('input[name="confirmPassword"]', testPassword);
     await page.fill('input[name="street"]', 'Apothekenweg');
