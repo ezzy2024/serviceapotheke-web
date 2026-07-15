@@ -6,21 +6,7 @@ export async function POST(req: Request) {
 
     const apiKey = process.env.GEMINI_API_KEY || '';
     if (!apiKey) {
-      const lowerMessage = message.toLowerCase();
-      let mockReply = 'Hallo! Interessieren Sie sich für Vertretungsangebote, pDL-Einsätze in Heimen oder unsere aTM-Services?';
-      if (lowerMessage.includes('hallo') || lowerMessage.includes('hi')) {
-        mockReply = 'Hallo! Suchen Sie als Apotheker nach Vertretungsschichten, oder möchten Sie als Apotheke Personal organisieren?';
-      } else if (lowerMessage.includes('apotheker') || lowerMessage.includes('vertretung')) {
-        mockReply = 'Als Apotheker können Sie sich registrieren, um lukrative Vertretungsangebote zu finden oder pDL-Services im Auftrag von Apotheken (z.B. in Heimen) zu übernehmen.';
-      } else if (lowerMessage.includes('apotheke') && !lowerMessage.includes('apotheker')) {
-        mockReply = 'Als Apotheke können Sie unsere Plattform nutzen, um qualifizierte Vertretungen zu finden, pDL-Einsätze extern zu vergeben oder aTM-Termine zu verwalten.';
-      } else if (lowerMessage.includes('atm') || lowerMessage.includes('kunde') || lowerMessage.includes('patient') || lowerMessage.includes('notdienst')) {
-        mockReply = 'Für Patienten bieten wir aktuell das Buchen von aTM-Terminen (Arzneimitteltherapiesicherheit) sowie den Notdienstplan an.';
-      } else if (lowerMessage.includes('pdl') || lowerMessage.includes('heim')) {
-        mockReply = 'Apotheker können als externe Dienstleister pDL-Services (wie Heimbesuche) für angeschlossene Apotheken übernehmen. Apotheken können diese Einsätze über unsere Plattform verwalten.';
-      } else {
-        mockReply = 'Ich bin momentan im Demo-Modus. Bitte stellen Sie Fragen zu Vertretungsangeboten, pDL, aTM oder dem Notdienstplan!';
-      }
+      const mockReply = 'Ich bin momentan im Demo-Modus. Bitte stellen Sie Fragen zu Vertretungsangeboten, pDL, aTM oder dem Notdienstplan!';
       await new Promise(resolve => setTimeout(resolve, 800));
       return NextResponse.json({ reply: mockReply });
     }

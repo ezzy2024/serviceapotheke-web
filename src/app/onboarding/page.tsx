@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { useToast } from "@/components/ui/Toast";
 
-type IntentRole = "pharmacy" | "pharmacist" | "consumer" | null;
+type IntentRole = "pharmacy" | "pharmacist" | null;
 
 export default function OnboardingEngine() {
   const router = useRouter();
@@ -36,8 +36,6 @@ export default function OnboardingEngine() {
         router.push(`/register/pharmacy?${queryParams}`);
       } else if (role === "pharmacist") {
         router.push(`/register/pharmacist?${queryParams}`);
-      } else if (role === "consumer") {
-        router.push(`/register?${queryParams}`); // Maps to (b2c)/register
       }
     } catch (error) {
       toast.error("Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.");
@@ -55,20 +53,14 @@ export default function OnboardingEngine() {
         </div>
 
         <div className="space-y-4">
-          <button 
-            onClick={() => setRole("consumer")}
-            className={`w-full p-4 border-2 rounded-xl text-left transition-all ${role === "consumer" ? "border-blue-600 bg-blue-50" : "border-slate-200 hover:border-blue-300"}`}
-          >
-            <h3 className="font-semibold text-slate-900 text-lg">Ich bin Patient / Kunde</h3>
-            <p className="text-sm text-slate-500 mt-1">E-Rezepte einlösen, Medikamente bestellen & Gesundheitsdaten verwalten.</p>
-          </button>
+
 
           <button 
             onClick={() => setRole("pharmacist")}
             className={`w-full p-4 border-2 rounded-xl text-left transition-all ${role === "pharmacist" ? "border-blue-600 bg-blue-50" : "border-slate-200 hover:border-blue-300"}`}
           >
             <h3 className="font-semibold text-slate-900 text-lg">Ich bin Apotheker / PTA</h3>
-            <p className="text-sm text-slate-500 mt-1">Schichten finden, AÜG-Verträge verwalten & Profil erstellen.</p>
+            <p className="text-sm text-slate-500 mt-1">Schichten finden, Dienstverträge verwalten & Profil erstellen.</p>
           </button>
 
           <button 

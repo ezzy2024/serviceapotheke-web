@@ -17,18 +17,23 @@ export default function LoginPage() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('[Login] handleLogin started', { email, role });
     setError('');
     setIsLoading(true);
     
     const endpoint = role === 'Pharmacy' ? '/Pharmacy/login' : '/Pharmacist/login';
     
     try {
+      console.log('[Login] calling api.post', endpoint);
       // The HttpOnly cookie is set automatically by the backend
       const res = await api.post(endpoint, { email, password });
+      console.log('[Login] api.post succeeded', res.data);
       
       // Notify Context
       login({ id: res.data.id, email, role });
+      console.log('[Login] login context updated');
     } catch (err: any) {
+      console.error('[Login] api.post failed', err.message, err.response?.status);
       setError(err.response?.data?.message || 'Login fehlgeschlagen. Bitte überprüfen Sie Ihre Daten.');
     } finally {
       setIsLoading(false);
@@ -73,8 +78,10 @@ export default function LoginPage() {
 
           <form onSubmit={handleLogin} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">E-Mail</label>
+              <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">E-Mail</label>
               <input 
+                id="email"
+                name="email"
                 type="email" 
                 required
                 value={email}
@@ -85,8 +92,10 @@ export default function LoginPage() {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Passwort</label>
+              <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1">Passwort</label>
               <input 
+                id="password"
+                name="password"
                 type="password" 
                 required
                 value={password}

@@ -10,8 +10,8 @@ export default function PharmacistShifts() {
   const [shifts, setShifts] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   
-  // AÜG Compliance Modal State
-  const [isAugModalOpen, setIsAugModalOpen] = useState(false);
+  // Freelancer Compliance Modal State
+  const [isComplianceModalOpen, setIsComplianceModalOpen] = useState(false);
   const [selectedApplicationId, setSelectedApplicationId] = useState<number | null>(null);
   const [augConsent, setAugConsent] = useState(false);
   const [isCompleting, setIsCompleting] = useState(false);
@@ -36,10 +36,10 @@ export default function PharmacistShifts() {
     }
   };
 
-  const openAugModal = (applicationId: number) => {
+  const openComplianceModal = (applicationId: number) => {
     setSelectedApplicationId(applicationId);
     setAugConsent(false);
-    setIsAugModalOpen(true);
+    setIsComplianceModalOpen(true);
   };
 
   const handleCompleteShift = async () => {
@@ -54,7 +54,7 @@ export default function PharmacistShifts() {
         breaksTakenMinutes: 30,
         notes: "Schicht erfolgreich abgeschlossen."
       });
-      setIsAugModalOpen(false);
+      setIsComplianceModalOpen(false);
       fetchShifts(); // Refresh state
     } catch (error) {
       console.error('Failed to complete shift', error);
@@ -130,7 +130,7 @@ export default function PharmacistShifts() {
                       <h4 className="font-bold text-slate-800 mb-1">Schicht anstehend</h4>
                       <p className="text-xs text-slate-500 mb-4 px-4">Nach Beendigung der Schicht kannst du hier den Stundenzettel einreichen.</p>
                       <button 
-                        onClick={() => openAugModal(shift.id)}
+                        onClick={() => openComplianceModal(shift.id)}
                         className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-colors shadow-sm"
                       >
                         Schicht abschließen
@@ -164,15 +164,15 @@ export default function PharmacistShifts() {
         )}
       </div>
 
-      {/* AÜG Compliance Modal */}
-      {isAugModalOpen && (
+      {/* Freelancer Compliance Modal */}
+      {isComplianceModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
           <div className="bg-white rounded-3xl max-w-lg w-full p-8 shadow-2xl relative">
             <div className="flex items-center justify-center w-12 h-12 rounded-full bg-orange-100 text-orange-600 mb-6">
               <AlertTriangle className="w-6 h-6" />
             </div>
             
-            <h3 className="text-2xl font-bold text-slate-800 mb-2">Rechtliche Bestätigung (AÜG)</h3>
+            <h3 className="text-2xl font-bold text-slate-800 mb-2">Rechtliche Bestätigung (Freelancer)</h3>
             <p className="text-slate-600 mb-6 text-sm">Zur finalen Rechnungsstellung und Vermeidung der Scheinselbstständigkeit ist diese Bestätigung erforderlich.</p>
             
             <div className="bg-slate-50 p-5 rounded-xl border border-slate-200 mb-6">
@@ -191,7 +191,7 @@ export default function PharmacistShifts() {
 
             <div className="flex justify-end space-x-3">
               <button 
-                onClick={() => setIsAugModalOpen(false)}
+                onClick={() => setIsComplianceModalOpen(false)}
                 className="px-5 py-2.5 rounded-xl font-medium text-slate-600 hover:bg-slate-100 transition-colors"
               >
                 Abbrechen

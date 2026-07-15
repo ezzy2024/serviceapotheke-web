@@ -11,8 +11,8 @@ export default function PharmacyJobs() {
   const [jobs, setJobs] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   
-  // AÜG Compliance Modal State
-  const [isAugModalOpen, setIsAugModalOpen] = useState(false);
+  // Freelancer Compliance Modal State
+  const [isComplianceModalOpen, setIsComplianceModalOpen] = useState(false);
   const [selectedApplicationId, setSelectedApplicationId] = useState<number | null>(null);
   const [augConsent, setAugConsent] = useState(false);
   const [isAccepting, setIsAccepting] = useState(false);
@@ -34,10 +34,10 @@ export default function PharmacyJobs() {
     }
   };
 
-  const openAugModal = (applicationId: number) => {
+  const openComplianceModal = (applicationId: number) => {
     setSelectedApplicationId(applicationId);
     setAugConsent(false);
-    setIsAugModalOpen(true);
+    setIsComplianceModalOpen(true);
   };
 
   const handleAcceptApplication = async () => {
@@ -48,7 +48,7 @@ export default function PharmacyJobs() {
       await api.put('/Allocation/accept', {
         applicationId: selectedApplicationId
       });
-      setIsAugModalOpen(false);
+      setIsComplianceModalOpen(false);
       fetchJobs(); // Refresh state
     } catch (error) {
       console.error('Failed to accept application', error);
@@ -129,7 +129,7 @@ export default function PharmacyJobs() {
                         <div>
                           {app.status === 'Pending' && (
                             <button 
-                              onClick={() => openAugModal(app.id)}
+                              onClick={() => openComplianceModal(app.id)}
                               className="px-4 py-2 bg-white border border-cyan-200 text-cyan-700 hover:bg-cyan-50 hover:border-cyan-300 rounded-lg font-semibold text-sm transition-colors shadow-sm"
                             >
                               Akzeptieren
@@ -151,15 +151,15 @@ export default function PharmacyJobs() {
         )}
       </div>
 
-      {/* AÜG Compliance Modal */}
-      {isAugModalOpen && (
+      {/* Freelancer Compliance Modal */}
+      {isComplianceModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
           <div className="bg-white rounded-3xl max-w-lg w-full p-8 shadow-2xl relative">
             <div className="flex items-center justify-center w-12 h-12 rounded-full bg-orange-100 text-orange-600 mb-6">
               <AlertTriangle className="w-6 h-6" />
             </div>
             
-            <h3 className="text-2xl font-bold text-slate-800 mb-2">Rechtliche Bestätigung (AÜG)</h3>
+            <h3 className="text-2xl font-bold text-slate-800 mb-2">Rechtliche Bestätigung (Freelancer)</h3>
             <p className="text-slate-600 mb-6 text-sm">Zur Vermeidung der Scheinselbstständigkeit ist folgende Bestätigung vor der Beauftragung zwingend erforderlich.</p>
             
             <div className="bg-slate-50 p-5 rounded-xl border border-slate-200 mb-6">
@@ -171,14 +171,14 @@ export default function PharmacyJobs() {
                   className="mt-1 w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
                 />
                 <span className="ml-3 text-sm text-slate-700 leading-relaxed font-medium">
-                  "Ich bestätige rechtsverbindlich, dass der Auftragnehmer ausschließlich als freier Mitarbeiter (Honorarvertretung) beauftragt wird. Es erfolgt keine Eingliederung in die Betriebsstruktur und es besteht kein fachliches Weisungsrecht. Dies stellt ausdrücklich keine Arbeitnehmerüberlassung (AÜG) dar."
+                  "Ich bestätige rechtsverbindlich, dass der Auftragnehmer ausschließlich als freier Mitarbeiter (Honorarvertretung) beauftragt wird. Es erfolgt keine Eingliederung in die Betriebsstruktur und es besteht kein fachliches Weisungsrecht. Dies stellt ausdrücklich keine Arbeitnehmerüberlassung dar."
                 </span>
               </label>
             </div>
 
             <div className="flex justify-end space-x-3">
               <button 
-                onClick={() => setIsAugModalOpen(false)}
+                onClick={() => setIsComplianceModalOpen(false)}
                 className="px-5 py-2.5 rounded-xl font-medium text-slate-600 hover:bg-slate-100 transition-colors"
               >
                 Abbrechen

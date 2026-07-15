@@ -2,6 +2,7 @@ import { ShiftSidebarFilters } from '@/components/dashboard/ShiftRadar/ShiftSide
 import { ShiftFilterChips } from '@/components/dashboard/ShiftRadar/ShiftFilterChips';
 import { HaversinePriorityCard } from '@/components/dashboard/ShiftRadar/HaversinePriorityCard';
 import { ShiftCard } from '@/components/dashboard/ShiftRadar/ShiftCard';
+import { ComplianceBadgesGroup } from '@/components/ui/ComplianceBadges';
 import { LayoutGrid, List } from 'lucide-react';
 
 export default function ShiftRadarPage() {
@@ -47,6 +48,9 @@ export default function ShiftRadarPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 font-['Outfit',sans-serif]">
+      <div className="max-w-[1320px] mx-auto px-6 lg:px-8 pt-6 flex justify-end">
+        <ComplianceBadgesGroup />
+      </div>
       {/* Container for the Chips */}
       <div className="max-w-[1320px] mx-auto px-6 lg:px-8 pt-6">
         <ShiftFilterChips />

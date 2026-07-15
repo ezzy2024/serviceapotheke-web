@@ -10,6 +10,7 @@ import { encryptData, decryptData } from '@/lib/crypto';
 import VaultUnlockModal from '@/components/VaultUnlockModal';
 import { pdf } from '@react-pdf/renderer';
 import { PdlReportDocument } from '@/components/PdlReportDocument';
+import { ComplianceBadgesGroup } from '@/components/ui/ComplianceBadges';
 
 export default function PdlDashboardPage() {
   const [patients, setPatients] = useState<any[]>([]);
@@ -174,10 +175,13 @@ export default function PdlDashboardPage() {
       )}
 
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-cyan-600">Pharmazeutische Dienstleistungen (pDL)</h1>
-        <p className="text-slate-600 mt-1">Automatische Identifikation und KI-gestützte Dokumentation von Polymedikationen (AMTS).</p>
-      </div>
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-cyan-600">Pharmazeutische Dienstleistungen (pDL)</h1>
+            <p className="text-slate-600 mt-1">Automatische Identifikation und KI-gestützte Dokumentation von Polymedikationen (AMTS).</p>
+          </div>
+          <ComplianceBadgesGroup />
+        </div>
 
       {/* Upload Zone */}
       <motion.div 

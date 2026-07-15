@@ -1,13 +1,15 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/AuthContext';
 import api from '@/lib/api';
 import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, Plus, UserPlus, Briefcase, AlertCircle, ShieldCheck, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 
 export default function DienstplanPage() {
   const { user } = useAuth();
+  const router = useRouter();
   const [employees, setEmployees] = useState<any[]>([]);
   const [shifts, setShifts] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -68,9 +70,7 @@ export default function DienstplanPage() {
   };
 
   const handleCreateVacancy = (date: Date) => {
-    // Generate JobPost payload mapping to the empty time block
-    const dateString = date.toLocaleDateString('de-DE');
-    alert(`Konversions-Pipeline ausgelöst!\nLeitet zum Marktplatz weiter, um Freelancer für den ${dateString} zu suchen.\n(Payload: StartTime=08:00, EndTime=18:00, IsEmergency=false)`);
+    router.push(`/dashboard/pharmacy/jobs/create?date=${date.toISOString()}`);
   };
 
   const handleAddEmployee = async () => {

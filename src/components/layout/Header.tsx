@@ -48,7 +48,7 @@ export default function Header() {
   return (
     <header className="bg-white border-b-2 border-ink sticky top-0 z-30 w-full h-16 flex items-center justify-between px-6">
       <div className="flex items-center">
-        <button className="md:hidden text-ink hover:text-ink/70 mr-4">
+        <button className="md:hidden text-ink hover:text-ink/70 mr-4" aria-label="Hauptmenü öffnen">
           <Menu className="w-6 h-6" />
         </button>
         <h2 className="text-xl font-black text-ink uppercase tracking-tight hidden md:block">
@@ -60,6 +60,7 @@ export default function Header() {
         <div className="relative">
           <button 
             onClick={() => setShowDropdown(!showDropdown)}
+            aria-label="Benachrichtigungen"
             className="p-2 text-ink hover:bg-bone border-2 border-transparent hover:border-ink hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all relative"
           >
             <Bell className="w-5 h-5 font-bold" />

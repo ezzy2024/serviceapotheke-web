@@ -23,4 +23,12 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withPWA(nextConfig);
+import { withSentryConfig } from "@sentry/nextjs";
+
+const sentryWebpackPluginOptions = {
+  silent: true,
+  org: "serviceapotheke",
+  project: "serviceapotheke-web",
+};
+
+export default withSentryConfig(withPWA(nextConfig), sentryWebpackPluginOptions);

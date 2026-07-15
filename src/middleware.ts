@@ -33,13 +33,19 @@ export function middleware(request: NextRequest) {
   // Apply strict tenant separation only for dashboard routes
   if (pathname.startsWith('/dashboard')) {
     const tokenCookie = request.cookies.get('sa_auth_v2');
+    console.log('[Middleware] tokenCookie:', tokenCookie);
+    
     if (!tokenCookie || !tokenCookie.value) {
+      console.log('[Middleware] Redirecting to /login because token is missing');
       return NextResponse.redirect(new URL('/login', request.url));
     }
 
     const role = decodeJwtRole(tokenCookie.value);
+    console.log('[Middleware] decoded role:', role);
+    
     if (!role) {
       // Invalid token format
+      console.log('[Middleware] Redirecting to /login because role is invalid');
       return NextResponse.redirect(new URL('/login', request.url));
     }
 

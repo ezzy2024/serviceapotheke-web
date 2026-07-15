@@ -8,7 +8,9 @@ export const pharmacyRegistrationSchema = z.object({
   street: z.string().min(3, 'Straße erforderlich'),
   zipCode: z.string().regex(/^\d{5}$/, 'PLZ muss 5 Ziffern enthalten'),
   city: z.string().min(2, 'Stadt erforderlich'),
-  augCompliance: z.boolean().refine(val => val === true, 'AÜG-Compliance muss bestätigt werden'),
+  freelanceCompliance: z.boolean().refine(val => val === true, 'Freelancer-Compliance muss bestätigt werden'),
+  betriebserlaubnisNumber: z.string().min(5, 'Betriebserlaubnisnummer erforderlich').optional(),
+  approbationNumber: z.string().min(5, 'Approbationsnummer erforderlich').optional(),
   searchRadiusKm: z.number().min(1, 'Suchradius muss mindestens 1 km betragen').max(100, 'Maximal 100 km Suchradius'),
 });
 

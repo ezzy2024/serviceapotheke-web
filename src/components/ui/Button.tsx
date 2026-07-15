@@ -6,7 +6,7 @@ import { Loader2 } from 'lucide-react';
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   onClick?: (e?: React.MouseEvent<HTMLButtonElement>) => void | Promise<void>;
   isLoading?: boolean;
-  variant?: 'primary' | 'secondary' | 'danger';
+  variant?: 'primary' | 'secondary' | 'danger' | 'brutalist' | 'brutalist-secondary';
   size?: 'sm' | 'md' | 'lg';
 }
 
@@ -45,8 +45,12 @@ export const Button: React.FC<ButtonProps> = ({
   if (variant === 'primary') variantClasses = 'bg-blue-600 text-white hover:bg-blue-700 border-transparent';
   if (variant === 'secondary') variantClasses = 'bg-slate-100 text-slate-900 hover:bg-slate-200 border-transparent';
   if (variant === 'danger') variantClasses = 'bg-red-600 text-white hover:bg-red-700 border-transparent';
+  if (variant === 'brutalist') variantClasses = 'bg-lime text-ink border-4 border-ink shadow-[4px_4px_0px_0px_rgba(12,20,16,1)] hover:shadow-[6px_6px_0px_0px_rgba(12,20,16,1)] hover:-translate-y-0.5 rounded-none font-bold uppercase tracking-wide';
+  if (variant === 'brutalist-secondary') variantClasses = 'bg-white text-ink border-4 border-ink shadow-[4px_4px_0px_0px_rgba(12,20,16,1)] hover:shadow-[6px_6px_0px_0px_rgba(12,20,16,1)] hover:-translate-y-0.5 rounded-none font-bold uppercase tracking-wide';
 
-  const baseClasses = 'inline-flex items-center justify-center rounded-lg font-semibold transition-all duration-200 border disabled:opacity-50 disabled:cursor-not-allowed';
+  const baseClasses = variant.startsWith('brutalist') 
+    ? 'inline-flex items-center justify-center transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed'
+    : 'inline-flex items-center justify-center rounded-lg font-semibold transition-all duration-200 border disabled:opacity-50 disabled:cursor-not-allowed';
 
   return (
     <button

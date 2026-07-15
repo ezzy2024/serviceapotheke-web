@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Loader2, ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
 
 export default function B2CRegisterPage() {
   const [agreedToWaiver, setAgreedToWaiver] = useState(false);
@@ -42,17 +43,15 @@ export default function B2CRegisterPage() {
           </label>
         </div>
         
-        <button 
+        <Button 
           type="submit"
           disabled={!agreedToWaiver || isSubmitting}
-          className="w-full py-4 bg-blue-600 border-2 border-ink text-white text-lg font-black uppercase tracking-wide transition-all shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 disabled:opacity-50 disabled:translate-y-0 disabled:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center gap-3"
+          isLoading={isSubmitting}
+          variant="brutalist"
+          className="w-full py-4 text-lg"
         >
-          {isSubmitting ? <Loader2 className="w-6 h-6 animate-spin" /> : (
-            <>
-              Kostenpflichtig Registrieren <ArrowRight className="w-6 h-6" />
-            </>
-          )}
-        </button>
+          Kostenpflichtig Registrieren <ArrowRight className="ml-2 w-6 h-6" />
+        </Button>
       </form>
     </div>
   );

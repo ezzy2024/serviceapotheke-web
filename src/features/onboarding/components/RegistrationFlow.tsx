@@ -2,6 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { pharmacyRegistrationSchema, PharmacyRegistrationData } from '../schemas/validationSchemas';
+import { FileUpload } from '@/components/ui/FileUpload';
 
 export const RegistrationFlow: React.FC = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<PharmacyRegistrationData>({
@@ -11,6 +12,7 @@ export const RegistrationFlow: React.FC = () => {
 
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [error, setError] = React.useState('');
+  const [documentFile, setDocumentFile] = React.useState<File | null>(null);
 
   const onSubmit = async (data: PharmacyRegistrationData) => {
     setIsSubmitting(true);
@@ -22,6 +24,9 @@ export const RegistrationFlow: React.FC = () => {
           formData.append(key, value.toString());
         }
       });
+      if (documentFile) {
+        formData.append('documentFile', documentFile);
+      }
       // Import api at top or use fetch. Since we don't know if api is imported, use fetch.
       const response = await fetch('/api/Pharmacy/register', {
         method: 'POST',
@@ -94,15 +99,45 @@ export const RegistrationFlow: React.FC = () => {
           </div>
         </div>
 
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium mb-1 text-slate-700">Approbationsnummer (für Apotheker)</label>
+            <input
+              {...register('approbationNumber')}
+              placeholder="Ggf. freilassen falls Apotheke"
+              className={`w-full p-2 border rounded text-slate-900 bg-white focus:border-blue-500 focus:ring-blue-500 ${errors.approbationNumber ? 'border-red-500' : 'border-slate-300'}`}
+            />
+            {errors.approbationNumber && <span className="text-red-500 text-sm">{errors.approbationNumber.message}</span>}
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1 text-slate-700">Betriebserlaubnisnummer (für Apotheken)</label>
+            <input
+              {...register('betriebserlaubnisNumber')}
+              placeholder="Ggf. freilassen falls Apotheker"
+              className={`w-full p-2 border rounded text-slate-900 bg-white focus:border-blue-500 focus:ring-blue-500 ${errors.betriebserlaubnisNumber ? 'border-red-500' : 'border-slate-300'}`}
+            />
+            {errors.betriebserlaubnisNumber && <span className="text-red-500 text-sm">{errors.betriebserlaubnisNumber.message}</span>}
+          </div>
+        </div>
+
+        <div className="mt-4">
+          <FileUpload
+            accept="application/pdf,image/jpeg,image/png"
+            maxSize={10 * 1024 * 1024}
+            label="Approbationsurkunde / Betriebserlaubnis hochladen"
+            onFileSelect={(f) => setDocumentFile(f)}
+          />
+        </div>
+
         <div className="mt-4 p-4 bg-blue-50 rounded-lg">
-          <h3 className="font-semibold mb-2 text-slate-900">AÜG Compliance</h3>
+          <h3 className="font-semibold mb-2 text-slate-900">Freelancer Compliance</h3>
           <label className="flex items-start gap-2">
-            <input type="checkbox" {...register('augCompliance')} className="mt-1" />
+            <input type="checkbox" {...register('freelanceCompliance')} className="mt-1" />
             <span className="text-sm text-slate-700">
-              Ich bestätige, dass ich die Richtlinien des Arbeitnehmerüberlassungsgesetzes (AÜG) zur Kenntnis genommen habe.
+              Ich bestätige, dass der Einsatz ausschließlich als freier Mitarbeiter (Honorarvertretung) erfolgt. Dies stellt ausdrücklich keine Arbeitnehmerüberlassung dar.
             </span>
           </label>
-          {errors.augCompliance && <span className="text-red-500 text-sm block mt-1">{errors.augCompliance.message}</span>}
+          {errors.freelanceCompliance && <span className="text-red-500 text-sm block mt-1">{errors.freelanceCompliance.message}</span>}
         </div>
 
         <button disabled={isSubmitting} type="submit" className="mt-6 w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition disabled:opacity-50">

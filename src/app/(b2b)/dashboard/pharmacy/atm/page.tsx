@@ -18,7 +18,7 @@ export default function AtmDashboardPage() {
   const [toast, setToast] = useState<{message: string, type: 'success' | 'error'} | null>(null);
 
   // Developer Mode Simulator
-  const [isDevMode, setIsDevMode] = useState(true); // Default to true for this demo
+  const [isDevMode, setIsDevMode] = useState(false); // Default to false in production
   const [simulatedCode, setSimulatedCode] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
@@ -159,17 +159,19 @@ export default function AtmDashboardPage() {
           <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-cyan-600">Assistierte Telemedizin (aTM)</h1>
           <p className="text-slate-600 mt-1">Hardware-Pairing und Abrechnungsübersicht für Telepharmazie-Terminals.</p>
         </div>
-        <div className="flex items-center gap-2">
-          <label className="flex items-center gap-2 text-sm text-slate-500 cursor-pointer">
-            <input 
-              type="checkbox" 
-              checked={isDevMode} 
-              onChange={e => setIsDevMode(e.target.checked)}
-              className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
-            />
-            Developer Mode
-          </label>
-        </div>
+        {process.env.NODE_ENV === 'development' && (
+          <div className="flex items-center gap-2">
+            <label className="flex items-center gap-2 text-sm text-slate-500 cursor-pointer">
+              <input 
+                type="checkbox" 
+                checked={isDevMode} 
+                onChange={e => setIsDevMode(e.target.checked)}
+                className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+              />
+              Developer Mode
+            </label>
+          </div>
+        )}
       </div>
 
       {isDevMode && (

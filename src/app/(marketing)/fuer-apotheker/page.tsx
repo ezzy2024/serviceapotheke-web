@@ -4,7 +4,7 @@ import FadeIn from '@/components/ui/FadeIn';
 
 export const metadata = {
   title: 'Für Apotheker | ServiceApotheke - Honorarvertretung für Freelancer',
-  description: 'Finden Sie lukrative Schichten als Honorarvertreter. Haversine Matching, automatisierte Rechnungen und garantierter AÜG-Schutz.',
+  description: 'Finden Sie lukrative Schichten als Honorarvertreter. Haversine Matching, automatisierte Rechnungen und garantierte Freelancer-Compliance.',
 };
 
 export default function ForPharmacists() {
@@ -30,7 +30,7 @@ export default function ForPharmacists() {
               </FadeIn>
               <FadeIn delay={0.3}>
                 <p className="text-lg text-gray-600 mb-8 leading-relaxed max-w-xl">
-                  Konzentrieren Sie sich auf Ihre pharmazeutische Arbeit. Wir übernehmen die lästige Administration: Verträge, AÜG-Nachweise und die gesamte Rechnungsstellung – vollautomatisiert.
+                  Konzentrieren Sie sich auf Ihre pharmazeutische Arbeit. Wir übernehmen die lästige Administration: Verträge, Freelancer-Nachweise und die gesamte Rechnungsstellung – vollautomatisiert.
                 </p>
               </FadeIn>
               <FadeIn delay={0.4}>

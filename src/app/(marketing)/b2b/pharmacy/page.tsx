@@ -1,4 +1,4 @@
-﻿export const dynamic = 'force-dynamic';
+export const dynamic = 'force-dynamic';
 
 import Link from "next/link";
 import { CheckCircle, Zap, Shield, TrendingUp } from "lucide-react";
@@ -14,7 +14,7 @@ export default function B2bPharmacyLandingPage() {
               Zero-Touch Invoicing & <span className="text-blue-600">pDL-Umsatz</span>
             </h1>
             <p className="mt-6 max-w-2xl mx-auto text-xl text-gray-500">
-              Die erste AÜG-konforme Plattform für temporäre Apothekenvertretung. Komplett automatisierte Abrechnung. Zusätzliche Erlöse durch pharmazeutische Dienstleistungen (pDL).
+              Die erste Compliance-konforme Plattform für temporäre Apothekenvertretung. Komplett automatisierte Abrechnung. Zusätzliche Erlöse durch pharmazeutische Dienstleistungen (pDL).
             </p>
             <div className="mt-10 flex justify-center gap-4">
               <Link href="/register/pharmacy" className="rounded-md shadow px-8 py-3 text-lg font-medium text-white bg-blue-600 hover:bg-blue-700">
@@ -33,8 +33,8 @@ export default function B2bPharmacyLandingPage() {
               <div className="flex items-center justify-center h-16 w-16 rounded-md bg-blue-100 text-blue-600 mb-6">
                 <Shield className="h-8 w-8" />
               </div>
-              <h3 className="text-2xl font-bold">AÜG-Compliance</h3>
-              <p className="mt-4 text-gray-600">Kein Schein-Selbstständigkeits-Risiko. Vollständig gesicherte Arbeitnehmerüberlassung nach aktuellen rechtlichen Standards.</p>
+              <h3 className="text-2xl font-bold">Freelancer-Compliance</h3>
+              <p className="mt-4 text-gray-600">Kein Schein-Selbstständigkeits-Risiko. Vollständig gesicherte Honorarvertretung nach aktuellen rechtlichen Standards.</p>
             </div>
             <div className="flex flex-col items-center text-center">
               <div className="flex items-center justify-center h-16 w-16 rounded-md bg-blue-100 text-blue-600 mb-6">

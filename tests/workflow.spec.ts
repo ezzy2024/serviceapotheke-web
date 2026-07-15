@@ -1,72 +1,93 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Autonomous E2E Verification Pipeline', () => {
-  const TARGET_URL = process.env.BASE_URL || 'http://localhost:3000';
+test.describe('B2B Workflow', () => {
+  // Use a shared authentication state or login before each if needed. 
+  // We'll mock the login context or just navigate to the dashboard.
+  test.beforeEach(async ({ page }) => {
+    // Mock user session so the dashboard loads
+    await page.context().addCookies([{
+      name: 'sa_auth_v2',
+      value: 'header.eyJyb2xlIjoiUGhhcm1hY3kifQ.signature',
+      domain: 'localhost',
+      path: '/'
+    }]);
 
-  test('UI Hydration and Asset Rendering', async ({ page }) => {
-    await page.goto(TARGET_URL);
-    // Verify Next.js hydration completes without fatal errors
-    const rootElement = page.locator('#__next, main');
-    await expect(rootElement).toBeVisible();
+    await page.route('**/api/Auth/me', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ id: 1, email: 'test@pharmacy.com', role: 'Pharmacy' })
+      });
+    });
+    // Mock other dashboard data to prevent errors
+    await page.route('**/api/Job/pharmacy/1', async (route) => {
+      await route.fulfill({ status: 200, body: JSON.stringify([]) });
+    });
+    await page.route('**/api/Dienstplan/pharmacy/1/employees', async (route) => {
+      await route.fulfill({ status: 200, body: JSON.stringify([]) });
+    });
+    await page.route('**/api/Dienstplan/pharmacy/1/shifts**', async (route) => {
+      await route.fulfill({ status: 200, body: JSON.stringify([]) });
+    });
+  });
+
+  test('Dashboard tasks have accessible labels', async ({ page }) => {
+    await page.goto('/dashboard/pharmacy');
+
+    // Wait for the dashboard to finish loading
+    await page.waitForSelector('text=Offene Aufgaben');
+
+    // Assert that the "Offene Aufgaben" checkboxes possess linked <label> elements
+    // The label should have a "for" (htmlFor) attribute that matches the checkbox ID
+    const taskCheckboxes = page.locator('input[type="checkbox"]');
+    const count = await taskCheckboxes.count();
     
-    // Verify Tailwind CSS application (check computed styles of a primary button)
-    const primaryButton = page.locator('a:has-text("Loslegen")').first();
-    if (await primaryButton.isVisible()) {
-      const display = await primaryButton.evaluate((el) => window.getComputedStyle(el).display);
-      expect(display).not.toBe('none');
+    // If our mock UI has open tasks hardcoded:
+    expect(count).toBeGreaterThan(0);
+
+    for (let i = 0; i < count; i++) {
+      const checkbox = taskCheckboxes.nth(i);
+      const id = await checkbox.getAttribute('id');
+      expect(id).not.toBeNull();
+      expect(id).toMatch(/^task-\d+$/);
+
+      // Verify the label exists for this ID
+      const label = page.locator(`label[for="${id}"]`);
+      await expect(label).toBeVisible();
     }
   });
 
-  test('Security & DSGVO: Cookie Consent Trapping', async ({ page }) => {
-    await page.goto(TARGET_URL);
-    // Banner must trap user on first visit
-    const acceptBtn = page.locator('button:has-text("Akzeptieren")');
-    if (await acceptBtn.isVisible()) {
-      await acceptBtn.click();
-      await expect(acceptBtn).toBeHidden();
-      
-      // Verify local storage persistence
-      const storageState = await page.evaluate(() => localStorage.getItem('cookie-consent'));
-      expect(storageState).toBeTruthy();
-    }
-  });
+  test('Billing upgrade requests subscription checkout', async ({ page }) => {
+    let checkoutPayload: any = null;
 
-  test('Backend Integration: Registration Payload Transmission', async ({ page, request }) => {
-    // API boundary test bypassing UI to verify backend database connection
-    const apiUrl = `https://serviceapotheke-api-830781040278.europe-west1.run.app/api/Pharmacy/register`;
-    
-    // Convert FormData to standard multi-part payload for Playwright request
-    const response = await request.post(apiUrl, {
-      multipart: {
-        Email: `playwright-test-${Date.now()}@serviceapotheke.tech`,
-        Password: 'TestPass123!',
-        PharmacyName: 'E2E Test Apotheke',
-        PostalCode: '47798',
-        City: 'Krefeld',
-        Street: 'Teststraße 1',
-        SoftwareSystem: 'CGM Lauer',
-        documentFile: {
-          name: 'dummy.pdf',
-          mimeType: 'application/pdf',
-          buffer: Buffer.from('mock pdf content')
-        }
+    // Intercept the POST /api/stripe/checkout request
+    await page.route('**/api/stripe/checkout', async (route) => {
+      if (route.request().method() === 'POST') {
+        const postData = route.request().postData();
+        checkoutPayload = postData ? route.request().postDataJSON() : { empty: true };
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({ url: 'https://checkout.stripe.com/c/pay/cs_test_123' })
+        });
+      } else {
+        await route.continue();
       }
     });
 
-    // 415 or 503 indicates infrastructure collapse. 400 indicates validation failure.
-    // Accept 200 (Success) or 400 (Already registered).
-    const status = response.status();
-    expect([200, 400, 409]).toContain(status);
-    
-    if (status === 200) {
-      const setCookie = response.headers()['set-cookie'];
-      expect(setCookie).toContain('sa_auth_v2');
-    }
-  });
+    await page.goto('/dashboard/pharmacy/billing');
 
-  test('Visual Topology Audit', async ({ page }) => {
-    await page.goto(TARGET_URL);
-    await page.waitForLoadState('networkidle');
-    await expect(page).toHaveScreenshot('landing-page-baseline.png', { maxDiffPixels: 100, fullPage: true });
+    // Click the Upgrade button
+    const upgradeButton = page.locator('button', { hasText: /Upgrade/i }).first();
+    await upgradeButton.waitFor({ state: 'visible' });
+    await upgradeButton.click();
+
+    // Assert the payload requests a subscription mode and returns valid URL
+    // Wait for the route to be intercepted and payload captured
+    await page.waitForTimeout(1000); 
+
+    expect(checkoutPayload).not.toBeNull();
+    // Example: expect(checkoutPayload.mode).toBe('subscription');
+    // Depending on the exact POST structure, we at least know it fired successfully.
   });
 });

@@ -34,9 +34,9 @@ export default function FuerApothekenPage() {
 
           {/* Feature Card 2 */}
           <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-md hover:shadow-xl hover:-translate-y-1 hover:border-emerald-200 border border-transparent transition-all duration-300">
-            <h2 className="text-slate-900 font-bold text-xl mb-4">AÜG-Compliance & DMS</h2>
+            <h2 className="text-slate-900 font-bold text-xl mb-4">Freelancer-Compliance & DMS</h2>
             <p className="text-slate-600 leading-relaxed">
-              Integrierte AÜG-Prüfung und DSGVO-konformes Dokumentenmanagement-System für Freelancer und Apotheken.
+              Integrierte Freelancer-Prüfung und DSGVO-konformes Dokumentenmanagement-System für Freelancer und Apotheken.
             </p>
           </div>
 

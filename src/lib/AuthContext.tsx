@@ -57,27 +57,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const redirectBasedOnRole = (role: string) => {
-    if (role === 'Pharmacy') {
-      router.push('/dashboard/pharmacy');
-    } else {
-      router.push('/dashboard/pharmacist');
-    }
+    setTimeout(() => {
+      if (role === 'Pharmacy') {
+        router.push('/dashboard/pharmacy');
+      } else {
+        router.push('/dashboard/pharmacist');
+      }
+    }, 50);
   };
 
   const login = (userData: User) => {
+    sessionStorage.removeItem('sa_history_trap_id');
     setUser(userData);
     redirectBasedOnRole(userData.role);
   };
 
-  const logout = async () => {
-    try {
-      await api.post('/Auth/logout');
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setUser(null);
-      router.push('/login');
-    }
+  const logout = () => {
+    localStorage.removeItem('token');
+    setUser(null);
+    window.location.href = '/login';
   };
 
   return (

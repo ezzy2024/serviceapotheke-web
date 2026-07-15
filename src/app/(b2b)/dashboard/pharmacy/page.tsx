@@ -21,8 +21,8 @@ export default function PharmacyDashboard() {
   ];
 
   const openTasks = [
-    { id: 1, title: "BTM-Buchung pr�fen", time: "14:00" },
-    { id: 2, title: "K�hlschranktemperatur loggen", time: "16:00" },
+    { id: 1, title: "BTM-Buchung prï¿½fen", time: "14:00" },
+    { id: 2, title: "Kï¿½hlschranktemperatur loggen", time: "16:00" },
     { id: 3, title: "Rezeptur Salbe anfertigen", time: "17:30" }
   ];
 
@@ -84,7 +84,7 @@ export default function PharmacyDashboard() {
         <div className="relative z-10">
           <p className="text-sm font-black tracking-widest uppercase text-ink mb-2">Apotheken OS</p>
           <h1 className="text-4xl font-black text-ink uppercase tracking-tight">Command Center</h1>
-          <p className="text-ink/80 font-semibold mt-1">Dein tglicher berblick ber Personal, Vakanzen und Operations.</p>
+          <p className="text-ink/80 font-semibold mt-1">Dein täglicher Überblick über Personal, Vakanzen und Operations.</p>
         </div>
       </header>
 
@@ -206,8 +206,8 @@ export default function PharmacyDashboard() {
               {openTasks.map(task => (
                 <li key={task.id} className="p-4 hover:bg-bone transition-colors flex justify-between items-center bg-white">
                   <div className="flex items-center gap-3">
-                    <input type="checkbox" className="w-5 h-5 border-2 border-ink text-ink focus:ring-ink rounded-none bg-white" />
-                    <p className="font-bold text-ink">{task.title}</p>
+                    <input id={`task-${task.id}`} type="checkbox" className="w-5 h-5 border-2 border-ink text-ink focus:ring-ink rounded-none bg-white" />
+                    <label htmlFor={`task-${task.id}`} className="font-bold text-ink cursor-pointer">{task.title}</label>
                   </div>
                   <p className="text-sm font-black text-ink">{task.time}</p>
                 </li>
