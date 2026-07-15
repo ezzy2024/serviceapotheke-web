@@ -18,6 +18,7 @@ export default function PdlDashboardPage() {
   const [isUploading, setIsUploading] = useState(false);
   const [analyzingIds, setAnalyzingIds] = useState<Set<number>>(new Set());
   const [toast, setToast] = useState<{message: string, type: 'success' | 'error'} | null>(null);
+  const [skippedStats, setSkippedStats] = useState<{skipped: number, total: number} | null>(null);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
   
@@ -72,33 +73,52 @@ export default function PdlDashboardPage() {
       const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
       const rows = XLSX.utils.sheet_to_json(firstSheet);
       
-      // 2. Group by KdnNr and evaluate eligibility
-      const grouped = new Map<string, any>();
+      // 2. Parse rows (horizontal layout)
+      const parsedPatients = [];
+      let skipped = 0;
+      let total = 0;
+      
       for (const row of rows as any[]) {
-        const kdnNr = row.KdnNr?.toString() || row.PatientId?.toString() || row.PatientId_Hash?.toString();
-        if (!kdnNr) continue;
+        total++;
+        const keys = Object.keys(row);
         
-        if (!grouped.has(kdnNr)) {
-          grouped.set(kdnNr, {
-            kdnNr,
-            geburt: row.Geburtsjahr?.toString() || row.Geburt?.toString() || '1960',
-            gender: row.Geschlecht?.toString() || row.Gender?.toString() || 'unbekannt',
-            medications: []
-          });
+        // Find ID column (case-insensitive regex)
+        const kdnKey = keys.find(k => /^(kdn_?nr|kundennr|patientid)/i.test(k));
+        
+        if (!kdnKey || !row[kdnKey]) {
+          skipped++;
+          continue;
         }
         
-        const medName = row.Medikament?.toString() || row.MedicationName?.toString();
-        if (medName) {
-          grouped.get(kdnNr).medications.push(medName);
+        const kdnNr = row[kdnKey].toString();
+        
+        // Find birthdate (if available)
+        const geburtKey = keys.find(k => /^(geburt|geburtsdatum|geburtsjahr)/i.test(k));
+        const geburt = geburtKey ? row[geburtKey]?.toString() : '1960';
+        
+        // Find all medication columns
+        const medications = [];
+        for (const key of keys) {
+          if (/medikament|medication/i.test(key) && row[key]) {
+            medications.push(row[key].toString());
+          }
         }
+        
+        parsedPatients.push({
+          kdnNr,
+          geburt,
+          gender: 'unbekannt', // Fallback for demo
+          medications,
+          medicationCount: medications.length,
+          isEligibleForAmts: medications.length >= 5
+        });
       }
+      
+      setSkippedStats({ skipped, total });
       
       // 3. Client-Side Encrypt
       const encryptedPayloads = [];
-      for (const patient of Array.from(grouped.values())) {
-        patient.medicationCount = patient.medications.length;
-        patient.isEligibleForAmts = patient.medicationCount >= 5;
-        
+      for (const patient of parsedPatients) {
         const stringified = JSON.stringify(patient);
         const { ciphertextBase64, ivBase64 } = await encryptData(encryptionKey, stringified);
         encryptedPayloads.push({ ciphertextBase64, ivBase64 });
@@ -239,6 +259,17 @@ export default function PdlDashboardPage() {
           </div>
         )}
       </motion.div>
+      
+      {skippedStats && skippedStats.skipped > 0 && (
+        <motion.div 
+          initial={{ opacity: 0, height: 0 }} 
+          animate={{ opacity: 1, height: 'auto' }}
+          className="text-center text-amber-600 font-medium text-sm mt-2"
+        >
+          <AlertTriangle className="w-4 h-4 inline-block mr-1 -mt-0.5" />
+          {skippedStats.skipped} von {skippedStats.total} Zeilen konnten aufgrund eines unerkannten Formats (fehlende ID-Spalte) nicht verarbeitet werden.
+        </motion.div>
+      )}
 
       {/* Matrix */}
       <div className="bg-white/70 backdrop-blur-xl border border-white/50 shadow-xl shadow-slate-200/40 rounded-3xl overflow-hidden">
