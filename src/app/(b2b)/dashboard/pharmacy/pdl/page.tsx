@@ -143,6 +143,9 @@ export default function PdlDashboardPage() {
   };
 
   const handleAnalyze = async (patientId: number) => {
+    showToast('KI-gestützte Analyse ist noch nicht verfügbar. Ein zertifizierter AMTS-Anbieter (z.B. pharma4u) wird benötigt.', 'error');
+    
+    /* GATED: Requires licensed AMTS data provider for clinical interaction logic
     setAnalyzingIds(prev => new Set(prev).add(patientId));
     try {
       const patient = patients.find(p => p.id === patientId);
@@ -201,6 +204,7 @@ export default function PdlDashboardPage() {
         return next;
       });
     }
+    */
   };
 
   return (
