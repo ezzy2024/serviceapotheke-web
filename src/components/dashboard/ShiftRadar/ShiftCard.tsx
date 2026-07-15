@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Star, CheckCircle2, Bookmark, CheckSquare, Loader2, ChevronDown, ChevronUp } from 'lucide-react';
+import { Star, CheckCircle2, Bookmark, CheckSquare, Loader2, ChevronDown, ChevronUp, Info } from 'lucide-react';
 
 interface ShiftCardProps {
   jobId: number;
@@ -9,6 +9,7 @@ interface ShiftCardProps {
   initials: string;
   title: string;
   description: string;
+  conditionsJson?: string;
   hourlyRate: string;
   dates: string[];
   distance: string;
@@ -24,6 +25,7 @@ export function ShiftCard({
   initials,
   title,
   description,
+  conditionsJson,
   hourlyRate,
   dates,
   distance,
@@ -59,6 +61,23 @@ export function ShiftCard({
   const cardBorder = isSponsored 
     ? 'border-[#F5C842] hover:border-[#E8B020] rounded-tl-none rounded-tr-none' 
     : 'border-slate-100 hover:border-slate-200';
+
+  // Parse Konditionen from JSON
+  let konditionen = null;
+  if (conditionsJson) {
+    try {
+      const parsed = JSON.parse(conditionsJson);
+      const parts = [];
+      if (parsed.travelExpensePerKm) parts.push(`Fahrtkosten: ${parsed.travelExpensePerKm.toLocaleString('de-DE')} €/km`);
+      if (parsed.travelExpenseCap) parts.push(`Maximal ${parsed.travelExpenseCap} €`);
+      if (parsed.accommodation) parts.push(`Unterkunft: ${parsed.accommodation}`);
+      if (parts.length > 0) {
+        konditionen = parts.join(' • ');
+      }
+    } catch (e) {
+      // invalid json, ignore
+    }
+  }
 
   return (
     <div className="mb-2">
@@ -96,9 +115,11 @@ export function ShiftCard({
             {title}
           </button>
           
-          <div className={`text-[12px] sm:text-[12.5px] text-slate-500 leading-[1.4] ${isExpanded ? '' : 'line-clamp-2 sm:line-clamp-none'}`}>
-            {description}
-          </div>
+          {description && (
+            <div className={`text-[12px] sm:text-[12.5px] text-slate-500 leading-[1.4] ${isExpanded ? '' : 'line-clamp-2 sm:line-clamp-none'}`}>
+              {description}
+            </div>
+          )}
 
           <div className="flex items-center gap-2 flex-wrap mt-1">
             <div className="flex items-center gap-1 text-xs text-slate-600">
@@ -121,9 +142,19 @@ export function ShiftCard({
             ))}
           </div>
 
+          {/* Konditionen */}
+          {konditionen && (
+            <div className="flex items-start gap-1.5 mt-2 bg-slate-50 p-2 rounded-md border border-slate-100">
+              <Info className="w-3.5 h-3.5 text-slate-400 shrink-0 mt-0.5" />
+              <div className="text-[11px] font-medium text-slate-600">
+                <span className="font-semibold text-slate-700">Konditionen:</span> {konditionen}
+              </div>
+            </div>
+          )}
+
           <button onClick={() => setIsExpanded(!isExpanded)} className="text-[11px] text-slate-400 hover:text-slate-700 flex items-center gap-1 mt-1 transition-colors w-fit">
             {isExpanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
-            {isExpanded ? 'Details verbergen' : 'Details & Konditionen'}
+            {isExpanded ? 'Details verbergen' : 'Details einblenden'}
           </button>
         </div>
 
@@ -135,7 +166,6 @@ export function ShiftCard({
               <small className="text-[12px] sm:text-[14px] font-semibold">ab</small> € {hourlyRate}
             </div>
             <div className="text-[11px] text-slate-500 mt-1">pro Stunde (zzgl. MwSt.)</div>
-            <div className="text-[11px] text-[#1A7A4A] font-semibold mt-1 hidden sm:block">Fahrtkosten werden erstattet</div>
           </div>
 
           <div className="w-full sm:w-auto flex flex-col gap-1.5 shrink-0">

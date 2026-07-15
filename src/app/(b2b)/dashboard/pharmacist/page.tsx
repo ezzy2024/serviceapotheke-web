@@ -114,6 +114,15 @@ export default function ShiftRadarPage() {
                   ? (words[0][0] + words[1][0]).toUpperCase() 
                   : pharmacyName.substring(0, 2).toUpperCase();
 
+                // Map ReasonForVacancy to readable text
+                const reasonMap: Record<string, string> = {
+                  'Urlaub': 'Urlaubsvertretung',
+                  'Krankheit': 'Krankheitsausfall',
+                  'Engpass': 'Personalengpass',
+                  'Notdienst': 'Notdienst'
+                };
+                const descriptionText = shift.reasonForVacancy ? (reasonMap[shift.reasonForVacancy] || shift.reasonForVacancy) : '';
+
                 return (
                   <ShiftCard 
                     key={shift.id} 
@@ -121,7 +130,8 @@ export default function ShiftRadarPage() {
                     pharmacyName={pharmacyName}
                     initials={initials}
                     title={shift.title || 'Schichtangebot'}
-                    description={shift.description || ''}
+                    description={descriptionText}
+                    conditionsJson={shift.description || ''}
                     hourlyRate={shift.salary?.toFixed(2) || '0,00'}
                     dates={dates}
                     distance="~ km"
