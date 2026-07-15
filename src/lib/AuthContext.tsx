@@ -72,7 +72,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     redirectBasedOnRole(userData.role);
   };
 
-  const logout = () => {
+  const logout = async () => {
+    try {
+      await api.post('/Auth/logout');
+    } catch (error) {
+      console.warn('Backend logout failed or session already expired');
+    }
     localStorage.removeItem('token');
     setUser(null);
     window.location.href = '/login';
