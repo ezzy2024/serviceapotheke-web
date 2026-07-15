@@ -100,6 +100,47 @@ export default function DienstplanPage() {
     }
   };
 
+  const [isAddShiftModalOpen, setIsAddShiftModalOpen] = useState(false);
+  const [selectedShiftDate, setSelectedShiftDate] = useState<Date | null>(null);
+  const [selectedShiftEmployee, setSelectedShiftEmployee] = useState<any>(null);
+  const [shiftStartTime, setShiftStartTime] = useState('08:00');
+  const [shiftEndTime, setShiftEndTime] = useState('16:00');
+  const [isSubmittingShift, setIsSubmittingShift] = useState(false);
+  const [shiftError, setShiftError] = useState('');
+
+  const openAddShiftModal = (date: Date, emp: any) => {
+    setSelectedShiftDate(date);
+    setSelectedShiftEmployee(emp);
+    setShiftStartTime('08:00');
+    setShiftEndTime('16:00');
+    setShiftError('');
+    setIsAddShiftModalOpen(true);
+  };
+
+  const handleAddShiftSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedShiftDate || !selectedShiftEmployee || !user?.id) return;
+    
+    setIsSubmittingShift(true);
+    setShiftError('');
+    try {
+      await api.post(`/Dienstplan/shifts`, {
+        pharmacyId: user.id,
+        pharmacyEmployeeId: selectedShiftEmployee.id,
+        date: selectedShiftDate.toISOString(),
+        startTime: `${shiftStartTime}:00`,
+        endTime: `${shiftEndTime}:00`,
+        isEmergencyDuty: false
+      });
+      fetchData();
+      setIsAddShiftModalOpen(false);
+    } catch (err: any) {
+      setShiftError(err.response?.data?.message || 'Ein Fehler ist aufgetreten beim Speichern der Schicht.');
+    } finally {
+      setIsSubmittingShift(false);
+    }
+  };
+
   if (isLoading && employees.length === 0) {
     return <div className="flex justify-center p-12"><Loader2 className="w-8 h-8 animate-spin text-blue-600" /></div>;
   }
@@ -168,7 +209,10 @@ export default function DienstplanPage() {
                           </div>
                         ) : (
                           <div className="h-full w-full min-h-[48px] rounded-lg border-2 border-dashed border-transparent group-hover:border-slate-200 transition-colors flex items-center justify-center">
-                            <button className="opacity-0 group-hover:opacity-100 transition-opacity w-6 h-6 rounded-full bg-slate-100 text-slate-400 hover:bg-blue-100 hover:text-blue-600 flex items-center justify-center">
+                            <button 
+                              onClick={() => openAddShiftModal(date, emp)}
+                              className="opacity-0 group-hover:opacity-100 transition-opacity w-6 h-6 rounded-full bg-slate-100 text-slate-400 hover:bg-blue-100 hover:text-blue-600 flex items-center justify-center"
+                            >
                               <Plus className="w-4 h-4" />
                             </button>
                           </div>
@@ -247,6 +291,66 @@ export default function DienstplanPage() {
                   className="flex-1 py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-colors flex items-center justify-center"
                 >
                   {isSubmittingEmployee ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Speichern'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Add Shift Modal */}
+      {isAddShiftModalOpen && selectedShiftDate && selectedShiftEmployee && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden">
+            <div className="p-6 border-b border-slate-100">
+              <h3 className="text-xl font-bold text-slate-800">Schicht hinzufügen</h3>
+              <p className="text-sm text-slate-500 mt-1">
+                {selectedShiftEmployee.firstName} {selectedShiftEmployee.lastName} am {selectedShiftDate.toLocaleDateString('de-DE')}
+              </p>
+            </div>
+            <form onSubmit={handleAddShiftSubmit} className="p-6 space-y-4">
+              {shiftError && (
+                <div className="p-3 bg-red-50 text-red-600 border border-red-200 rounded-lg text-sm flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                  <span>{shiftError}</span>
+                </div>
+              )}
+              <div className="flex gap-4">
+                <div className="flex-1">
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Startzeit</label>
+                  <input 
+                    type="time" 
+                    value={shiftStartTime}
+                    onChange={(e) => setShiftStartTime(e.target.value)}
+                    className="w-full border border-slate-200 rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                    required
+                  />
+                </div>
+                <div className="flex-1">
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Endzeit</label>
+                  <input 
+                    type="time" 
+                    value={shiftEndTime}
+                    onChange={(e) => setShiftEndTime(e.target.value)}
+                    className="w-full border border-slate-200 rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                    required
+                  />
+                </div>
+              </div>
+              <div className="flex gap-3 pt-4">
+                <button 
+                  type="button"
+                  onClick={() => setIsAddShiftModalOpen(false)}
+                  className="flex-1 py-2 px-4 border border-slate-200 text-slate-600 font-medium rounded-xl hover:bg-slate-50 transition-colors"
+                >
+                  Abbrechen
+                </button>
+                <button 
+                  type="submit"
+                  disabled={isSubmittingShift}
+                  className="flex-1 py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-colors flex items-center justify-center"
+                >
+                  {isSubmittingShift ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Schicht speichern'}
                 </button>
               </div>
             </form>
