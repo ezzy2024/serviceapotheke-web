@@ -1,31 +1,57 @@
 import { test, expect } from '@playwright/test';
 
-// Helper function to poll 1secmail for an OTP
-async function getOtpFrom1secmail(request: any, login: string, domain: string, maxRetries = 15): Promise<string> {
-  const url = `https://www.1secmail.com/api/v1/?action=getMessages&login=${login}&domain=${domain}`;
+// Helper function to create a mail.tm account and return credentials
+async function createMailTmAccount(request: any) {
+  // 1. Get a valid domain
+  const domainRes = await request.get('https://api.mail.tm/domains');
+  const domainData = await domainRes.json();
+  const domain = domainData['hydra:member'][0].domain;
+
+  // 2. Create an account
+  const address = `e2etest_${Date.now()}@${domain}`;
+  const password = 'Password123!';
   
+  await request.post('https://api.mail.tm/accounts', {
+    data: { address, password }
+  });
+
+  // 3. Get JWT token
+  const tokenRes = await request.post('https://api.mail.tm/token', {
+    data: { address, password }
+  });
+  const tokenData = await tokenRes.json();
+  
+  return { address, token: tokenData.token };
+}
+
+// Helper function to poll mail.tm for an OTP
+async function getOtpFromMailTm(request: any, token: string, maxRetries = 15): Promise<string> {
   for (let i = 0; i < maxRetries; i++) {
     // Wait 5 seconds before polling
     await new Promise(resolve => setTimeout(resolve, 5000));
     
-    const messagesRes = await request.get(url);
-    const messages = await messagesRes.json();
+    const messagesRes = await request.get('https://api.mail.tm/messages', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    const messagesData = await messagesRes.json();
+    const messages = messagesData['hydra:member'];
     
     if (messages && messages.length > 0) {
       // Pick the first message
       const msgId = messages[0].id;
-      const readUrl = `https://www.1secmail.com/api/v1/?action=readMessage&login=${login}&domain=${domain}&id=${msgId}`;
-      const msgRes = await request.get(readUrl);
+      const msgRes = await request.get(`https://api.mail.tm/messages/${msgId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       const msg = await msgRes.json();
       
-      const body = msg.textBody || msg.htmlBody || '';
+      const body = msg.text || msg.html || '';
       const match = body.match(/\b\d{6}\b/);
       if (match) {
         return match[0];
       }
     }
   }
-  throw new Error(`OTP not found for ${login}@${domain} after ${maxRetries} retries`);
+  throw new Error(`OTP not found after ${maxRetries} retries`);
 }
 
 test.describe('Live E2E Flow', () => {
@@ -47,12 +73,8 @@ test.describe('Live E2E Flow', () => {
   test('Pharmacist Registration -> Confirm Email -> Login -> Dashboard', async ({ page, request }) => {
     test.setTimeout(120000); // 2 minutes for email polling
 
-    // Generate 1secmail address
-    const emailRes = await request.get('https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1');
-    const emails = await emailRes.json();
-    const testEmail = emails[0];
-    const [login, domain] = testEmail.split('@');
-    
+    // Generate mail.tm address
+    const { address: testEmail, token } = await createMailTmAccount(request);
     const testPassword = 'Password123!';
 
     // 1. Registration
@@ -84,7 +106,7 @@ test.describe('Live E2E Flow', () => {
     await expect(page.locator('h3:has-text("E-Mail Best")')).toBeVisible();
     
     // Poll for the actual OTP
-    const otp = await getOtpFrom1secmail(request, login, domain);
+    const otp = await getOtpFromMailTm(request, token);
 
     await page.fill('input[placeholder="123456"]', otp);
     await page.click('button:has-text("Verifizieren")');
@@ -103,12 +125,8 @@ test.describe('Live E2E Flow', () => {
   test('Pharmacy Registration -> Confirm Email -> Login -> Dashboard', async ({ page, request }) => {
     test.setTimeout(120000); // 2 minutes for email polling
 
-    // Generate 1secmail address
-    const emailRes = await request.get('https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1');
-    const emails = await emailRes.json();
-    const testEmail = emails[0];
-    const [login, domain] = testEmail.split('@');
-
+    // Generate mail.tm address
+    const { address: testEmail, token } = await createMailTmAccount(request);
     const testPassword = 'Password123!';
 
     // 1. Registration
@@ -133,7 +151,7 @@ test.describe('Live E2E Flow', () => {
     await expect(page.locator('h3:has-text("E-Mail Best")')).toBeVisible();
     
     // Poll for the actual OTP
-    const otp = await getOtpFrom1secmail(request, login, domain);
+    const otp = await getOtpFromMailTm(request, token);
 
     await page.fill('input[placeholder="123456"]', otp);
     await page.click('button:has-text("Verifizieren")');
