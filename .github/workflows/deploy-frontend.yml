@@ -18,25 +18,76 @@ jobs:
     name: Run Playwright E2E
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    
+    # 1. Ephemeral Test Database
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpassword
+          POSTGRES_DB: serviceapotheke_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+          
     steps:
     - uses: actions/checkout@v4
+    
+    # 2. Checkout API
+    - name: Checkout API
+      uses: actions/checkout@v4
+      with:
+        repository: ezzy2024/atm_Service_Apotheke
+        path: backend-repo
+        
     - uses: actions/setup-node@v4
       with:
         node-version: '20'
+        
+    # 3. Setup .NET
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+        
+    # 4. Start Local Backend
+    - name: Start Local Backend API
+      env:
+        ConnectionStrings__DefaultConnection: "Host=localhost;Port=5432;Database=serviceapotheke_test;Username=testuser;Password=testpassword"
+        ASPNETCORE_ENVIRONMENT: "Testing"
+      run: |
+        cd backend-repo
+        dotnet run --urls="http://127.0.0.1:5000" &
+        # Hard fail if the backend doesn't start within 90 seconds
+        npx wait-on http://127.0.0.1:5000/api/health -t 90000
+        
     - name: Install dependencies
       run: npm install
+      
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
+      
+    # 5. Point Frontend to Local Backend
     - name: Build and Start Next.js
       env:
-        NEXT_PUBLIC_API_URL: ${{ env.PROD_API_URL }}
+        NEXT_PUBLIC_API_URL: "http://127.0.0.1:5000/api"
       run: |
         sed -i 's/output: "standalone",//g' next.config.ts
         npm run build
         npm run start &
+        # Hard fail if Next.js doesn't start within 90 seconds
         npx wait-on tcp:3000 -t 90000
+        
     - name: Run Playwright tests
+      env:
+        NEXT_PUBLIC_API_URL: "http://127.0.0.1:5000/api"
       run: npx playwright test
+      
     - uses: actions/upload-artifact@v4
       if: always()
       with:
