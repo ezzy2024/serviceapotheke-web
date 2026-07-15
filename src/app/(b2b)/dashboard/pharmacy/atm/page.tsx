@@ -195,7 +195,7 @@ export default function AtmDashboardPage() {
                     {simulatedCode}
                   </div>
                   <div className="text-red-600 font-bold mt-1 text-sm flex items-center gap-1">
-                    Gltig fr: {formatTime(timeLeft)}
+                    Gültig für: {formatTime(timeLeft)}
                   </div>
                 </div>
               )}
@@ -288,7 +288,7 @@ export default function AtmDashboardPage() {
                     <div className="w-3 h-3 rounded-none bg-green-500 border border-ink animate-pulse"></div>
                     <div>
                       <h3 className="font-black text-ink">{terminal.name}</h3>
-                      <p className="text-xs font-bold text-ink/70 mt-1 uppercase tracking-wide">Status: Bereit fr E2EE Verbindungen</p>
+                      <p className="text-xs font-bold text-ink/70 mt-1 uppercase tracking-wide">Status: Bereit für E2EE Verbindungen</p>
                     </div>
                   </div>
                   <button 

@@ -38,7 +38,7 @@ export default function B2CRegisterPage() {
             />
             <span className="text-sm font-bold text-ink">
               <strong className="block text-base uppercase mb-1">Verzicht auf das Widerrufsrecht ( 327 BGB)</strong> 
-              Ich stimme ausdrcklich zu, dass Sie vor Ablauf der Widerrufsfrist mit der Ausfhrung des Vertrages beginnen. Mir ist bekannt, dass ich durch diese Zustimmung mit Beginn der Ausfhrung des Vertrages mein Widerrufsrecht verliere.
+              Ich stimme ausdrücklich zu, dass Sie vor Ablauf der Widerrufsfrist mit der Ausführung des Vertrages beginnen. Mir ist bekannt, dass ich durch diese Zustimmung mit Beginn der Ausführung des Vertrages mein Widerrufsrecht verliere.
             </span>
           </label>
         </div>

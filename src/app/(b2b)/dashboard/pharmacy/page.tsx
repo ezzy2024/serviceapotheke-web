@@ -21,8 +21,8 @@ export default function PharmacyDashboard() {
   ];
 
   const openTasks = [
-    { id: 1, title: "BTM-Buchung prï¿½fen", time: "14:00" },
-    { id: 2, title: "Kï¿½hlschranktemperatur loggen", time: "16:00" },
+    { id: 1, title: "BTM-Buchung prßfen", time: "14:00" },
+    { id: 2, title: "Kühlschranktemperatur loggen", time: "16:00" },
     { id: 3, title: "Rezeptur Salbe anfertigen", time: "17:30" }
   ];
 
@@ -165,7 +165,7 @@ export default function PharmacyDashboard() {
                 </ul>
               ) : (
                 <div className="p-12 text-center text-ink font-bold">
-                  <p>Kein Personal fr heute eingeteilt.</p>
+                  <p>Kein Personal für heute eingeteilt.</p>
                 </div>
               )}
             </div>

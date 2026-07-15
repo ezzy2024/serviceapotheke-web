@@ -330,11 +330,11 @@ export default function PharmacistWizard() {
 
             {step === 4 && (
               <motion.div key="step4" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-                <h3 className="text-2xl font-bold text-ink mb-6 font-bricolage uppercase tracking-tight">E-Mail Besttigung</h3>
+                <h3 className="text-2xl font-bold text-ink mb-6 font-bricolage uppercase tracking-tight">E-Mail Bestätigung</h3>
                 <div className="space-y-6">
                   <p className="text-ink font-medium">Wir haben einen Code an <strong className="bg-lime px-1">{formData.email}</strong> gesendet. Bitte gib den Code hier ein.</p>
                   <div>
-                    <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Besttigungscode</label>
+                    <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Bestätigungscode</label>
                     <input type="text" value={otp} onChange={(e) => setOtp(e.target.value)} className="block w-full p-4 border-4 border-ink focus:outline-none focus:bg-lime/10 transition-colors text-center text-3xl tracking-[0.5em] font-jetbrains font-bold" placeholder="123456" />
                   </div>
                 </div>
