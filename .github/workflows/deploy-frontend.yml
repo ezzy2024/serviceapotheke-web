@@ -55,7 +55,15 @@ jobs:
       with:
         dotnet-version: '8.0.x'
         
-    # 4. Start Local Backend
+    # 4. Initialize Database Schema
+    - name: Initialize Database Schema
+      env:
+        PGPASSWORD: testpassword
+      run: |
+        cd backend-repo
+        psql -h localhost -U testuser -d serviceapotheke_test -f schema.sql
+        
+    # 5. Start Local Backend
     - name: Start Local Backend API
       env:
         ConnectionStrings__DefaultConnection: "Host=localhost;Port=5432;Database=serviceapotheke_test;Username=testuser;Password=testpassword"
