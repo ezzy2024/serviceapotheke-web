@@ -10,7 +10,7 @@ export default defineConfig({
     video: 'on',
     screenshot: 'on',
     trace: 'on',
-    baseURL: process.env.BASE_URL || 'http://localhost:3000',
+    baseURL: process.env.BASE_URL || 'http://127.0.0.1:3000',
     permissions: ['camera', 'microphone'],
   },
   projects: [
