@@ -2,7 +2,7 @@ name: Build and Deploy Frontend to Cloud Run
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "fix/postgres-native-migrations" ]
 
 env:
   PROJECT_ID: gen-lang-client-0493260544
