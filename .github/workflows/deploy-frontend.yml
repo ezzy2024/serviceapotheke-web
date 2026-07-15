@@ -29,10 +29,9 @@ jobs:
       run: npx playwright install --with-deps
     - name: Build and Start Next.js
       run: |
+        sed -i 's/output: "standalone",//g' next.config.ts
         npm run build
-        cp -r public .next/standalone/
-        cp -r .next/static .next/standalone/.next/
-        PORT=3000 node .next/standalone/server.js &
+        npm run start &
         npx wait-on tcp:3000 -t 90000
     - name: Run Playwright tests
       run: npx playwright test
