@@ -72,15 +72,39 @@ export default function PdlDashboardPage() {
       const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
       const rows = XLSX.utils.sheet_to_json(firstSheet);
       
-      // 2. Client-Side Encrypt
+      // 2. Group by KdnNr and evaluate eligibility
+      const grouped = new Map<string, any>();
+      for (const row of rows as any[]) {
+        const kdnNr = row.KdnNr?.toString() || row.PatientId?.toString() || row.PatientId_Hash?.toString();
+        if (!kdnNr) continue;
+        
+        if (!grouped.has(kdnNr)) {
+          grouped.set(kdnNr, {
+            kdnNr,
+            geburt: row.Geburtsjahr?.toString() || row.Geburt?.toString() || '1960',
+            gender: row.Geschlecht?.toString() || row.Gender?.toString() || 'unbekannt',
+            medications: []
+          });
+        }
+        
+        const medName = row.Medikament?.toString() || row.MedicationName?.toString();
+        if (medName) {
+          grouped.get(kdnNr).medications.push(medName);
+        }
+      }
+      
+      // 3. Client-Side Encrypt
       const encryptedPayloads = [];
-      for (const row of rows) {
-        const stringified = JSON.stringify(row);
+      for (const patient of Array.from(grouped.values())) {
+        patient.medicationCount = patient.medications.length;
+        patient.isEligibleForAmts = patient.medicationCount >= 5;
+        
+        const stringified = JSON.stringify(patient);
         const { ciphertextBase64, ivBase64 } = await encryptData(encryptionKey, stringified);
         encryptedPayloads.push({ ciphertextBase64, ivBase64 });
       }
 
-      // 3. Transmit to backend
+      // 4. Transmit to backend
       const res = await api.post('/pdl/ingest', encryptedPayloads);
       showToast(`${res.data.processed} Patienten verschlsselt und bertragen.`, 'success');
       fetchPatients();
