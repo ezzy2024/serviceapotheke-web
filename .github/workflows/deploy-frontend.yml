@@ -43,6 +43,7 @@ jobs:
       uses: actions/checkout@v4
       with:
         repository: ezzy2024/atm_Service_Apotheke
+        ref: fix/postgres-native-migrations
         path: backend-repo
         
     - uses: actions/setup-node@v4
@@ -54,14 +55,6 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '8.0.x'
-        
-    # 4. Initialize Database Schema
-    - name: Initialize Database Schema
-      env:
-        PGPASSWORD: testpassword
-      run: |
-        cd backend-repo
-        psql -h localhost -U testuser -d serviceapotheke_test -f schema.sql
         
     # 5. Start Local Backend
     - name: Start Local Backend API
