@@ -30,7 +30,9 @@ jobs:
     - name: Build and Start Next.js
       run: |
         npm run build
-        npm run start &
+        cp -r public .next/standalone/
+        cp -r .next/static .next/standalone/.next/
+        PORT=3000 node .next/standalone/server.js &
         npx wait-on http://localhost:3000 -t 60000
     - name: Run Playwright tests
       run: npx playwright test
