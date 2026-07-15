@@ -33,7 +33,7 @@ jobs:
         cp -r public .next/standalone/
         cp -r .next/static .next/standalone/.next/
         PORT=3000 node .next/standalone/server.js &
-        npx wait-on http://localhost:3000 -t 60000
+        npx wait-on tcp:3000 -t 90000
     - name: Run Playwright tests
       run: npx playwright test
     - uses: actions/upload-artifact@v4
