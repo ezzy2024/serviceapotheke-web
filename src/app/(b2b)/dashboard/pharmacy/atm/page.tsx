@@ -76,29 +76,50 @@ export default function AtmDashboardPage() {
     return () => clearInterval(timerId);
   }, [timeLeft, simulatedCode]);
 
+  // Simulator Polling Effect
+  useEffect(() => {
+    if (!simulatedCode || timeLeft <= 0) return;
+
+    const pollInterval = setInterval(async () => {
+      try {
+        const res = await api.get(`/atm/kiosk/status/${simulatedCode}`);
+        if (res.data.status === 'paired') {
+          showToast('Simulator: Terminal erfolgreich gekoppelt!', 'success');
+          setSimulatedCode('');
+          setTimeLeft(0);
+        }
+      } catch (err: any) {
+        if (err.response?.status === 400 && err.response?.data?.error === 'Code expired or invalid') {
+          showToast('Simulator: Code abgelaufen', 'error');
+          setSimulatedCode('');
+          setTimeLeft(0);
+        }
+      }
+    }, 3000);
+
+    return () => clearInterval(pollInterval);
+  }, [simulatedCode, timeLeft]);
+
   const handlePair = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!pairingCode) return;
     
     setIsPairing(true);
-    // Mock the pairing process
-    setTimeout(() => {
-      if (pairingCode === simulatedCode || pairingCode === '123456') {
-        showToast('Kiosk-Terminal erfolgreich gekoppelt.', 'success');
-        setTerminals(prev => [...prev, {
-          id: Date.now(),
-          name: terminalName || `Kiosk-${pairingCode}`,
-          createdAt: new Date().toISOString()
-        }]);
-        setPairingCode('');
-        setTerminalName('');
-        setSimulatedCode('');
-        setTimeLeft(0);
+    try {
+      await api.post('/atm/kiosk/pair', { code: pairingCode, terminalName });
+      showToast('Kiosk-Terminal erfolgreich gekoppelt.', 'success');
+      setPairingCode('');
+      setTerminalName('');
+      await fetchData();
+    } catch (err: any) {
+      if (err.response?.status === 400 && err.response?.data?.error) {
+        showToast(`Kopplung fehlgeschlagen: ${err.response.data.error}`, 'error');
       } else {
         showToast('Kopplung fehlgeschlagen. Code ungültig oder abgelaufen.', 'error');
       }
+    } finally {
       setIsPairing(false);
-    }, 1500);
+    }
   };
 
   const handleRevoke = async (id: number) => {
@@ -115,14 +136,16 @@ export default function AtmDashboardPage() {
 
   const simulateKioskInitiate = async () => {
     setIsGenerating(true);
-    // Simulate generation delay
-    setTimeout(() => {
-      const code = Math.floor(100000 + Math.random() * 900000).toString();
-      setSimulatedCode(code);
+    try {
+      const res = await api.post('/atm/kiosk/initiate');
+      setSimulatedCode(res.data.code);
       setTimeLeft(300); // 5 minutes
       showToast('Simulator: Kiosk-Code generiert', 'success');
+    } catch (err) {
+      showToast('Simulator: Fehler beim Generieren', 'error');
+    } finally {
       setIsGenerating(false);
-    }, 800);
+    }
   };
 
   const formatTime = (seconds: number) => {
