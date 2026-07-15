@@ -73,21 +73,30 @@ export default function DienstplanPage() {
     router.push(`/dashboard/pharmacy/jobs/create?date=${date.toISOString()}`);
   };
 
-  const handleAddEmployee = async () => {
-    const name = prompt("Name des Mitarbeiters:");
-    if (!name) return;
-    const role = prompt("Rolle (z.B. Apotheker, PTA, PKA):", "PTA");
-    
+  const [isAddEmployeeModalOpen, setIsAddEmployeeModalOpen] = useState(false);
+  const [newEmployeeName, setNewEmployeeName] = useState('');
+  const [newEmployeeRole, setNewEmployeeRole] = useState('PTA');
+  const [isSubmittingEmployee, setIsSubmittingEmployee] = useState(false);
+
+  const handleAddEmployeeSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newEmployeeName.trim()) return;
+    setIsSubmittingEmployee(true);
     try {
       await api.post(`/Dienstplan/pharmacy/${user?.id}/employees`, {
-        firstName: name.split(' ')[0],
-        lastName: name.split(' ').slice(1).join(' '),
-        role: role || 'PTA',
+        firstName: newEmployeeName.split(' ')[0],
+        lastName: newEmployeeName.split(' ').slice(1).join(' ') || '',
+        role: newEmployeeRole || 'PTA',
         colorCode: '#0ea5e9' // cyan-500
       });
       fetchData();
+      setIsAddEmployeeModalOpen(false);
+      setNewEmployeeName('');
+      setNewEmployeeRole('PTA');
     } catch (err) {
       console.error(err);
+    } finally {
+      setIsSubmittingEmployee(false);
     }
   };
 
@@ -105,7 +114,7 @@ export default function DienstplanPage() {
           <p className="text-slate-600">Verwalte dein Stammteam und schreibe unbesetzte Schichten direkt als Vakanz aus.</p>
         </div>
         <button 
-          onClick={handleAddEmployee}
+          onClick={() => setIsAddEmployeeModalOpen(true)}
           className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 font-medium rounded-xl hover:bg-slate-50 transition-colors shadow-sm"
         >
           <UserPlus className="w-4 h-4 text-blue-600" /> Mitarbeiter anlegen
@@ -192,6 +201,58 @@ export default function DienstplanPage() {
           </table>
         </div>
       </div>
+
+      {/* Add Employee Modal */}
+      {isAddEmployeeModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden">
+            <div className="p-6 border-b border-slate-100">
+              <h3 className="text-xl font-bold text-slate-800">Mitarbeiter anlegen</h3>
+            </div>
+            <form onSubmit={handleAddEmployeeSubmit} className="p-6 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Name des Mitarbeiters</label>
+                <input 
+                  type="text" 
+                  value={newEmployeeName}
+                  onChange={(e) => setNewEmployeeName(e.target.value)}
+                  className="w-full border border-slate-200 rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                  placeholder="Max Mustermann"
+                  autoFocus
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Rolle</label>
+                <input 
+                  type="text" 
+                  value={newEmployeeRole}
+                  onChange={(e) => setNewEmployeeRole(e.target.value)}
+                  className="w-full border border-slate-200 rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                  placeholder="z.B. Apotheker, PTA, PKA"
+                  required
+                />
+              </div>
+              <div className="flex gap-3 pt-4">
+                <button 
+                  type="button"
+                  onClick={() => setIsAddEmployeeModalOpen(false)}
+                  className="flex-1 py-2 px-4 border border-slate-200 text-slate-600 font-medium rounded-xl hover:bg-slate-50 transition-colors"
+                >
+                  Abbrechen
+                </button>
+                <button 
+                  type="submit"
+                  disabled={isSubmittingEmployee}
+                  className="flex-1 py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-colors flex items-center justify-center"
+                >
+                  {isSubmittingEmployee ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Speichern'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
