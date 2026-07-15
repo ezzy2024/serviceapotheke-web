@@ -28,6 +28,8 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Build and Start Next.js
+      env:
+        NEXT_PUBLIC_API_URL: ${{ env.PROD_API_URL }}
       run: |
         sed -i 's/output: "standalone",//g' next.config.ts
         npm run build

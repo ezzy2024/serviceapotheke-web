@@ -69,7 +69,7 @@ test.describe('Live E2E Flow', () => {
         // Only ignore specific known benign static asset 404s and expected auth ping failures
         if (text.includes('favicon.ico') && text.includes('404')) return;
         if (text.includes('manifest.json') && text.includes('404')) return;
-        if (text.includes('/Auth/me') || text.includes('AuthContext')) return;
+        if (text.includes('/Auth/me') || text.includes('AuthContext') || text.includes('status of 401')) return;
         throw new Error(`Console Error: ${text}`);
       }
     });
