@@ -45,8 +45,8 @@ export default function PharmacyJobs() {
     
     setIsAccepting(true);
     try {
-      await api.put('/Allocation/accept', {
-        applicationId: selectedApplicationId
+      await api.put(`/Allocation/shift/${selectedApplicationId}/status`, {
+        newStatus: 'Accepted'
       });
       setIsComplianceModalOpen(false);
       fetchJobs(); // Refresh state

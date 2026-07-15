@@ -1,3 +1,8 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useAuth } from '@/lib/AuthContext';
+import api from '@/lib/api';
 import { ShiftSidebarFilters } from '@/components/dashboard/ShiftRadar/ShiftSidebarFilters';
 import { ShiftFilterChips } from '@/components/dashboard/ShiftRadar/ShiftFilterChips';
 import { HaversinePriorityCard } from '@/components/dashboard/ShiftRadar/HaversinePriorityCard';
@@ -6,45 +11,37 @@ import { ComplianceBadgesGroup } from '@/components/ui/ComplianceBadges';
 import { LayoutGrid, List } from 'lucide-react';
 
 export default function ShiftRadarPage() {
-  // Mock payload mimicking the MatchingController output
-  const shifts = [
-    {
-      pharmacyName: "Stadt-Apotheke München",
-      initials: "SAM",
-      title: "Notdienstvertretung gesucht (Nachtschicht)",
-      description: "Wir suchen eine zuverlässige Vertretung für den kommenden Notdienst. WWS: CGM Lauer. Erfahrung vorausgesetzt.",
-      hourlyRate: "120,00",
-      dates: ["14. Aug 2026", "15. Aug 2026"],
-      distance: "4.5 km",
-      rating: "4.8",
-      reviews: "12",
-      isSponsored: true
-    },
-    {
-      pharmacyName: "Apotheke am Markt",
-      initials: "AAM",
-      title: "Urlaubsvertretung für 2 Wochen",
-      description: "Freundliches Team sucht Unterstützung während der Sommerferien. Flexible Arbeitszeiten nach Absprache möglich.",
-      hourlyRate: "95,00",
-      dates: ["01. Sep - 14. Sep 2026"],
-      distance: "12.8 km",
-      rating: "4.5",
-      reviews: "8",
-      isSponsored: false
-    },
-    {
-      pharmacyName: "Paracelsus Apotheke",
-      initials: "PAR",
-      title: "Krankheitsausfall: Kurzfristige Vertretung",
-      description: "Dringend! Wir benötigen heute Nachmittag und morgen Unterstützung am HV. ADG Kenntnisse von Vorteil.",
-      hourlyRate: "110,00",
-      dates: ["Heute, 14:00 - 18:00"],
-      distance: "2.1 km",
-      rating: "5.0",
-      reviews: "34",
-      isSponsored: false
+  const { user } = useAuth();
+  const [shifts, setShifts] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchJobs = async () => {
+    try {
+      const res = await api.get('/Job/available');
+      setShifts(res.data);
+    } catch (error) {
+      console.error('Failed to load available jobs', error);
+    } finally {
+      setIsLoading(false);
     }
-  ];
+  };
+
+  useEffect(() => {
+    fetchJobs();
+  }, []);
+
+  const handleApply = async (jobId: number) => {
+    if (!user?.id) return false;
+    try {
+      await api.post(`/Allocation/${jobId}/apply`, { pharmacistId: user.id });
+      return true; // success
+    } catch (error: any) {
+      if (error.response?.status === 409) {
+        throw new Error('Already applied');
+      }
+      throw error;
+    }
+  };
 
   return (
     <div className="min-h-screen bg-slate-50 font-['Outfit',sans-serif]">
@@ -67,7 +64,11 @@ export default function ShiftRadarPage() {
           {/* Header Controls */}
           <div className="flex items-center justify-between mb-4 gap-3">
             <div className="text-sm text-slate-600">
-              <strong className="text-slate-900 font-bold">142 Vakanzen</strong> für Ihr Profil
+              {isLoading ? (
+                <span>Lade Vakanzen...</span>
+              ) : (
+                <><strong className="text-slate-900 font-bold">{shifts.length} Vakanzen</strong> für Ihr Profil</>
+              )}
             </div>
             
             <div className="flex items-center gap-2">
@@ -93,9 +94,44 @@ export default function ShiftRadarPage() {
 
           {/* Shift Cards Feed */}
           <div className="flex flex-col gap-2">
-            {shifts.map((shift, idx) => (
-              <ShiftCard key={idx} {...shift} />
-            ))}
+            {isLoading ? (
+               <div className="text-center py-10 text-slate-500">Lade...</div>
+            ) : shifts.length === 0 ? (
+               <div className="text-center py-10 text-slate-500 bg-white border border-slate-200 rounded-xl">Keine offenen Schichten gefunden.</div>
+            ) : (
+              shifts.map((shift: any) => {
+                const dates = [];
+                if (shift.startDate && shift.endDate) {
+                  const s = new Date(shift.startDate).toLocaleDateString('de-DE');
+                  const e = new Date(shift.endDate).toLocaleDateString('de-DE');
+                  dates.push(s === e ? s : `${s} - ${e}`);
+                }
+
+                // Make initials from pharmacy name
+                const pharmacyName = shift.pharmacy?.name || 'Apotheke';
+                const words = pharmacyName.split(' ');
+                const initials = words.length > 1 
+                  ? (words[0][0] + words[1][0]).toUpperCase() 
+                  : pharmacyName.substring(0, 2).toUpperCase();
+
+                return (
+                  <ShiftCard 
+                    key={shift.id} 
+                    jobId={shift.id}
+                    pharmacyName={pharmacyName}
+                    initials={initials}
+                    title={shift.title || 'Schichtangebot'}
+                    description={shift.description || ''}
+                    hourlyRate={shift.salary?.toFixed(2) || '0,00'}
+                    dates={dates}
+                    distance="~ km"
+                    rating="0.0"
+                    reviews="0"
+                    onApply={handleApply}
+                  />
+                );
+              })
+            )}
           </div>
 
           {/* Pagination */}
@@ -110,9 +146,6 @@ export default function ShiftRadarPage() {
                3
              </button>
              <span className="text-slate-400 px-1">...</span>
-             <button className="w-9 h-9 flex items-center justify-center rounded-md text-[13px] font-medium border-[1.5px] border-slate-200 bg-white text-slate-700 hover:border-red-600 hover:text-red-600 transition-colors">
-               14
-             </button>
           </div>
 
         </div>
