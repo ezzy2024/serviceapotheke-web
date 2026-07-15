@@ -17,10 +17,20 @@ export default function AtmDashboardPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [toast, setToast] = useState<{message: string, type: 'success' | 'error'} | null>(null);
 
-  // Terminal Simulator
+  // Terminal Simulator (Dev Mode)
+  const [isDevMode, setIsDevMode] = useState(false);
   const [simulatedCode, setSimulatedCode] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('devtools') === '1') {
+        setIsDevMode(true);
+      }
+    }
+  }, []);
 
   const { isUnlocked, encryptionKey } = useE2EE();
 
@@ -192,40 +202,42 @@ export default function AtmDashboardPage() {
         </div>
       </div>
 
-      <motion.div 
-        initial={{ opacity: 0, height: 0 }} 
-        animate={{ opacity: 1, height: 'auto' }} 
-        className="bg-bone border-2 border-ink rounded-none p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
-      >
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="text-xl font-black text-ink uppercase tracking-tight flex items-center gap-2">
-              <MonitorSmartphone className="w-6 h-6" />
-              Terminal Simulator
-            </h3>
-            <p className="text-ink/80 font-bold text-sm mt-1">Simuliert die Code-Generierung eines physischen aTM-Kiosks (Keine Hardware nötig).</p>
-          </div>
-          <div className="flex items-center gap-4">
-            {simulatedCode && (
-              <div className="flex flex-col items-end">
-                <div className="px-4 py-2 bg-white border-2 border-ink font-mono text-2xl font-black tracking-widest text-ink">
-                  {simulatedCode}
+      {isDevMode && (
+        <motion.div 
+          initial={{ opacity: 0, height: 0 }} 
+          animate={{ opacity: 1, height: 'auto' }} 
+          className="bg-bone border-2 border-ink rounded-none p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+        >
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-xl font-black text-ink uppercase tracking-tight flex items-center gap-2">
+                <MonitorSmartphone className="w-6 h-6" />
+                Terminal Simulator
+              </h3>
+              <p className="text-ink/80 font-bold text-sm mt-1">Simuliert die Code-Generierung eines physischen aTM-Kiosks (Keine Hardware nötig).</p>
+            </div>
+            <div className="flex items-center gap-4">
+              {simulatedCode && (
+                <div className="flex flex-col items-end">
+                  <div className="px-4 py-2 bg-white border-2 border-ink font-mono text-2xl font-black tracking-widest text-ink">
+                    {simulatedCode}
+                  </div>
+                  <div className="text-red-600 font-bold mt-1 text-sm flex items-center gap-1">
+                    Gültig für: {formatTime(timeLeft)}
+                  </div>
                 </div>
-                <div className="text-red-600 font-bold mt-1 text-sm flex items-center gap-1">
-                  Gültig für: {formatTime(timeLeft)}
-                </div>
-              </div>
-            )}
-            <button 
-              onClick={simulateKioskInitiate}
-              disabled={isGenerating || !!simulatedCode}
-              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 border-2 border-ink text-white font-black uppercase tracking-wide transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 disabled:opacity-50 disabled:translate-y-0 disabled:shadow-none"
-            >
-              {isGenerating ? 'Generiert...' : 'Code Generieren'}
-            </button>
+              )}
+              <button 
+                onClick={simulateKioskInitiate}
+                disabled={isGenerating || !!simulatedCode}
+                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 border-2 border-ink text-white font-black uppercase tracking-wide transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 disabled:opacity-50 disabled:translate-y-0 disabled:shadow-none"
+              >
+                {isGenerating ? 'Generiert...' : 'Code Generieren'}
+              </button>
+            </div>
           </div>
-        </div>
-      </motion.div>
+        </motion.div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
