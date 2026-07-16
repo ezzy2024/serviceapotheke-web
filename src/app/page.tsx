@@ -100,10 +100,6 @@ export default function Home() {
                 <span className="text-4xl font-extrabold text-slate-900">DSGVO</span>
                 <span className="text-sm text-slate-500 mt-1">Strengster Datenschutz</span>
               </div>
-              <div className="flex flex-col items-center">
-                <span className="text-4xl font-extrabold text-slate-900">ISO</span>
-                <span className="text-sm text-slate-500 mt-1">27001 Konformität</span>
-              </div>
             </div>
           </div>
         </section>

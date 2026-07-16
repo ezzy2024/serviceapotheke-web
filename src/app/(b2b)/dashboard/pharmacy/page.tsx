@@ -223,16 +223,7 @@ export default function PharmacyDashboard() {
               </h2>
             </div>
             <div className="p-6 space-y-4">
-              <div className="flex justify-between items-center">
-                <div>
-                  <p className="font-black">ISO 27001 Status</p>
-                  <p className="text-xs font-bold text-bone/70 uppercase tracking-wide mt-1">ISMS Zertifizierung aktiv</p>
-                </div>
-                <div className="bg-green-400 text-ink px-3 py-1 font-black text-xs uppercase tracking-wide border-2 border-green-400">
-                  Compliant
-                </div>
-              </div>
-              
+
               <div className="flex justify-between items-center">
                 <div>
                   <p className="font-black">Datenschutz & Cookies</p>
