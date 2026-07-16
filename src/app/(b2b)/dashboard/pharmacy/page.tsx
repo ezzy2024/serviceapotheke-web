@@ -14,12 +14,6 @@ export default function PharmacyDashboard() {
   const [isLoading, setIsLoading] = useState(true);
 
   // Mock data for Apotheken OS features
-  const inventoryAlerts = [
-    { id: 1, name: "Ibuprofen 400mg", stock: 12, zone: "A1 - Freiwahl", status: "critical" },
-    { id: 2, name: "Nasenspray Ratiopharm", stock: 24, zone: "A3 - Sichtwahl", status: "warning" },
-    { id: 3, name: "Paracetamol 500mg", stock: 18, zone: "B1 - Rezeptur", status: "warning" }
-  ];
-
   const openTasks = [
     { id: 1, title: "BTM-Buchung prßfen", time: "14:00" },
     { id: 2, title: "Kühlschranktemperatur loggen", time: "16:00" },
@@ -120,18 +114,6 @@ export default function PharmacyDashboard() {
           <p className="text-sm font-bold uppercase tracking-wide text-ink mt-2">Personal im Dienst</p>
         </Link>
 
-        <div className="bg-red-400 p-6 border-2 border-ink shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] relative overflow-hidden">
-          <div className="flex justify-between items-start mb-4 relative z-10">
-            <div className="p-3 bg-white border-2 border-ink">
-              <AlertTriangle className="w-6 h-6 text-ink" />
-            </div>
-          </div>
-          <p className="text-4xl font-black text-ink relative z-10">{inventoryAlerts.length}</p>
-          <p className="text-sm font-bold uppercase tracking-wide text-ink mt-2 relative z-10">Inventar Warnungen</p>
-          <div className="absolute -bottom-4 -right-4 text-ink opacity-10">
-            <Package className="w-32 h-32" />
-          </div>
-        </div>
       </div>
 
       {/* Split-View Command Center */}
@@ -173,29 +155,6 @@ export default function PharmacyDashboard() {
         </div>
             {/* Right Column */}
         <div className="space-y-8">
-          <section className="bg-white border-2 border-ink shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
-            <div className="p-6 border-b-2 border-ink flex justify-between items-center bg-red-400">
-              <h2 className="text-xl font-black text-ink uppercase tracking-tight flex items-center gap-2">
-                <Package className="w-6 h-6" /> Inventar Warnungen
-              </h2>
-            </div>
-            <ul className="divide-y-2 divide-ink">
-              {inventoryAlerts.map(alert => (
-                <li key={alert.id} className="p-4 hover:bg-bone transition-colors flex justify-between items-center bg-white">
-                  <div>
-                    <p className="font-black text-ink">{alert.name}</p>
-                    <p className="text-xs font-bold text-ink/70 mt-1 uppercase tracking-wide">{alert.zone}</p>
-                  </div>
-                  <div className={`px-3 py-1 text-xs font-black uppercase tracking-wide border-2 border-ink ${
-                    alert.status === 'critical' ? 'bg-red-400 text-ink' : 'bg-yellow-400 text-ink'
-                  }`}>
-                    {alert.stock} Stck
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </section>
-
           <section className="bg-white border-2 border-ink shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
             <div className="p-6 border-b-2 border-ink flex justify-between items-center bg-bone">
               <h2 className="text-xl font-black text-ink uppercase tracking-tight flex items-center gap-2">

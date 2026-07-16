@@ -39,9 +39,12 @@ export default function Sidebar() {
 
   return (
     <div className="w-64 bg-bone border-r-2 border-ink h-full flex flex-col">
-      <div className="p-6 border-b-2 border-ink bg-white">
-        <h1 className="text-3xl font-black text-ink tracking-tight uppercase">
-          SA<span className="text-blue-600">.tech</span>
+      <div className="p-6 border-b-2 border-ink bg-white flex items-center space-x-2">
+        <div className="w-8 h-8 bg-ink text-white rounded-lg flex items-center justify-center font-bold text-lg shadow-[2px_2px_0px_0px_rgba(12,20,16,1)]">
+          S
+        </div>
+        <h1 className="text-xl font-black text-ink tracking-tight">
+          ServiceApotheke
         </h1>
       </div>
 

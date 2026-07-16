@@ -42,15 +42,13 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   let variantClasses = '';
-  if (variant === 'primary') variantClasses = 'bg-blue-600 text-white hover:bg-blue-700 border-transparent';
-  if (variant === 'secondary') variantClasses = 'bg-slate-100 text-slate-900 hover:bg-slate-200 border-transparent';
-  if (variant === 'danger') variantClasses = 'bg-red-600 text-white hover:bg-red-700 border-transparent';
-  if (variant === 'brutalist') variantClasses = 'bg-lime text-ink border-4 border-ink shadow-[4px_4px_0px_0px_rgba(12,20,16,1)] hover:shadow-[6px_6px_0px_0px_rgba(12,20,16,1)] hover:-translate-y-0.5 rounded-none font-bold uppercase tracking-wide';
-  if (variant === 'brutalist-secondary') variantClasses = 'bg-white text-ink border-4 border-ink shadow-[4px_4px_0px_0px_rgba(12,20,16,1)] hover:shadow-[6px_6px_0px_0px_rgba(12,20,16,1)] hover:-translate-y-0.5 rounded-none font-bold uppercase tracking-wide';
+  if (variant === 'primary') variantClasses = 'bg-ink text-white hover:bg-ink/90 border-transparent rounded-xl shadow-md transition-all font-semibold';
+  if (variant === 'secondary') variantClasses = 'bg-white text-ink hover:bg-bone border border-ink/20 rounded-xl shadow-sm transition-all font-semibold';
+  if (variant === 'danger') variantClasses = 'bg-persimmon text-white hover:bg-persimmon/90 border-transparent rounded-xl shadow-md transition-all font-semibold';
+  if (variant === 'brutalist') variantClasses = 'bg-ink text-white rounded-xl shadow-md hover:bg-ink/90 font-semibold transition-all';
+  if (variant === 'brutalist-secondary') variantClasses = 'bg-white text-ink border border-ink/20 rounded-xl shadow-sm hover:bg-bone font-semibold transition-all';
 
-  const baseClasses = variant.startsWith('brutalist') 
-    ? 'inline-flex items-center justify-center transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed'
-    : 'inline-flex items-center justify-center rounded-lg font-semibold transition-all duration-200 border disabled:opacity-50 disabled:cursor-not-allowed';
+  const baseClasses = 'inline-flex items-center justify-center transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed';
 
   return (
     <button

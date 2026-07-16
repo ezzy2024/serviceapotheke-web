@@ -146,7 +146,7 @@ export default function SettingsPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-black text-ink uppercase tracking-wide mb-1">Strae</label>
+              <label className="block text-sm font-black text-ink uppercase tracking-wide mb-1">Straße</label>
               <input 
                 type="text" 
                 value={formData.street}

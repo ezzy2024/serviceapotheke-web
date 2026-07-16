@@ -5,7 +5,7 @@ export default function FuerApothekenPage() {
   return (
     <div className="bg-white min-h-screen font-sans flex flex-col">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-cyan-500 text-white py-24 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center text-center">
+      <section className="bg-ink text-white py-24 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center text-center">
         <h1 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight">
           Personalmangel rechtssicher lösen.
         </h1>
@@ -14,7 +14,7 @@ export default function FuerApothekenPage() {
         </p>
         <Link 
           href="/register/pharmacy"
-          className="bg-white text-blue-600 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-50 transition-all"
+          className="bg-white text-ink font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-50 transition-all"
         >
           Plattform betreten
         </Link>
@@ -58,7 +58,7 @@ export default function FuerApothekenPage() {
         </h2>
         <Link 
           href="/register/pharmacy"
-          className="bg-blue-600 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-blue-700 transition-all"
+          className="bg-lime text-ink text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-lime/90 transition-all"
         >
           Jetzt kostenlos registrieren
         </Link>

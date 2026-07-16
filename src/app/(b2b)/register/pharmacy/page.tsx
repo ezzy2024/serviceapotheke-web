@@ -127,7 +127,7 @@ export default function PharmacyWizard() {
         if (loginErr.response?.status === 401 && loginErr.response?.data?.message?.includes('E-Mail-Adresse')) {
           setStep(4);
           setIsLoading(false);
-          toast.info('Bitte besttigen Sie Ihre E-Mail-Adresse.');
+          toast.info('Bitte bestätigen Sie Ihre E-Mail-Adresse.');
           return;
         }
         throw loginErr;
@@ -143,7 +143,16 @@ export default function PharmacyWizard() {
         const firstError = Object.values(err.response.data.errors)[0] as string[];
         toast.error(firstError[0]);
       } else {
-        const msg = err.response?.data?.message || (typeof err.response?.data === 'string' ? err.response.data : 'Ein Fehler ist aufgetreten.');
+        let msg = 'Ein Fehler ist aufgetreten.';
+        if (typeof err.response?.data?.message === 'string' && err.response.data.message.trim() !== '') {
+          msg = err.response.data.message;
+        } else if (typeof err.response?.data?.title === 'string' && err.response.data.title.trim() !== '') {
+          msg = err.response.data.title;
+        } else if (typeof err.response?.data?.detail === 'string' && err.response.data.detail.trim() !== '') {
+          msg = err.response.data.detail;
+        } else if (typeof err.response?.data === 'string' && err.response.data.trim() !== '') {
+          msg = err.response.data;
+        }
         toast.error(msg);
       }
     } finally {
@@ -160,7 +169,16 @@ export default function PharmacyWizard() {
       toast.success('E-Mail bestätigt und Registrierung abgeschlossen!');
       window.location.href = '/dashboard/pharmacy';
     } catch (err: any) {
-      const msg = err.response?.data?.message || (typeof err.response?.data === 'string' ? err.response.data : 'Ein Fehler ist aufgetreten.');
+      let msg = 'Ein Fehler ist aufgetreten.';
+      if (typeof err.response?.data?.message === 'string' && err.response.data.message.trim() !== '') {
+        msg = err.response.data.message;
+      } else if (typeof err.response?.data?.title === 'string' && err.response.data.title.trim() !== '') {
+        msg = err.response.data.title;
+      } else if (typeof err.response?.data?.detail === 'string' && err.response.data.detail.trim() !== '') {
+        msg = err.response.data.detail;
+      } else if (typeof err.response?.data === 'string' && err.response.data.trim() !== '') {
+        msg = err.response.data;
+      }
       toast.error(msg);
     } finally {
       setIsLoading(false);
@@ -175,7 +193,7 @@ export default function PharmacyWizard() {
           <p className="mt-4 text-ink/70 font-medium font-jetbrains uppercase tracking-widest text-sm">Schritt {step} von {step === 4 ? 4 : 3}</p>
         </div>
 
-        <div className="bg-white border-2 border-ink shadow-[8px_8px_0px_0px_rgba(12,20,16,1)] p-8">
+        <div className="bg-white bg-white rounded-2xl shadow-xl ring-1 ring-ink/5 p-8">
           <AnimatePresence mode="wait">
             {step === 1 && (
               <motion.div key="step1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
@@ -188,19 +206,19 @@ export default function PharmacyWizard() {
                     placeholder="Suchen Sie Ihre Apotheke nach Name oder PLZ..." 
                     value={searchQuery}
                     onChange={handleSearchChange}
-                    className="block w-full p-3 border-2 border-lime focus:outline-none focus:bg-lime/10 transition-colors bg-white shadow-[4px_4px_0px_0px_rgba(12,20,16,1)]"
+                    className="block w-full p-3 border border-lime/50 rounded-xl focus:ring-2 focus:ring-lime transition-all shadow-sm bg-white shadow-md rounded-xl ring-1 ring-ink/5"
                   />
                   {isSearching && <div className="absolute right-3 top-10 text-sm font-bold text-ink/50">Lade...</div>}
                   {searchResults.length === 0 && searchQuery.length >= 2 && !isSearching && (
-                    <div className="absolute z-10 w-full mt-2 bg-white border-2 border-ink shadow-[4px_4px_0px_0px_rgba(12,20,16,1)] p-4 text-center">
+                    <div className="absolute z-10 w-full mt-2 bg-white border-2 border-ink shadow-md rounded-xl ring-1 ring-ink/5 p-4 text-center">
                       <p className="text-sm font-bold text-ink mb-3">Keine Apotheke gefunden?</p>
-                      <Button onClick={() => setShowManualFields(true)} variant="brutalist-secondary" className="w-full">
+                      <Button onClick={() => setShowManualFields(true)} className="w-full bg-white text-ink border border-ink/20 rounded-xl shadow-sm hover:bg-bone font-semibold px-6 py-3 transition-all inline-flex items-center justify-center">
                         Manuell eintragen
                       </Button>
                     </div>
                   )}
                   {searchResults.length > 0 && (
-                    <ul className="absolute z-10 w-full mt-2 bg-white border-2 border-ink shadow-[4px_4px_0px_0px_rgba(12,20,16,1)] max-h-60 overflow-y-auto">
+                    <ul className="absolute z-10 w-full mt-2 bg-white border-2 border-ink shadow-md rounded-xl ring-1 ring-ink/5 max-h-60 overflow-y-auto">
                       {searchResults.map((p) => (
                         <li 
                           key={p.id} 
@@ -220,53 +238,53 @@ export default function PharmacyWizard() {
                   <div className="space-y-6">
                   <div>
                     <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Name der Apotheke</label>
-                    <input type="text" name="pharmacyName" value={formData.pharmacyName} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.pharmacyName ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                    <input type="text" name="pharmacyName" value={formData.pharmacyName} onChange={handleInputChange} className={`block w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-lime transition-all shadow-sm ${errors.pharmacyName ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                     {errors.pharmacyName && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.pharmacyName}</p>}
                   </div>
                   <div>
                     <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">E-Mail Adresse</label>
-                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.email ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} className={`block w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-lime transition-all shadow-sm ${errors.email ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                     {errors.email && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.email}</p>}
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Passwort</label>
-                      <input type="password" name="password" value={formData.password} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.password ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                      <input type="password" name="password" value={formData.password} onChange={handleInputChange} className={`block w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-lime transition-all shadow-sm ${errors.password ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                       {errors.password && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.password}</p>}
                     </div>
                     <div>
-                      <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Passwort besttigen</label>
-                      <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.confirmPassword ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                      <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Passwort bestätigen</label>
+                      <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleInputChange} className={`block w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-lime transition-all shadow-sm ${errors.confirmPassword ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                       {errors.confirmPassword && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.confirmPassword}</p>}
                     </div>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                     <div className="sm:col-span-2">
-                      <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Strae</label>
-                      <input type="text" name="street" value={formData.street} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.street ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                      <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Straße</label>
+                      <input type="text" name="street" value={formData.street} onChange={handleInputChange} className={`block w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-lime transition-all shadow-sm ${errors.street ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                       {errors.street && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.street}</p>}
                     </div>
                     <div>
                       <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Hausnummer</label>
-                      <input type="text" name="houseNumber" value={formData.houseNumber} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.houseNumber ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                      <input type="text" name="houseNumber" value={formData.houseNumber} onChange={handleInputChange} className={`block w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-lime transition-all shadow-sm ${errors.houseNumber ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                       {errors.houseNumber && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.houseNumber}</p>}
                     </div>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                     <div>
                       <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">PLZ</label>
-                      <input type="text" name="postalCode" value={formData.postalCode} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.postalCode ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                      <input type="text" name="postalCode" value={formData.postalCode} onChange={handleInputChange} className={`block w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-lime transition-all shadow-sm ${errors.postalCode ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                       {errors.postalCode && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.postalCode}</p>}
                     </div>
                     <div className="sm:col-span-2">
                       <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Stadt</label>
-                      <input type="text" name="city" value={formData.city} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.city ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                      <input type="text" name="city" value={formData.city} onChange={handleInputChange} className={`block w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-lime transition-all shadow-sm ${errors.city ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                       {errors.city && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.city}</p>}
                     </div>
                   </div>
                 </div>
                   <div className="mt-10 flex justify-end">
-                    <Button onClick={handleNext} variant="brutalist">
+                    <Button onClick={handleNext} className="bg-ink text-white rounded-xl shadow-md hover:bg-ink/90 font-semibold px-6 py-3 transition-all inline-flex items-center justify-center">
                       Weiter <ArrowRight className="ml-2 w-5 h-5" />
                     </Button>
                   </div>
@@ -298,10 +316,10 @@ export default function PharmacyWizard() {
                   </div>
                 </div>
                 <div className="mt-10 flex justify-between">
-                  <Button onClick={() => setStep(1)} variant="brutalist-secondary">
+                  <Button onClick={() => setStep(1)} className="bg-white text-ink border border-ink/20 rounded-xl shadow-sm hover:bg-bone font-semibold px-6 py-3 transition-all inline-flex items-center justify-center">
                     <ArrowLeft className="mr-2 w-5 h-5" /> Zurück
                   </Button>
-                  <Button onClick={handleNext} variant="brutalist">
+                  <Button onClick={handleNext} className="bg-ink text-white rounded-xl shadow-md hover:bg-ink/90 font-semibold px-6 py-3 transition-all inline-flex items-center justify-center">
                     Weiter <ArrowRight className="ml-2 w-5 h-5" />
                   </Button>
                 </div>
@@ -321,10 +339,10 @@ export default function PharmacyWizard() {
                   />
                 </div>
                 <div className="mt-10 flex justify-between">
-                  <Button onClick={() => setStep(2)} variant="brutalist-secondary">
+                  <Button onClick={() => setStep(2)} className="bg-white text-ink border border-ink/20 rounded-xl shadow-sm hover:bg-bone font-semibold px-6 py-3 transition-all inline-flex items-center justify-center">
                     <ArrowLeft className="mr-2 w-5 h-5" /> Zurück
                   </Button>
-                  <Button onClick={handleRegister} isLoading={isLoading} variant="brutalist">
+                  <Button onClick={handleRegister} isLoading={isLoading} className="bg-ink text-white rounded-xl shadow-md hover:bg-ink/90 font-semibold px-6 py-3 transition-all inline-flex items-center justify-center">
                     <CheckCircle2 className="mr-2 w-5 h-5" /> Registrierung abschließen
                   </Button>
                 </div>
@@ -342,7 +360,7 @@ export default function PharmacyWizard() {
                   </div>
                 </div>
                 <div className="mt-10 flex justify-end">
-                  <Button onClick={handleVerify} isLoading={isLoading} variant="brutalist">
+                  <Button onClick={handleVerify} isLoading={isLoading} className="bg-ink text-white rounded-xl shadow-md hover:bg-ink/90 font-semibold px-6 py-3 transition-all inline-flex items-center justify-center">
                     Verifizieren <CheckCircle2 className="ml-2 w-5 h-5" />
                   </Button>
                 </div>

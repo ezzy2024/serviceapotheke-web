@@ -1,0 +1,411 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: e2e_register_prod.spec.ts >> Production Registration E2E >> Pharmacist Registration Flow
+- Location: tests\e2e_register_prod.spec.ts:49:7
+
+# Error details
+
+```
+Error: apiRequestContext._wrapApiCall: EPERM: operation not permitted, open 'C:\Users\ezzel\Projects\ServiceApotheke_MegaProject\serviceapotheke-web\test-results\.playwright-artifacts-0\traces\resources\page@16d4c9ae2a8fcd0da8f571cf74351a69-1784211682741.jpeg'
+```
+
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - alert [ref=e2]
+  - generic [ref=e3]:
+    - generic [ref=e5]:
+      - heading "SA.tech" [level=1] [ref=e7]
+      - navigation [ref=e8]:
+        - link "Schicht-Radar" [ref=e9] [cursor=pointer]:
+          - /url: /dashboard/pharmacist
+          - img [ref=e10]
+          - text: Schicht-Radar
+        - link "Meine Schichten" [ref=e17] [cursor=pointer]:
+          - /url: /dashboard/pharmacist/shifts
+          - img [ref=e18]
+          - text: Meine Schichten
+        - link "Einnahmen" [ref=e21] [cursor=pointer]:
+          - /url: /dashboard/pharmacist/earnings
+          - img [ref=e22]
+          - text: Einnahmen
+        - link "Profil" [ref=e25] [cursor=pointer]:
+          - /url: /dashboard/pharmacist/profile
+          - img [ref=e26]
+          - text: Profil
+      - generic [ref=e30]:
+        - generic [ref=e31]: T
+        - generic [ref=e32]:
+          - paragraph [ref=e33]: Pharmacist
+          - paragraph [ref=e34]: test_1784211679499@web-library.net
+    - generic [ref=e35]:
+      - banner [ref=e36]:
+        - heading "Freelancer Portal" [level=2] [ref=e38]
+        - generic [ref=e39]:
+          - button "Benachrichtigungen" [ref=e41]:
+            - img [ref=e42]
+          - button "Logout" [ref=e46]:
+            - img [ref=e47]
+            - text: Logout
+      - main [ref=e50]:
+        - generic [ref=e52]:
+          - generic [ref=e54]:
+            - generic [ref=e55]: Was genau suchen Sie?
+            - generic [ref=e56]:
+              - generic [ref=e57] [cursor=pointer]:
+                - text: Alle Schichten
+                - generic [ref=e58]: "124"
+              - generic [ref=e59] [cursor=pointer]:
+                - text: Notdienst
+                - generic [ref=e60]: "12"
+              - generic [ref=e61] [cursor=pointer]:
+                - text: Urlaubsvertretung
+                - generic [ref=e62]: "48"
+              - generic [ref=e63] [cursor=pointer]:
+                - text: 🚨 Krankheitsausfall
+                - generic [ref=e64]: "8"
+              - generic [ref=e65] [cursor=pointer]:
+                - text: 📆 Wochenende
+                - generic [ref=e66]: "56"
+          - main [ref=e67]:
+            - complementary [ref=e68]:
+              - generic [ref=e69]:
+                - heading "Filter" [level=2] [ref=e70]
+                - button "Alle löschen" [ref=e71]
+              - generic [ref=e72]:
+                - generic [ref=e73]:
+                  - text: Sortieren nach
+                  - img [ref=e74]
+                - generic [ref=e76]:
+                  - combobox [ref=e77] [cursor=pointer]:
+                    - option "Beste Übereinstimmung (Haversine)" [selected]
+                    - option "Höchster Stundenlohn"
+                    - option "Kürzeste Distanz"
+                    - option "Neueste zuerst"
+                  - img
+              - generic [ref=e78]:
+                - generic [ref=e79]:
+                  - text: Schichtdauer
+                  - img [ref=e80]
+                - generic [ref=e82]:
+                  - generic [ref=e85] [cursor=pointer]: Ganztags (8-10h)
+                  - generic [ref=e88] [cursor=pointer]: Halbtags (4-6h)
+                  - generic [ref=e91] [cursor=pointer]: Nachtdienst
+              - generic [ref=e92]:
+                - generic [ref=e93]:
+                  - generic [ref=e94]: WWS-System
+                  - img [ref=e95]
+                - generic [ref=e97]:
+                  - generic [ref=e100] [cursor=pointer]: CGM Lauer
+                  - generic [ref=e103] [cursor=pointer]: ADG
+                  - generic [ref=e106] [cursor=pointer]: Pharmatechnik (IXOS)
+            - generic [ref=e107]:
+              - generic [ref=e108]:
+                - generic [ref=e109]:
+                  - strong [ref=e110]: 8 Vakanzen
+                  - text: für Ihr Profil
+                - generic [ref=e112]:
+                  - button [ref=e113]:
+                    - img [ref=e114]
+                  - button [ref=e115]:
+                    - img [ref=e116]
+              - generic [ref=e121]:
+                - img [ref=e123]
+                - generic [ref=e126]:
+                  - generic [ref=e127]: Haversine Priority Match • 99%
+                  - generic [ref=e128]:
+                    - text: Urlaubsvertretung gesucht
+                    - generic [ref=e129]: (1.2 km)
+                  - 'link "Adler Apotheke: Perfektes Match! Diese Apotheke sucht eine Urlaubsvertretung und nutzt CGM Lauer, was mit Ihrem Profil übereinstimmt." [ref=e130] [cursor=pointer]':
+                    - /url: "#"
+                    - generic [ref=e131]:
+                      - generic [ref=e132]: "Adler Apotheke: Perfektes Match! Diese Apotheke sucht eine Urlaubsvertretung und nutzt CGM Lauer, was mit Ihrem Profil übereinstimmt."
+                      - img [ref=e133]
+              - generic [ref=e135]: Weitere Vakanzen
+              - generic [ref=e138]:
+                - generic [ref=e140]:
+                  - generic [ref=e142] [cursor=pointer]: AP
+                  - generic [ref=e143]:
+                    - generic [ref=e144]:
+                      - generic [ref=e145]: Apotheke
+                      - generic [ref=e146]: "Distanz: ~ km"
+                    - button "Urlaub (20.07.2026)" [ref=e147]
+                    - generic [ref=e148]: Urlaubsvertretung
+                    - generic [ref=e150]:
+                      - generic [ref=e151]:
+                        - img [ref=e152]
+                        - img [ref=e154]
+                        - img [ref=e156]
+                        - img [ref=e158]
+                        - img [ref=e160]
+                      - text: 0.0 · 0 Bewertungen
+                    - generic [ref=e162]:
+                      - generic [ref=e163]: "Termine:"
+                      - generic [ref=e164]: 20.7.2026
+                    - generic [ref=e165]:
+                      - img [ref=e166]
+                      - generic [ref=e168]: "Konditionen: Fahrtkosten: 0,3 €/km"
+                    - button "Details einblenden" [ref=e169]:
+                      - img [ref=e170]
+                      - text: Details einblenden
+                  - generic [ref=e172]:
+                    - generic [ref=e173]:
+                      - generic [ref=e174]: ab€ 55.00
+                      - generic [ref=e175]: / Stunde
+                    - generic [ref=e176]:
+                      - generic [ref=e177]: Sofort buchbar
+                      - button "Bewerben" [ref=e179] [cursor=pointer]:
+                        - img [ref=e180]
+                        - text: Bewerben
+                - generic [ref=e184]:
+                  - generic [ref=e186] [cursor=pointer]: AP
+                  - generic [ref=e187]:
+                    - generic [ref=e188]:
+                      - generic [ref=e189]: Apotheke
+                      - generic [ref=e190]: "Distanz: ~ km"
+                    - button "Urlaub (16.07.2026)" [ref=e191]
+                    - generic [ref=e192]: Urlaubsvertretung
+                    - generic [ref=e194]:
+                      - generic [ref=e195]:
+                        - img [ref=e196]
+                        - img [ref=e198]
+                        - img [ref=e200]
+                        - img [ref=e202]
+                        - img [ref=e204]
+                      - text: 0.0 · 0 Bewertungen
+                    - generic [ref=e206]:
+                      - generic [ref=e207]: "Termine:"
+                      - generic [ref=e208]: 16.7.2026
+                    - generic [ref=e209]:
+                      - img [ref=e210]
+                      - generic [ref=e212]: "Konditionen: Fahrtkosten: 0,3 €/km • Maximal 50 €"
+                    - button "Details einblenden" [ref=e213]:
+                      - img [ref=e214]
+                      - text: Details einblenden
+                  - generic [ref=e216]:
+                    - generic [ref=e217]:
+                      - generic [ref=e218]: ab€ 45.00
+                      - generic [ref=e219]: / Stunde
+                    - generic [ref=e220]:
+                      - generic [ref=e221]: Sofort buchbar
+                      - button "Bewerben" [ref=e223] [cursor=pointer]:
+                        - img [ref=e224]
+                        - text: Bewerben
+                - generic [ref=e228]:
+                  - generic [ref=e230] [cursor=pointer]: AP
+                  - generic [ref=e231]:
+                    - generic [ref=e232]:
+                      - generic [ref=e233]: Apotheke
+                      - generic [ref=e234]: "Distanz: ~ km"
+                    - button "Urlaub (15.07.2026)" [ref=e235]
+                    - generic [ref=e236]: Urlaubsvertretung
+                    - generic [ref=e238]:
+                      - generic [ref=e239]:
+                        - img [ref=e240]
+                        - img [ref=e242]
+                        - img [ref=e244]
+                        - img [ref=e246]
+                        - img [ref=e248]
+                      - text: 0.0 · 0 Bewertungen
+                    - generic [ref=e250]:
+                      - generic [ref=e251]: "Termine:"
+                      - generic [ref=e252]: 15.7.2026
+                    - generic [ref=e253]:
+                      - img [ref=e254]
+                      - generic [ref=e256]: "Konditionen: Fahrtkosten: 0,3 €/km"
+                    - button "Details einblenden" [ref=e257]:
+                      - img [ref=e258]
+                      - text: Details einblenden
+                  - generic [ref=e260]:
+                    - generic [ref=e261]:
+                      - generic [ref=e262]: ab€ 45.00
+                      - generic [ref=e263]: / Stunde
+                    - generic [ref=e264]:
+                      - generic [ref=e265]: Sofort buchbar
+                      - button "Bewerben" [ref=e267] [cursor=pointer]:
+                        - img [ref=e268]
+                        - text: Bewerben
+                - generic [ref=e272]:
+                  - generic [ref=e274] [cursor=pointer]: AP
+                  - generic [ref=e275]:
+                    - generic [ref=e276]:
+                      - generic [ref=e277]: Apotheke
+                      - generic [ref=e278]: "Distanz: ~ km"
+                    - button "Urlaub (14.07.2026)" [ref=e279]
+                    - generic [ref=e280]: Urlaubsvertretung
+                    - generic [ref=e282]:
+                      - generic [ref=e283]:
+                        - img [ref=e284]
+                        - img [ref=e286]
+                        - img [ref=e288]
+                        - img [ref=e290]
+                        - img [ref=e292]
+                      - text: 0.0 · 0 Bewertungen
+                    - generic [ref=e294]:
+                      - generic [ref=e295]: "Termine:"
+                      - generic [ref=e296]: 14.7.2026
+                    - generic [ref=e297]:
+                      - img [ref=e298]
+                      - generic [ref=e300]: "Konditionen: Fahrtkosten: 0,3 €/km"
+                    - button "Details einblenden" [ref=e301]:
+                      - img [ref=e302]
+                      - text: Details einblenden
+                  - generic [ref=e304]:
+                    - generic [ref=e305]:
+                      - generic [ref=e306]: ab€ 45.00
+                      - generic [ref=e307]: / Stunde
+                    - generic [ref=e308]:
+                      - generic [ref=e309]: Sofort buchbar
+                      - button "Bewerben" [ref=e311] [cursor=pointer]:
+                        - img [ref=e312]
+                        - text: Bewerben
+                - generic [ref=e316]:
+                  - generic [ref=e318] [cursor=pointer]: AP
+                  - generic [ref=e319]:
+                    - generic [ref=e320]:
+                      - generic [ref=e321]: Apotheke
+                      - generic [ref=e322]: "Distanz: ~ km"
+                    - button "Urlaub (20.07.2026)" [ref=e323]
+                    - generic [ref=e324]: Urlaubsvertretung
+                    - generic [ref=e326]:
+                      - generic [ref=e327]:
+                        - img [ref=e328]
+                        - img [ref=e330]
+                        - img [ref=e332]
+                        - img [ref=e334]
+                        - img [ref=e336]
+                      - text: 0.0 · 0 Bewertungen
+                    - generic [ref=e338]:
+                      - generic [ref=e339]: "Termine:"
+                      - generic [ref=e340]: 20.7.2026
+                    - generic [ref=e341]:
+                      - img [ref=e342]
+                      - generic [ref=e344]: "Konditionen: Fahrtkosten: 0,3 €/km"
+                    - button "Details einblenden" [ref=e345]:
+                      - img [ref=e346]
+                      - text: Details einblenden
+                  - generic [ref=e348]:
+                    - generic [ref=e349]:
+                      - generic [ref=e350]: ab€ 45.00
+                      - generic [ref=e351]: / Stunde
+                    - generic [ref=e352]:
+                      - generic [ref=e353]: Sofort buchbar
+                      - button "Bewerben" [ref=e355] [cursor=pointer]:
+                        - img [ref=e356]
+                        - text: Bewerben
+                - generic [ref=e360]:
+                  - generic [ref=e362] [cursor=pointer]: AP
+                  - generic [ref=e363]:
+                    - generic [ref=e364]:
+                      - generic [ref=e365]: Apotheke
+                      - generic [ref=e366]: "Distanz: ~ km"
+                    - button "Urlaub (14.07.2026)" [ref=e367]
+                    - generic [ref=e368]: Urlaubsvertretung
+                    - generic [ref=e370]:
+                      - generic [ref=e371]:
+                        - img [ref=e372]
+                        - img [ref=e374]
+                        - img [ref=e376]
+                        - img [ref=e378]
+                        - img [ref=e380]
+                      - text: 0.0 · 0 Bewertungen
+                    - generic [ref=e382]:
+                      - generic [ref=e383]: "Termine:"
+                      - generic [ref=e384]: 14.7.2026
+                    - generic [ref=e385]:
+                      - img [ref=e386]
+                      - generic [ref=e388]: "Konditionen: Fahrtkosten: 0,3 €/km"
+                    - button "Details einblenden" [ref=e389]:
+                      - img [ref=e390]
+                      - text: Details einblenden
+                  - generic [ref=e392]:
+                    - generic [ref=e393]:
+                      - generic [ref=e394]: ab€ 45.00
+                      - generic [ref=e395]: / Stunde
+                    - generic [ref=e396]:
+                      - generic [ref=e397]: Sofort buchbar
+                      - button "Bewerben" [ref=e399] [cursor=pointer]:
+                        - img [ref=e400]
+                        - text: Bewerben
+                - generic [ref=e404]:
+                  - generic [ref=e406] [cursor=pointer]: AP
+                  - generic [ref=e407]:
+                    - generic [ref=e408]:
+                      - generic [ref=e409]: Apotheke
+                      - generic [ref=e410]: "Distanz: ~ km"
+                    - button "Urlaub (13.07.2026)" [ref=e411]
+                    - generic [ref=e412]: Urlaubsvertretung
+                    - generic [ref=e414]:
+                      - generic [ref=e415]:
+                        - img [ref=e416]
+                        - img [ref=e418]
+                        - img [ref=e420]
+                        - img [ref=e422]
+                        - img [ref=e424]
+                      - text: 0.0 · 0 Bewertungen
+                    - generic [ref=e426]:
+                      - generic [ref=e427]: "Termine:"
+                      - generic [ref=e428]: 13.7.2026
+                    - generic [ref=e429]:
+                      - img [ref=e430]
+                      - generic [ref=e432]: "Konditionen: Fahrtkosten: 0,3 €/km"
+                    - button "Details einblenden" [ref=e433]:
+                      - img [ref=e434]
+                      - text: Details einblenden
+                  - generic [ref=e436]:
+                    - generic [ref=e437]:
+                      - generic [ref=e438]: ab€ 45.00
+                      - generic [ref=e439]: / Stunde
+                    - generic [ref=e440]:
+                      - generic [ref=e441]: Sofort buchbar
+                      - button "Bewerben" [ref=e443] [cursor=pointer]:
+                        - img [ref=e444]
+                        - text: Bewerben
+                - generic [ref=e448]:
+                  - generic [ref=e450] [cursor=pointer]: AP
+                  - generic [ref=e451]:
+                    - generic [ref=e452]:
+                      - generic [ref=e453]: Apotheke
+                      - generic [ref=e454]: "Distanz: ~ km"
+                    - button "Urlaub (13.07.2026)" [ref=e455]
+                    - generic [ref=e456]: Urlaubsvertretung
+                    - generic [ref=e458]:
+                      - generic [ref=e459]:
+                        - img [ref=e460]
+                        - img [ref=e462]
+                        - img [ref=e464]
+                        - img [ref=e466]
+                        - img [ref=e468]
+                      - text: 0.0 · 0 Bewertungen
+                    - generic [ref=e470]:
+                      - generic [ref=e471]: "Termine:"
+                      - generic [ref=e472]: 13.7.2026
+                    - generic [ref=e473]:
+                      - img [ref=e474]
+                      - generic [ref=e476]: "Konditionen: Fahrtkosten: 0,3 €/km"
+                    - button "Details einblenden" [ref=e477]:
+                      - img [ref=e478]
+                      - text: Details einblenden
+                  - generic [ref=e480]:
+                    - generic [ref=e481]:
+                      - generic [ref=e482]: ab€ 45.00
+                      - generic [ref=e483]: / Stunde
+                    - generic [ref=e484]:
+                      - generic [ref=e485]: Sofort buchbar
+                      - button "Bewerben" [ref=e487] [cursor=pointer]:
+                        - img [ref=e488]
+                        - text: Bewerben
+              - generic [ref=e491]:
+                - button "1" [ref=e492]
+                - button "2" [ref=e493]
+                - button "3" [ref=e494]
+                - generic [ref=e495]: ...
+                - button "14" [ref=e496]
+```

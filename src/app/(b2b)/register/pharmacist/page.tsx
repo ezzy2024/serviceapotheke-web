@@ -140,7 +140,16 @@ export default function PharmacistWizard() {
       if (err.errors) {
         toast.error(err.errors[0].message);
       } else {
-        const msg = err.response?.data?.message || (typeof err.response?.data === 'string' ? err.response.data : 'Ein Fehler ist aufgetreten.');
+        let msg = 'Ein Fehler ist aufgetreten.';
+        if (typeof err.response?.data?.message === 'string' && err.response.data.message.trim() !== '') {
+          msg = err.response.data.message;
+        } else if (typeof err.response?.data?.title === 'string' && err.response.data.title.trim() !== '') {
+          msg = err.response.data.title;
+        } else if (typeof err.response?.data?.detail === 'string' && err.response.data.detail.trim() !== '') {
+          msg = err.response.data.detail;
+        } else if (typeof err.response?.data === 'string' && err.response.data.trim() !== '') {
+          msg = err.response.data;
+        }
         toast.error(msg);
       }
     } finally {
@@ -168,7 +177,16 @@ export default function PharmacistWizard() {
       toast.success('E-Mail bestätigt und Registrierung abgeschlossen!');
       window.location.href = '/dashboard/pharmacist';
     } catch (err: any) {
-      const msg = err.response?.data?.message || (typeof err.response?.data === 'string' ? err.response.data : 'Ein Fehler ist aufgetreten.');
+      let msg = 'Ein Fehler ist aufgetreten.';
+      if (typeof err.response?.data?.message === 'string' && err.response.data.message.trim() !== '') {
+        msg = err.response.data.message;
+      } else if (typeof err.response?.data?.title === 'string' && err.response.data.title.trim() !== '') {
+        msg = err.response.data.title;
+      } else if (typeof err.response?.data?.detail === 'string' && err.response.data.detail.trim() !== '') {
+        msg = err.response.data.detail;
+      } else if (typeof err.response?.data === 'string' && err.response.data.trim() !== '') {
+        msg = err.response.data;
+      }
       toast.error(msg);
     } finally {
       setIsLoading(false);
@@ -183,7 +201,7 @@ export default function PharmacistWizard() {
           <p className="mt-4 text-ink/70 font-medium font-jetbrains uppercase tracking-widest text-sm">Schritt {step} von {step === 4 ? 4 : 3}</p>
         </div>
 
-        <div className="bg-white border-2 border-ink shadow-[8px_8px_0px_0px_rgba(12,20,16,1)] p-8">
+        <div className="bg-white bg-white rounded-2xl shadow-xl ring-1 ring-ink/5 p-8">
           <AnimatePresence mode="wait">
             {step === 1 && (
               <motion.div key="step1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
@@ -191,60 +209,60 @@ export default function PharmacistWizard() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
                   <div>
                     <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Vorname</label>
-                    <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.firstName ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                    <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} className={`block w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-lime transition-all shadow-sm ${errors.firstName ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                     {errors.firstName && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.firstName}</p>}
                   </div>
                   <div>
                     <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Nachname</label>
-                    <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.lastName ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                    <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} className={`block w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-lime transition-all shadow-sm ${errors.lastName ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                     {errors.lastName && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.lastName}</p>}
                   </div>
                 </div>
                 <div className="space-y-6">
                   <div>
                     <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">E-Mail Adresse</label>
-                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.email ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} className={`block w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-lime transition-all shadow-sm ${errors.email ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                     {errors.email && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.email}</p>}
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Passwort</label>
-                      <input type="password" name="password" value={formData.password} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.password ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                      <input type="password" name="password" value={formData.password} onChange={handleInputChange} className={`block w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-lime transition-all shadow-sm ${errors.password ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                       {errors.password && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.password}</p>}
                     </div>
                     <div>
                       <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Passwort bestätigen</label>
-                      <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.confirmPassword ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                      <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleInputChange} className={`block w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-lime transition-all shadow-sm ${errors.confirmPassword ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                       {errors.confirmPassword && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.confirmPassword}</p>}
                     </div>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                     <div className="sm:col-span-2">
                       <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Straße</label>
-                      <input type="text" name="street" value={formData.street} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.street ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                      <input type="text" name="street" value={formData.street} onChange={handleInputChange} className={`block w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-lime transition-all shadow-sm ${errors.street ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                       {errors.street && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.street}</p>}
                     </div>
                     <div>
                       <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Hausnummer</label>
-                      <input type="text" name="houseNumber" value={formData.houseNumber} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.houseNumber ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                      <input type="text" name="houseNumber" value={formData.houseNumber} onChange={handleInputChange} className={`block w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-lime transition-all shadow-sm ${errors.houseNumber ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                       {errors.houseNumber && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.houseNumber}</p>}
                     </div>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                     <div>
                       <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">PLZ</label>
-                      <input type="text" name="postalCode" value={formData.postalCode} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.postalCode ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                      <input type="text" name="postalCode" value={formData.postalCode} onChange={handleInputChange} className={`block w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-lime transition-all shadow-sm ${errors.postalCode ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                       {errors.postalCode && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.postalCode}</p>}
                     </div>
                     <div className="sm:col-span-2">
                       <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Stadt</label>
-                      <input type="text" name="city" value={formData.city} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.city ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                      <input type="text" name="city" value={formData.city} onChange={handleInputChange} className={`block w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-lime transition-all shadow-sm ${errors.city ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                       {errors.city && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.city}</p>}
                     </div>
                   </div>
                 </div>
                 <div className="mt-10 flex justify-end">
-                  <Button onClick={handleNext} variant="brutalist">
+                  <Button onClick={handleNext} className="bg-ink text-white rounded-xl shadow-md hover:bg-ink/90 font-semibold px-6 py-3 transition-all inline-flex items-center justify-center">
                     Weiter <ArrowRight className="ml-2 w-5 h-5" />
                   </Button>
                 </div>
@@ -269,7 +287,7 @@ export default function PharmacistWizard() {
                         <option>Fortgeschritten</option>
                         <option>Experte</option>
                       </select>
-                      <Button onClick={addWws} variant="brutalist-secondary" size="md">
+                      <Button onClick={addWws} className="bg-white text-ink border border-ink/20 rounded-xl shadow-sm hover:bg-bone font-semibold px-6 py-3 transition-all inline-flex items-center justify-center" size="md">
                         <Plus className="w-5 h-5" />
                       </Button>
                     </div>
@@ -284,10 +302,10 @@ export default function PharmacistWizard() {
                   </div>
                 </div>
                 <div className="mt-10 flex justify-between">
-                  <Button onClick={() => setStep(1)} variant="brutalist-secondary">
+                  <Button onClick={() => setStep(1)} className="bg-white text-ink border border-ink/20 rounded-xl shadow-sm hover:bg-bone font-semibold px-6 py-3 transition-all inline-flex items-center justify-center">
                     <ArrowLeft className="mr-2 w-5 h-5" /> Zurück
                   </Button>
-                  <Button onClick={handleNext} variant="brutalist">
+                  <Button onClick={handleNext} className="bg-ink text-white rounded-xl shadow-md hover:bg-ink/90 font-semibold px-6 py-3 transition-all inline-flex items-center justify-center">
                     Weiter <ArrowRight className="ml-2 w-5 h-5" />
                   </Button>
                 </div>
@@ -318,10 +336,10 @@ export default function PharmacistWizard() {
                   />
                 </div>
                 <div className="mt-10 flex justify-between">
-                  <Button onClick={() => setStep(2)} variant="brutalist-secondary">
+                  <Button onClick={() => setStep(2)} className="bg-white text-ink border border-ink/20 rounded-xl shadow-sm hover:bg-bone font-semibold px-6 py-3 transition-all inline-flex items-center justify-center">
                     <ArrowLeft className="mr-2 w-5 h-5" /> Zurück
                   </Button>
-                  <Button onClick={handleSubmit} isLoading={isLoading} variant="brutalist">
+                  <Button onClick={handleSubmit} isLoading={isLoading} className="bg-ink text-white rounded-xl shadow-md hover:bg-ink/90 font-semibold px-6 py-3 transition-all inline-flex items-center justify-center">
                     <CheckCircle2 className="mr-2 w-5 h-5" /> Registrierung abschließen
                   </Button>
                 </div>
@@ -339,7 +357,7 @@ export default function PharmacistWizard() {
                   </div>
                 </div>
                 <div className="mt-10 flex justify-end">
-                  <Button onClick={handleVerify} isLoading={isLoading} variant="brutalist">
+                  <Button onClick={handleVerify} isLoading={isLoading} className="bg-ink text-white rounded-xl shadow-md hover:bg-ink/90 font-semibold px-6 py-3 transition-all inline-flex items-center justify-center">
                     Verifizieren <CheckCircle2 className="ml-2 w-5 h-5" />
                   </Button>
                 </div>

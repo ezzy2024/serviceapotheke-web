@@ -4,9 +4,11 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/AuthContext';
 import api from '@/lib/api';
 import { Briefcase, Building, Calendar, AlertTriangle, CheckCircle2, Clock } from 'lucide-react';
+import { useToast } from '@/components/ui/Toast';
 
 export default function PharmacistShifts() {
   const { user } = useAuth();
+  const toast = useToast();
   const [shifts, setShifts] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   
@@ -90,11 +92,25 @@ export default function PharmacistShifts() {
           breaksMinutes: breakMinutes,
           hourlyRate: shift?.jobPost?.salary || 0,
           travelCosts: 0,
-          accommodationCosts: 0
+          accommodationCosts: 0,
+          status: 'Submitted'
         });
-      } catch (error) {
-        console.error('Failed to submit timesheet', error);
-        alert('Fehler beim Einreichen des Stundenzettels. Bitte überprüfe deine Eingaben.');
+      } catch (err: any) {
+        console.error('Failed to submit timesheet', err);
+        let msg = 'Fehler beim Einreichen des Stundenzettels. Bitte überprüfe deine Eingaben.';
+        if (typeof err.response?.data?.message === 'string' && err.response.data.message.trim() !== '') {
+          msg = err.response.data.message;
+        } else if (typeof err.response?.data?.title === 'string' && err.response.data.title.trim() !== '') {
+          msg = err.response.data.title;
+        } else if (typeof err.response?.data?.detail === 'string' && err.response.data.detail.trim() !== '') {
+          msg = err.response.data.detail;
+        } else if (typeof err.response?.data === 'string' && err.response.data.trim() !== '') {
+          msg = err.response.data;
+        } else if (err.response?.data?.errors) {
+            const firstError = Object.values(err.response.data.errors)[0] as string[];
+            if (firstError && firstError.length > 0) msg = firstError[0];
+        }
+        toast.error(msg);
         setIsCompleting(false);
         return;
       }
@@ -104,11 +120,20 @@ export default function PharmacistShifts() {
         newStatus: "Completed"
       });
 
+      toast.success('Schicht erfolgreich abgeschlossen.');
       setIsComplianceModalOpen(false);
       fetchShifts(); // Refresh state
-    } catch (error) {
-      console.error('Failed to complete shift', error);
-      alert('Fehler beim Aktualisieren des Schichtstatus.');
+    } catch (err: any) {
+      console.error('Failed to complete shift', err);
+      let msg = 'Fehler beim Aktualisieren des Schichtstatus.';
+      if (typeof err.response?.data?.message === 'string' && err.response.data.message.trim() !== '') {
+        msg = err.response.data.message;
+      } else if (typeof err.response?.data?.title === 'string' && err.response.data.title.trim() !== '') {
+        msg = err.response.data.title;
+      } else if (typeof err.response?.data?.detail === 'string' && err.response.data.detail.trim() !== '') {
+        msg = err.response.data.detail;
+      }
+      toast.error(msg);
     } finally {
       setIsCompleting(false);
     }

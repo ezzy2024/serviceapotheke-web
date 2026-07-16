@@ -18,6 +18,7 @@ export default function PdlDashboardPage() {
   const [isUploading, setIsUploading] = useState(false);
   const [analyzingIds, setAnalyzingIds] = useState<Set<number>>(new Set());
   const [toast, setToast] = useState<{message: string, type: 'success' | 'error'} | null>(null);
+  const [isComingSoonOpen, setIsComingSoonOpen] = useState(false);
   const [skippedStats, setSkippedStats] = useState<{skipped: number, total: number} | null>(null);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -143,7 +144,7 @@ export default function PdlDashboardPage() {
   };
 
   const handleAnalyze = async (patientId: number) => {
-    showToast('KI-gestützte Analyse ist noch nicht verfügbar. Ein zertifizierter AMTS-Anbieter (z.B. pharma4u) wird benötigt.', 'error');
+    setIsComingSoonOpen(true);
     
     /* GATED: Requires licensed AMTS data provider for clinical interaction logic
     setAnalyzingIds(prev => new Set(prev).add(patientId));
@@ -214,11 +215,46 @@ export default function PdlDashboardPage() {
       <div className={`max-w-7xl mx-auto space-y-8 ${!isUnlocked ? 'filter blur-md pointer-events-none' : ''}`}>
         {/* Toast */}
       {toast && (
-        <div className={`fixed top-4 right-4 z-50 p-4 rounded-xl shadow-lg border backdrop-blur-md flex items-center gap-3 transition-all ${
-          toast.type === 'success' ? 'bg-green-500/20 border-green-500/30 text-green-900' : 'bg-red-500/20 border-red-500/30 text-red-900'
+        <div className={`fixed top-4 right-4 z-50 p-4 rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] border-2 border-ink backdrop-blur-md flex items-center gap-3 transition-all ${
+          toast.type === 'success' ? 'bg-lime text-ink' : 'bg-red-400 text-ink'
         }`}>
-          {toast.type === 'success' ? <CheckCircle className="w-5 h-5 text-green-600" /> : <AlertTriangle className="w-5 h-5 text-red-600" />}
-          <p className="font-medium">{toast.message}</p>
+          {toast.type === 'success' ? <CheckCircle className="w-5 h-5 text-ink" /> : <AlertTriangle className="w-5 h-5 text-ink" />}
+          <p className="font-bold uppercase tracking-wide">{toast.message}</p>
+        </div>
+      )}
+
+      {/* Coming Soon Modal */}
+      {isComingSoonOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/80 backdrop-blur-sm p-4">
+          <div className="bg-bone border-4 border-ink w-full max-w-md shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-8 relative">
+            <button 
+              onClick={() => setIsComingSoonOpen(false)}
+              className="absolute top-4 right-4 p-2 bg-white border-2 border-ink hover:-translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
+            >
+              <div className="w-4 h-4 relative">
+                <div className="absolute inset-0 w-full h-0.5 bg-ink top-1/2 -translate-y-1/2 rotate-45"></div>
+                <div className="absolute inset-0 w-full h-0.5 bg-ink top-1/2 -translate-y-1/2 -rotate-45"></div>
+              </div>
+            </button>
+            
+            <div className="flex justify-center mb-6">
+              <div className="w-16 h-16 bg-lime border-4 border-ink flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                <Lock className="w-8 h-8 text-ink" />
+              </div>
+            </div>
+            
+            <h3 className="text-2xl font-black text-ink uppercase tracking-tight text-center mb-4">AMTS Analyse (Bald verfügbar)</h3>
+            <p className="text-ink/80 font-semibold text-center mb-8">
+              Die vollautomatisierte KI-gestützte Medikationsanalyse (AMTS) erfordert die Anbindung an einen lizenzierten ABDA-Datenprovider (z.B. pharma4u). Diese Integration wird in Kürze freigeschaltet.
+            </p>
+            
+            <button 
+              onClick={() => setIsComingSoonOpen(false)}
+              className="w-full py-4 bg-ink text-bone font-black uppercase tracking-widest hover:bg-ink/90 transition-colors border-2 border-ink"
+            >
+              Verstanden
+            </button>
+          </div>
         </div>
       )}
 
