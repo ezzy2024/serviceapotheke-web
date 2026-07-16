@@ -22,10 +22,10 @@ export default function UeberUnsPage() {
           </div>
           <div className="mt-12">
             <Link 
-              href="/" 
-              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full font-semibold transition-all shadow-lg shadow-blue-600/20"
+              href="/register" 
+              className="btn-primary px-8 py-3 text-lg"
             >
-              Zurück zur Startseite
+              Jetzt starten
             </Link>
           </div>
         </div>

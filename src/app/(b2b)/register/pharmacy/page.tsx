@@ -41,6 +41,7 @@ export default function PharmacyWizard() {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [showManualFields, setShowManualFields] = useState(false);
 
   const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
@@ -58,15 +59,14 @@ export default function PharmacyWizard() {
   const handleSelectPharmacy = (pharmacy: any) => {
     setFormData((prev) => ({
       ...prev,
-      pharmacyName: pharmacy.name || prev.pharmacyName,
-      street: pharmacy.street || prev.street,
-      postalCode: pharmacy.plz || prev.postalCode,
-      city: pharmacy.city || prev.city,
-      phoneNumber: pharmacy.phone || prev.phoneNumber,
-      email: pharmacy.email || prev.email,
+      pharmacyName: pharmacy.name || '',
+      street: pharmacy.street || '',
+      postalCode: pharmacy.plz || '',
+      city: pharmacy.city || ''
     }));
-    setSearchQuery('');
+    setSearchQuery(pharmacy.name || '');
     setSearchResults([]);
+    setShowManualFields(true);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -175,11 +175,11 @@ export default function PharmacyWizard() {
           <p className="mt-4 text-ink/70 font-medium font-jetbrains uppercase tracking-widest text-sm">Schritt {step} von {step === 4 ? 4 : 3}</p>
         </div>
 
-        <div className="bg-white border-4 border-ink shadow-[8px_8px_0px_0px_rgba(12,20,16,1)] p-8">
+        <div className="bg-white border-2 border-ink shadow-[8px_8px_0px_0px_rgba(12,20,16,1)] p-8">
           <AnimatePresence mode="wait">
             {step === 1 && (
               <motion.div key="step1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-                <h3 className="text-2xl font-bold text-ink mb-6 font-bricolage uppercase tracking-tight">Apotheken Daten & Account</h3>
+                <h3 className="text-2xl font-bold text-ink mb-6 font-bricolage tracking-tight">Apotheken Daten & Account</h3>
                 
                 <div className="mb-8 relative">
                   <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Apotheken-Register durchsuchen</label>
@@ -188,11 +188,19 @@ export default function PharmacyWizard() {
                     placeholder="Suchen Sie Ihre Apotheke nach Name oder PLZ..." 
                     value={searchQuery}
                     onChange={handleSearchChange}
-                    className="block w-full p-3 border-4 border-lime focus:outline-none focus:bg-lime/10 transition-colors bg-white shadow-[4px_4px_0px_0px_rgba(12,20,16,1)]"
+                    className="block w-full p-3 border-2 border-lime focus:outline-none focus:bg-lime/10 transition-colors bg-white shadow-[4px_4px_0px_0px_rgba(12,20,16,1)]"
                   />
                   {isSearching && <div className="absolute right-3 top-10 text-sm font-bold text-ink/50">Lade...</div>}
+                  {searchResults.length === 0 && searchQuery.length >= 2 && !isSearching && (
+                    <div className="absolute z-10 w-full mt-2 bg-white border-2 border-ink shadow-[4px_4px_0px_0px_rgba(12,20,16,1)] p-4 text-center">
+                      <p className="text-sm font-bold text-ink mb-3">Keine Apotheke gefunden?</p>
+                      <Button onClick={() => setShowManualFields(true)} variant="brutalist-secondary" className="w-full">
+                        Manuell eintragen
+                      </Button>
+                    </div>
+                  )}
                   {searchResults.length > 0 && (
-                    <ul className="absolute z-10 w-full mt-2 bg-white border-4 border-ink shadow-[4px_4px_0px_0px_rgba(12,20,16,1)] max-h-60 overflow-y-auto">
+                    <ul className="absolute z-10 w-full mt-2 bg-white border-2 border-ink shadow-[4px_4px_0px_0px_rgba(12,20,16,1)] max-h-60 overflow-y-auto">
                       {searchResults.map((p) => (
                         <li 
                           key={p.id} 
@@ -207,73 +215,75 @@ export default function PharmacyWizard() {
                   )}
                 </div>
 
-                <div className="space-y-6">
+                {showManualFields && (
+                  <div className="space-y-6">
                   <div>
                     <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Name der Apotheke</label>
-                    <input type="text" name="pharmacyName" value={formData.pharmacyName} onChange={handleInputChange} className={`block w-full p-3 border-4 focus:outline-none focus:bg-lime/10 transition-colors ${errors.pharmacyName ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                    <input type="text" name="pharmacyName" value={formData.pharmacyName} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.pharmacyName ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                     {errors.pharmacyName && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.pharmacyName}</p>}
                   </div>
                   <div>
                     <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">E-Mail Adresse</label>
-                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} className={`block w-full p-3 border-4 focus:outline-none focus:bg-lime/10 transition-colors ${errors.email ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.email ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                     {errors.email && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.email}</p>}
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Passwort</label>
-                      <input type="password" name="password" value={formData.password} onChange={handleInputChange} className={`block w-full p-3 border-4 focus:outline-none focus:bg-lime/10 transition-colors ${errors.password ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                      <input type="password" name="password" value={formData.password} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.password ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                       {errors.password && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.password}</p>}
                     </div>
                     <div>
                       <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Passwort besttigen</label>
-                      <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleInputChange} className={`block w-full p-3 border-4 focus:outline-none focus:bg-lime/10 transition-colors ${errors.confirmPassword ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                      <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.confirmPassword ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                       {errors.confirmPassword && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.confirmPassword}</p>}
                     </div>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                     <div className="sm:col-span-2">
                       <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Strae</label>
-                      <input type="text" name="street" value={formData.street} onChange={handleInputChange} className={`block w-full p-3 border-4 focus:outline-none focus:bg-lime/10 transition-colors ${errors.street ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                      <input type="text" name="street" value={formData.street} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.street ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                       {errors.street && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.street}</p>}
                     </div>
                     <div>
                       <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Hausnummer</label>
-                      <input type="text" name="houseNumber" value={formData.houseNumber} onChange={handleInputChange} className={`block w-full p-3 border-4 focus:outline-none focus:bg-lime/10 transition-colors ${errors.houseNumber ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                      <input type="text" name="houseNumber" value={formData.houseNumber} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.houseNumber ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                       {errors.houseNumber && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.houseNumber}</p>}
                     </div>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                     <div>
                       <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">PLZ</label>
-                      <input type="text" name="postalCode" value={formData.postalCode} onChange={handleInputChange} className={`block w-full p-3 border-4 focus:outline-none focus:bg-lime/10 transition-colors ${errors.postalCode ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                      <input type="text" name="postalCode" value={formData.postalCode} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.postalCode ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                       {errors.postalCode && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.postalCode}</p>}
                     </div>
                     <div className="sm:col-span-2">
                       <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Stadt</label>
-                      <input type="text" name="city" value={formData.city} onChange={handleInputChange} className={`block w-full p-3 border-4 focus:outline-none focus:bg-lime/10 transition-colors ${errors.city ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                      <input type="text" name="city" value={formData.city} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.city ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                       {errors.city && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.city}</p>}
                     </div>
                   </div>
                 </div>
-                <div className="mt-10 flex justify-end">
-                  <Button onClick={handleNext} variant="brutalist">
-                    Weiter <ArrowRight className="ml-2 w-5 h-5" />
-                  </Button>
-                </div>
-              </motion.div>
-            )}
+                  <div className="mt-10 flex justify-end">
+                    <Button onClick={handleNext} variant="brutalist">
+                      Weiter <ArrowRight className="ml-2 w-5 h-5" />
+                    </Button>
+                  </div>
+                  )}
+                </motion.div>
+              )}
 
             {step === 2 && (
               <motion.div key="step2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-                <h3 className="text-2xl font-bold text-ink mb-6 font-bricolage uppercase tracking-tight">Infrastruktur & Details</h3>
+                <h3 className="text-2xl font-bold text-ink mb-6 font-bricolage tracking-tight">Infrastruktur & Details</h3>
                 <div className="space-y-6">
                   <div>
                     <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Betriebserlaubnis Nummer / IK-Nummer</label>
-                    <input type="text" name="licenseNumber" value={formData.licenseNumber} onChange={handleInputChange} className="block w-full p-3 border-4 border-ink focus:outline-none focus:bg-lime/10 transition-colors" />
+                    <input type="text" name="licenseNumber" value={formData.licenseNumber} onChange={handleInputChange} className="block w-full p-3 border-2 border-ink focus:outline-none focus:bg-lime/10 transition-colors" />
                   </div>
                   <div>
                     <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Eingesetztes Warenwirtschaftssystem</label>
-                    <select name="softwareSystem" value={formData.softwareSystem} onChange={handleInputChange} className="block w-full p-3 border-4 border-ink focus:outline-none focus:bg-lime/10 transition-colors bg-white font-bold">
+                    <select name="softwareSystem" value={formData.softwareSystem} onChange={handleInputChange} className="block w-full p-3 border-2 border-ink focus:outline-none focus:bg-lime/10 transition-colors bg-white font-bold">
                       <option>CGM Lauer</option>
                       <option>Pharmatechnik IXOS</option>
                       <option>ADG</option>
@@ -282,7 +292,7 @@ export default function PharmacyWizard() {
                   </div>
                   <div>
                     <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Apotheken Beschreibung (optional)</label>
-                    <textarea name="description" value={formData.description} onChange={handleInputChange} rows={4} className="block w-full p-3 border-4 border-ink focus:outline-none focus:bg-lime/10 transition-colors resize-none"></textarea>
+                    <textarea name="description" value={formData.description} onChange={handleInputChange} rows={4} className="block w-full p-3 border-2 border-ink focus:outline-none focus:bg-lime/10 transition-colors resize-none"></textarea>
                   </div>
                 </div>
                 <div className="mt-10 flex justify-between">
@@ -298,7 +308,7 @@ export default function PharmacyWizard() {
 
             {step === 3 && (
               <motion.div key="step3" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-                <h3 className="text-2xl font-bold text-ink mb-6 font-bricolage uppercase tracking-tight">Verifizierung Dokument</h3>
+                <h3 className="text-2xl font-bold text-ink mb-6 font-bricolage tracking-tight">Verifizierung Dokument</h3>
                 <div className="space-y-6">
                   <FileUpload 
                     label="Betriebserlaubnis (erforderlich)" 
@@ -321,12 +331,12 @@ export default function PharmacyWizard() {
 
             {step === 4 && (
               <motion.div key="step4" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-                <h3 className="text-2xl font-bold text-ink mb-6 font-bricolage uppercase tracking-tight">E-Mail Bestätigung</h3>
+                <h3 className="text-2xl font-bold text-ink mb-6 font-bricolage tracking-tight">E-Mail Bestätigung</h3>
                 <div className="space-y-6">
                   <p className="text-ink font-medium">Wir haben einen Code an <strong className="bg-lime px-1">{formData.email}</strong> gesendet. Bitte gib den Code hier ein.</p>
                   <div>
                     <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Bestätigungscode</label>
-                    <input type="text" value={otp} onChange={(e) => setOtp(e.target.value)} className="block w-full p-4 border-4 border-ink focus:outline-none focus:bg-lime/10 transition-colors text-center text-3xl tracking-[0.5em] font-jetbrains font-bold" placeholder="123456" />
+                    <input type="text" value={otp} onChange={(e) => setOtp(e.target.value)} className="block w-full p-4 border-2 border-ink focus:outline-none focus:bg-lime/10 transition-colors text-center text-3xl tracking-[0.5em] font-jetbrains font-bold" placeholder="123456" />
                   </div>
                 </div>
                 <div className="mt-10 flex justify-end">

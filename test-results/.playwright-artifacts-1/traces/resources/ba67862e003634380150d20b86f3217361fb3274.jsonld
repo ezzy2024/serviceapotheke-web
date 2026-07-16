@@ -1,0 +1,1 @@
+{"@context":"\/contexts\/Domain","@id":"\/domains","@type":"hydra:Collection","hydra:totalItems":1,"hydra:member":[{"@id":"\/domains\/6a267a69ca2113fdb0afef9c","@type":"Domain","id":"6a267a69ca2113fdb0afef9c","domain":"web-library.net","isActive":true,"isPrivate":false,"createdAt":"2026-06-08T00:00:00+00:00","updatedAt":"2026-06-08T00:00:00+00:00"}]}

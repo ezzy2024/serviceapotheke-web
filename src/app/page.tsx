@@ -56,7 +56,7 @@ export default function Home() {
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Link 
-                    href="/onboarding"
+                    href="/register"
                     onClick={() => trackConversion('hero_cta_clicked')}
                     className="btn-primary-cta text-center text-lg"
                   >
@@ -306,7 +306,7 @@ export default function Home() {
               Starten Sie noch heute mit ServiceApotheke. Kostenlos, ohne Kreditkarte.
             </p>
             <Link 
-              href="/onboarding"
+              href="/register"
               onClick={() => trackConversion('bottom_cta_clicked')}
               className="inline-block py-5 px-10 rounded-full text-lg font-bold bg-white text-blue-600 hover:bg-blue-50 transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1"
             >

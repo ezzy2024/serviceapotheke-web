@@ -183,62 +183,62 @@ export default function PharmacistWizard() {
           <p className="mt-4 text-ink/70 font-medium font-jetbrains uppercase tracking-widest text-sm">Schritt {step} von {step === 4 ? 4 : 3}</p>
         </div>
 
-        <div className="bg-white border-4 border-ink shadow-[8px_8px_0px_0px_rgba(12,20,16,1)] p-8">
+        <div className="bg-white border-2 border-ink shadow-[8px_8px_0px_0px_rgba(12,20,16,1)] p-8">
           <AnimatePresence mode="wait">
             {step === 1 && (
               <motion.div key="step1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-                <h3 className="text-2xl font-bold text-ink mb-6 font-bricolage uppercase tracking-tight">Persönliche Daten & Account</h3>
+                <h3 className="text-2xl font-bold text-ink mb-6 font-bricolage tracking-tight">Persönliche Daten & Account</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
                   <div>
                     <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Vorname</label>
-                    <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} className={`block w-full p-3 border-4 focus:outline-none focus:bg-lime/10 transition-colors ${errors.firstName ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                    <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.firstName ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                     {errors.firstName && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.firstName}</p>}
                   </div>
                   <div>
                     <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Nachname</label>
-                    <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} className={`block w-full p-3 border-4 focus:outline-none focus:bg-lime/10 transition-colors ${errors.lastName ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                    <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.lastName ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                     {errors.lastName && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.lastName}</p>}
                   </div>
                 </div>
                 <div className="space-y-6">
                   <div>
                     <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">E-Mail Adresse</label>
-                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} className={`block w-full p-3 border-4 focus:outline-none focus:bg-lime/10 transition-colors ${errors.email ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.email ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                     {errors.email && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.email}</p>}
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Passwort</label>
-                      <input type="password" name="password" value={formData.password} onChange={handleInputChange} className={`block w-full p-3 border-4 focus:outline-none focus:bg-lime/10 transition-colors ${errors.password ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                      <input type="password" name="password" value={formData.password} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.password ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                       {errors.password && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.password}</p>}
                     </div>
                     <div>
                       <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Passwort bestätigen</label>
-                      <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleInputChange} className={`block w-full p-3 border-4 focus:outline-none focus:bg-lime/10 transition-colors ${errors.confirmPassword ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                      <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.confirmPassword ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                       {errors.confirmPassword && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.confirmPassword}</p>}
                     </div>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                     <div className="sm:col-span-2">
                       <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Straße</label>
-                      <input type="text" name="street" value={formData.street} onChange={handleInputChange} className={`block w-full p-3 border-4 focus:outline-none focus:bg-lime/10 transition-colors ${errors.street ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                      <input type="text" name="street" value={formData.street} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.street ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                       {errors.street && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.street}</p>}
                     </div>
                     <div>
                       <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Hausnummer</label>
-                      <input type="text" name="houseNumber" value={formData.houseNumber} onChange={handleInputChange} className={`block w-full p-3 border-4 focus:outline-none focus:bg-lime/10 transition-colors ${errors.houseNumber ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                      <input type="text" name="houseNumber" value={formData.houseNumber} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.houseNumber ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                       {errors.houseNumber && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.houseNumber}</p>}
                     </div>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                     <div>
                       <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">PLZ</label>
-                      <input type="text" name="postalCode" value={formData.postalCode} onChange={handleInputChange} className={`block w-full p-3 border-4 focus:outline-none focus:bg-lime/10 transition-colors ${errors.postalCode ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                      <input type="text" name="postalCode" value={formData.postalCode} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.postalCode ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                       {errors.postalCode && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.postalCode}</p>}
                     </div>
                     <div className="sm:col-span-2">
                       <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Stadt</label>
-                      <input type="text" name="city" value={formData.city} onChange={handleInputChange} className={`block w-full p-3 border-4 focus:outline-none focus:bg-lime/10 transition-colors ${errors.city ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
+                      <input type="text" name="city" value={formData.city} onChange={handleInputChange} className={`block w-full p-3 border-2 focus:outline-none focus:bg-lime/10 transition-colors ${errors.city ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
                       {errors.city && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.city}</p>}
                     </div>
                   </div>
@@ -253,18 +253,18 @@ export default function PharmacistWizard() {
 
             {step === 2 && (
               <motion.div key="step2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-                <h3 className="text-2xl font-bold text-ink mb-6 font-bricolage uppercase tracking-tight">Qualifikationen & Kenntnisse</h3>
+                <h3 className="text-2xl font-bold text-ink mb-6 font-bricolage tracking-tight">Qualifikationen & Kenntnisse</h3>
                 <div className="space-y-6">
                   <div>
                     <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Warenwirtschaftssysteme (WWS)</label>
                     <div className="flex gap-2">
-                      <select value={currentWws} onChange={(e) => setCurrentWws(e.target.value)} className="block w-full p-3 border-4 border-ink focus:outline-none focus:bg-lime/10 transition-colors font-bold bg-white">
+                      <select value={currentWws} onChange={(e) => setCurrentWws(e.target.value)} className="block w-full p-3 border-2 border-ink focus:outline-none focus:bg-lime/10 transition-colors font-bold bg-white">
                         <option>Pharmatechnik IXOS</option>
                         <option>CGM Lauer</option>
                         <option>ADG</option>
                         <option>Awinta</option>
                       </select>
-                      <select value={currentLevel} onChange={(e) => setCurrentLevel(e.target.value)} className="block w-full p-3 border-4 border-ink focus:outline-none focus:bg-lime/10 transition-colors font-bold bg-white">
+                      <select value={currentLevel} onChange={(e) => setCurrentLevel(e.target.value)} className="block w-full p-3 border-2 border-ink focus:outline-none focus:bg-lime/10 transition-colors font-bold bg-white">
                         <option>Grundkenntnisse</option>
                         <option>Fortgeschritten</option>
                         <option>Experte</option>
@@ -296,7 +296,7 @@ export default function PharmacistWizard() {
 
             {step === 3 && (
               <motion.div key="step3" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-                <h3 className="text-2xl font-bold text-ink mb-6 font-bricolage uppercase tracking-tight">Dokumente Upload</h3>
+                <h3 className="text-2xl font-bold text-ink mb-6 font-bricolage tracking-tight">Dokumente Upload</h3>
                 <div className="space-y-6">
                   <FileUpload 
                     label="Approbationsurkunde" 
@@ -330,12 +330,12 @@ export default function PharmacistWizard() {
 
             {step === 4 && (
               <motion.div key="step4" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-                <h3 className="text-2xl font-bold text-ink mb-6 font-bricolage uppercase tracking-tight">E-Mail Bestätigung</h3>
+                <h3 className="text-2xl font-bold text-ink mb-6 font-bricolage tracking-tight">E-Mail Bestätigung</h3>
                 <div className="space-y-6">
                   <p className="text-ink font-medium">Wir haben einen Code an <strong className="bg-lime px-1">{formData.email}</strong> gesendet. Bitte gib den Code hier ein.</p>
                   <div>
                     <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Bestätigungscode</label>
-                    <input type="text" value={otp} onChange={(e) => setOtp(e.target.value)} className="block w-full p-4 border-4 border-ink focus:outline-none focus:bg-lime/10 transition-colors text-center text-3xl tracking-[0.5em] font-jetbrains font-bold" placeholder="123456" />
+                    <input type="text" value={otp} onChange={(e) => setOtp(e.target.value)} className="block w-full p-4 border-2 border-ink focus:outline-none focus:bg-lime/10 transition-colors text-center text-3xl tracking-[0.5em] font-jetbrains font-bold" placeholder="123456" />
                   </div>
                 </div>
                 <div className="mt-10 flex justify-end">
