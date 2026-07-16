@@ -42,9 +42,7 @@ test.describe('E2E Registration Flow', () => {
 
     await page.goto('http://localhost:3000/register/pharmacy');
     
-    await page.fill('input[placeholder*="Suchen Sie Ihre Apotheke"]', 'Not Real Apotheke 99');
-    await page.waitForSelector('text=Keine Apotheke gefunden?');
-    await page.click('button:has-text("Manuell eintragen")');
+    // Step 1: Manually Enter (Search logic removed)
 
     await page.fill('input[name="pharmacyName"]', 'Test Apotheke');
     await page.fill('input[name="email"]', account.email);

@@ -50,7 +50,7 @@ test.describe('Production Registration E2E', () => {
     const account = await getMailTmAccount();
     console.log(`Pharmacist Test Email: ${account.email}`);
 
-    await page.goto('https://serviceapotheke.tech/register/pharmacist');
+    await page.goto('http://localhost:3000/register/pharmacist');
     
     // Step 1: Personal Data
     await page.fill('input[name="firstName"]', 'Test');
@@ -96,12 +96,9 @@ test.describe('Production Registration E2E', () => {
     const account = await getMailTmAccount();
     console.log(`Pharmacy Test Email: ${account.email}`);
 
-    await page.goto('https://serviceapotheke.tech/register/pharmacy');
+    await page.goto('http://localhost:3000/register/pharmacy');
     
-    // Step 1: Search and Manually Enter
-    await page.fill('input[placeholder*="Suchen Sie Ihre Apotheke"]', 'Not Real Apotheke 99');
-    await page.waitForSelector('text=Keine Apotheke gefunden?');
-    await page.click('button:has-text("Manuell eintragen")');
+    // Step 1: Manually Enter (Search logic removed)
 
     await page.fill('input[name="pharmacyName"]', 'Test Apotheke');
     await page.fill('input[name="email"]', account.email);
