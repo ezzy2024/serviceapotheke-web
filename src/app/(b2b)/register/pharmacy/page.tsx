@@ -29,7 +29,8 @@ export default function PharmacyWizard() {
     licenseNumber: '',
     description: '',
     documentName: 'Betriebserlaubnis',
-    softwareSystem: 'CGM Lauer'
+    softwareSystem: 'CGM Lauer',
+    softwareSystemOther: ''
   });
   
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -71,6 +72,11 @@ export default function PharmacyWizard() {
 
       const submitData = new FormData();
       Object.entries(formData).forEach(([key, value]) => {
+        if (key === 'softwareSystemOther') return;
+        if (key === 'softwareSystem' && formData.softwareSystem === 'Andere') {
+          submitData.append(key, formData.softwareSystemOther);
+          return;
+        }
         if (key !== 'confirmPassword' && value) {
           submitData.append(key, value as string);
         }
@@ -236,11 +242,19 @@ export default function PharmacyWizard() {
                       <option>Pharmatechnik IXOS</option>
                       <option>ADG</option>
                       <option>Awinta</option>
+                      <option>Prokas</option>
+                      <option>Andere</option>
                     </select>
+                    {formData.softwareSystem === 'Andere' && (
+                      <div className="mt-4">
+                        <label className="block text-sm font-semibold text-slate-700 mb-1">Bitte WWS angeben</label>
+                        <input type="text" name="softwareSystemOther" value={formData.softwareSystemOther} onChange={handleInputChange} className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" placeholder="Name des Systems" />
+                      </div>
+                    )}
                   </div>
                   <div>
                     <label className="block text-sm font-semibold text-slate-700 mb-1">Apotheken Beschreibung (optional)</label>
-                    <textarea name="description" value={formData.description} onChange={handleInputChange} rows={4} className="block w-full p-3 border-2 border-ink focus:outline-none focus:bg-lime/10 transition-colors resize-none"></textarea>
+                    <textarea name="description" value={formData.description} onChange={handleInputChange} rows={4} className="block w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all resize-none"></textarea>
                   </div>
                 </div>
                 <div className="mt-10 flex justify-between">

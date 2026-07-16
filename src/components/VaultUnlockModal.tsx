@@ -67,7 +67,7 @@ export default function VaultUnlockModal({ isOpen, onSuccess, onCancel }: VaultU
             Tresor Entsperren
           </h2>
           <p className="text-ink/80 font-bold text-center text-sm mb-8">
-            Die Gesundheitsdaten sind E2EE verschlsselt. Bitte geben Sie Ihr Vault-Passwort ein, um den lokalen Schlssel zu generieren.
+            Die Gesundheitsdaten sind E2EE verschlüsselt. Bitte geben Sie Ihr Vault-Passwort ein, um den lokalen Schlüssel zu generieren.
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-6">

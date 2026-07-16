@@ -127,7 +127,7 @@ export default function PdlDashboardPage() {
 
       // 4. Transmit to backend
       const res = await api.post('/pdl/ingest', encryptedPayloads);
-      showToast(`${res.data.processed} Patienten verschlsselt und bertragen.`, 'success');
+      showToast(`${res.data.processed} Patienten verschlüsselt und übertragen.`, 'success');
       fetchPatients();
     } catch (err: any) {
       showToast(err.response?.data?.error || 'Upload fehlgeschlagen.', 'error');

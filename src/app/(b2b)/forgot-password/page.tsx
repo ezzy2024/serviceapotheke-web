@@ -17,9 +17,9 @@ export default function ForgotPasswordPage() {
     
     try {
       const endpoint = role === 'Pharmacy' ? '/Pharmacy/forgot-password' : '/Pharmacist/forgot-password';
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5241';
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5241/api';
       
-      const res = await fetch(`${apiUrl}/api${endpoint}`, {
+      const res = await fetch(`${baseUrl}${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
