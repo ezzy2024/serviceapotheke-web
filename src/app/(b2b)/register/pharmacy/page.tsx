@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+
 import { ArrowRight, ArrowLeft, UploadCloud, CheckCircle2 } from 'lucide-react';
 import api from '@/lib/api';
 import { useRouter } from 'next/navigation';
@@ -193,10 +193,9 @@ export default function PharmacyWizard() {
           <p className="mt-4 text-ink/70 font-medium font-jetbrains uppercase tracking-widest text-sm">Schritt {step} von {step === 4 ? 4 : 3}</p>
         </div>
 
-        <div className="bg-white bg-white rounded-2xl shadow-xl ring-1 ring-ink/5 p-8">
-          <AnimatePresence mode="wait">
+        <div className="bg-white rounded-2xl shadow-xl ring-1 ring-ink/5 p-8">
             {step === 1 && (
-              <motion.div key="step1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
+              <div key="step1">
                 <h3 className="text-2xl font-bold text-ink mb-6 font-bricolage tracking-tight">Apotheken Daten & Account</h3>
                 
                 <div className="mb-8 relative">
@@ -290,11 +289,11 @@ export default function PharmacyWizard() {
                   </div>
                   </>
                   )}
-                </motion.div>
-              )}
+              </div>
+            )}
 
             {step === 2 && (
-              <motion.div key="step2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
+              <div key="step2">
                 <h3 className="text-2xl font-bold text-ink mb-6 font-bricolage tracking-tight">Infrastruktur & Details</h3>
                 <div className="space-y-6">
                   <div>
@@ -323,11 +322,11 @@ export default function PharmacyWizard() {
                     Weiter <ArrowRight className="ml-2 w-5 h-5" />
                   </Button>
                 </div>
-              </motion.div>
+              </div>
             )}
 
             {step === 3 && (
-              <motion.div key="step3" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
+              <div key="step3">
                 <h3 className="text-2xl font-bold text-ink mb-6 font-bricolage tracking-tight">Verifizierung Dokument</h3>
                 <div className="space-y-6">
                   <FileUpload 
@@ -346,11 +345,11 @@ export default function PharmacyWizard() {
                     <CheckCircle2 className="mr-2 w-5 h-5" /> Registrierung abschließen
                   </Button>
                 </div>
-              </motion.div>
+              </div>
             )}
 
             {step === 4 && (
-              <motion.div key="step4" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
+              <div key="step4">
                 <h3 className="text-2xl font-bold text-ink mb-6 font-bricolage tracking-tight">E-Mail Bestätigung</h3>
                 <div className="space-y-6">
                   <p className="text-ink font-medium">Wir haben einen Code an <strong className="bg-lime px-1">{formData.email}</strong> gesendet. Bitte gib den Code hier ein.</p>
@@ -364,9 +363,8 @@ export default function PharmacyWizard() {
                     Verifizieren <CheckCircle2 className="ml-2 w-5 h-5" />
                   </Button>
                 </div>
-              </motion.div>
+              </div>
             )}
-          </AnimatePresence>
         </div>
       </div>
     </div>
