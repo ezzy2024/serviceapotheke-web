@@ -82,7 +82,6 @@ export default function ShiftRadarPage() {
         
         {/* Sidebar */}
         <ShiftSidebarFilters filters={filters} onFilterChange={setFilters} />
-
         {/* Results Area */}
         <div className="min-w-0">
           
@@ -92,16 +91,16 @@ export default function ShiftRadarPage() {
               {isLoading ? (
                 <span>Lade Vakanzen...</span>
               ) : (
-                <><strong className="text-[20px] text-ink font-black font-bricolage">{filteredShifts.length} VAKANZEN</strong> <span className="font-jetbrains">FÜR IHR PROFIL</span></>
+                <><strong className="text-[20px] text-ink font-bold font-bricolage">{filteredShifts.length} Vakanzen</strong> <span className="text-ink/80">für Ihr Profil</span></>
               )}
             </div>
             
             <div className="flex items-center gap-2">
-              <div className="flex border-4 border-ink rounded-lg overflow-hidden shadow-[4px_4px_0px_0px_rgba(12,20,16,1)]">
+              <div className="flex border-2 border-ink rounded-lg overflow-hidden shadow-sm">
                 <button className="px-3 py-2 bg-ink flex items-center justify-center transition-colors">
                   <List className="w-5 h-5 text-white" />
                 </button>
-                <button className="px-3 py-2 bg-white hover:bg-lime flex items-center justify-center transition-colors">
+                <button className="px-3 py-2 bg-white hover:bg-bone flex items-center justify-center transition-colors">
                   <LayoutGrid className="w-5 h-5 text-ink" />
                 </button>
               </div>
@@ -111,10 +110,10 @@ export default function ShiftRadarPage() {
           {/* Premium Match */}
           <HaversinePriorityCard />
 
-          <div className="flex items-center gap-4 my-6 text-[14px] font-bold uppercase tracking-[1px] text-ink font-jetbrains">
-            <div className="flex-1 h-1 bg-ink"></div>
-            WEITERE VAKANZEN
-            <div className="flex-1 h-1 bg-ink"></div>
+          <div className="flex items-center gap-4 my-6 text-[14px] font-bold text-ink/70 font-bricolage">
+            <div className="flex-1 h-px bg-ink/20"></div>
+            Weitere Vakanzen
+            <div className="flex-1 h-px bg-ink/20"></div>
           </div>
 
           {/* Shift Cards Feed */}
@@ -122,7 +121,7 @@ export default function ShiftRadarPage() {
             {isLoading ? (
                <div className="text-center py-10 font-bold text-ink">Lade...</div>
             ) : filteredShifts.length === 0 ? (
-               <div className="text-center py-12 text-ink bg-white border-4 border-ink rounded-xl shadow-[6px_6px_0px_0px_rgba(12,20,16,1)] font-bold text-[18px]">Keine offenen Schichten für diese Filter gefunden.</div>
+               <div className="text-center py-12 text-ink bg-white border-2 border-ink rounded-xl shadow-sm font-medium text-[16px]">Keine offenen Schichten für diese Filter gefunden.</div>
             ) : (
               filteredShifts.map((shift: any) => {
                 const dates = [];
@@ -172,22 +171,21 @@ export default function ShiftRadarPage() {
           {/* Pagination */}
           {filteredShifts.length > 0 && (
             <div className="flex justify-center items-center gap-2 mt-10">
-               <button className="w-10 h-10 flex items-center justify-center rounded-lg text-[14px] font-bold border-4 border-ink bg-ink text-lime shadow-[4px_4px_0px_0px_rgba(12,20,16,1)]">
+               <button className="w-10 h-10 flex items-center justify-center rounded-lg text-[14px] font-bold border-2 border-ink bg-ink text-white shadow-sm">
                  1
                </button>
-               <button className="w-10 h-10 flex items-center justify-center rounded-lg text-[14px] font-bold border-4 border-ink bg-white text-ink shadow-[4px_4px_0px_0px_rgba(12,20,16,1)] hover:-translate-y-0.5 transition-transform hover:shadow-[6px_6px_0px_0px_rgba(12,20,16,1)]">
+               <button className="w-10 h-10 flex items-center justify-center rounded-lg text-[14px] font-medium border-2 border-ink bg-white text-ink shadow-sm hover:bg-bone transition-colors">
                  2
                </button>
-               <button className="w-10 h-10 flex items-center justify-center rounded-lg text-[14px] font-bold border-4 border-ink bg-white text-ink shadow-[4px_4px_0px_0px_rgba(12,20,16,1)] hover:-translate-y-0.5 transition-transform hover:shadow-[6px_6px_0px_0px_rgba(12,20,16,1)]">
+               <button className="w-10 h-10 flex items-center justify-center rounded-lg text-[14px] font-medium border-2 border-ink bg-white text-ink shadow-sm hover:bg-bone transition-colors">
                  3
                </button>
-               <span className="text-ink px-2 font-black">...</span>
-               <button className="w-10 h-10 flex items-center justify-center rounded-lg text-[14px] font-bold border-4 border-ink bg-white text-ink shadow-[4px_4px_0px_0px_rgba(12,20,16,1)] hover:-translate-y-0.5 transition-transform hover:shadow-[6px_6px_0px_0px_rgba(12,20,16,1)]">
+               <span className="text-ink/50 px-2 font-black">...</span>
+               <button className="w-10 h-10 flex items-center justify-center rounded-lg text-[14px] font-medium border-2 border-ink bg-white text-ink shadow-sm hover:bg-bone transition-colors">
                  14
                </button>
             </div>
           )}
-
         </div>
       </main>
     </div>
