@@ -16,6 +16,12 @@ export default function PharmacistShifts() {
   const [augConsent, setAugConsent] = useState(false);
   const [isCompleting, setIsCompleting] = useState(false);
 
+  // New Timesheet Form State
+  const [startTime, setStartTime] = useState("08:00");
+  const [endTime, setEndTime] = useState("16:30");
+  const [breakMinutes, setBreakMinutes] = useState(30);
+  const [timesheetError, setTimesheetError] = useState("");
+
   useEffect(() => {
     if (user?.id) {
       fetchShifts();
@@ -39,26 +45,70 @@ export default function PharmacistShifts() {
   const openComplianceModal = (applicationId: number) => {
     setSelectedApplicationId(applicationId);
     setAugConsent(false);
+    setTimesheetError("");
+    
+    const shift = shifts.find(s => s.id === applicationId);
+    if (shift?.jobPost) {
+      const start = shift.jobPost.startDate ? new Date(shift.jobPost.startDate).toLocaleTimeString('de-DE', {hour: '2-digit', minute:'2-digit'}) : "08:00";
+      const end = shift.jobPost.endDate ? new Date(shift.jobPost.endDate).toLocaleTimeString('de-DE', {hour: '2-digit', minute:'2-digit'}) : "16:30";
+      setStartTime(start);
+      setEndTime(end);
+      setBreakMinutes(30);
+    }
+    
     setIsComplianceModalOpen(true);
   };
 
   const handleCompleteShift = async () => {
     if (!augConsent || !selectedApplicationId) return;
     
+    setTimesheetError("");
+    const [startH, startM] = startTime.split(':').map(Number);
+    const [endH, endM] = endTime.split(':').map(Number);
+    const totalMinutes = (endH * 60 + endM) - (startH * 60 + startM);
+    
+    if (totalMinutes <= 0) {
+        setTimesheetError("Die Endzeit muss nach der Startzeit liegen.");
+        return;
+    }
+    if (breakMinutes >= totalMinutes) {
+        setTimesheetError("Die Pausenzeit darf nicht länger als die gesamte Schichtdauer sein.");
+        return;
+    }
+    
     setIsCompleting(true);
     try {
-      // The backend accepts Timesheet data here, but for MVP we submit standard shift hours
-      await api.put('/Allocation/complete', {
-        applicationId: selectedApplicationId,
-        actualHoursWorked: 8.0, // Hardcoded for MVP, in real app would be an input field
-        breaksTakenMinutes: 30,
-        notes: "Schicht erfolgreich abgeschlossen."
+      const shift = shifts.find(s => s.id === selectedApplicationId);
+      
+      // 1. Submit Timesheet
+      try {
+        await api.post('/Timesheet/submit', {
+          jobApplicationId: selectedApplicationId,
+          actualStartDate: shift?.jobPost?.startDate || new Date().toISOString(),
+          actualStartTime: `${startTime}:00`,
+          actualEndTime: `${endTime}:00`,
+          breaksMinutes: breakMinutes,
+          hourlyRate: shift?.jobPost?.salary || 0,
+          travelCosts: 0,
+          accommodationCosts: 0
+        });
+      } catch (error) {
+        console.error('Failed to submit timesheet', error);
+        alert('Fehler beim Einreichen des Stundenzettels. Bitte überprüfe deine Eingaben.');
+        setIsCompleting(false);
+        return;
+      }
+
+      // 2. Transition Status to Completed
+      await api.put(`/Allocation/shift/${selectedApplicationId}/status`, {
+        newStatus: "Completed"
       });
+
       setIsComplianceModalOpen(false);
       fetchShifts(); // Refresh state
     } catch (error) {
       console.error('Failed to complete shift', error);
-      alert('Fehler beim Abschließen der Schicht.');
+      alert('Fehler beim Aktualisieren des Schichtstatus.');
     } finally {
       setIsCompleting(false);
     }
@@ -175,6 +225,27 @@ export default function PharmacistShifts() {
             <h3 className="text-2xl font-bold text-slate-800 mb-2">Rechtliche Bestätigung (Freelancer)</h3>
             <p className="text-slate-600 mb-6 text-sm">Zur finalen Rechnungsstellung und Vermeidung der Scheinselbstständigkeit ist diese Bestätigung erforderlich.</p>
             
+            {timesheetError && (
+              <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm mb-4 border border-red-100">
+                {timesheetError}
+              </div>
+            )}
+            
+            <div className="grid grid-cols-3 gap-4 mb-6">
+              <div>
+                <label className="block text-xs font-bold text-slate-500 mb-1">Startzeit</label>
+                <input type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} className="w-full border border-slate-200 rounded-lg p-2 text-slate-700" />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-500 mb-1">Endzeit</label>
+                <input type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} className="w-full border border-slate-200 rounded-lg p-2 text-slate-700" />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-500 mb-1">Pause (Min)</label>
+                <input type="number" min="0" value={breakMinutes} onChange={(e) => setBreakMinutes(Number(e.target.value))} className="w-full border border-slate-200 rounded-lg p-2 text-slate-700" />
+              </div>
+            </div>
+
             <div className="bg-slate-50 p-5 rounded-xl border border-slate-200 mb-6">
               <label className="flex items-start cursor-pointer">
                 <input 

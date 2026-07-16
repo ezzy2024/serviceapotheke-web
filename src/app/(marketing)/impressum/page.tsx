@@ -23,7 +23,7 @@ export default function ImpressumPage() {
 
             <h2>Kontakt</h2>
             <p>
-              Telefon: +49 (0) 2151 1234567<br />
+              Telefon: +49 151 66884447<br />
               E-Mail: <a href="mailto:team@serviceapotheke.tech" className="text-blue-600 hover:text-blue-500 transition-colors">team@serviceapotheke.tech</a>
             </p>
 

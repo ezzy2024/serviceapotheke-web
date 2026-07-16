@@ -42,7 +42,7 @@ export default function Home() {
                 <div className="space-y-4">
                   <div className="compliance-badge shadow-sm">
                     <CheckCircle2 className="w-4 h-4" />
-                    <span>Freelance-Dienstvertrag & DSGVO-zertifiziert</span>
+                    <span>Transparenter Freelance-Dienstvertrag</span>
                   </div>
                   <h1 className="text-5xl lg:text-7xl font-extrabold text-slate-900 leading-tight tracking-tight">
                     Apotheken-Management,<br />
@@ -97,8 +97,8 @@ export default function Home() {
                 <span className="text-sm text-slate-500 mt-1">Digitaler Workflow</span>
               </div>
               <div className="flex flex-col items-center">
-                <span className="text-4xl font-extrabold text-slate-900">DSGVO</span>
-                <span className="text-sm text-slate-500 mt-1">Strengster Datenschutz</span>
+                <span className="text-4xl font-extrabold text-slate-900">Sicher</span>
+                <span className="text-sm text-slate-500 mt-1">Strikte Vertraulichkeit</span>
               </div>
             </div>
           </div>
@@ -153,7 +153,7 @@ export default function Home() {
                 </div>
                 <h3 className="text-xl font-bold text-slate-900 mb-2">DMS</h3>
                 <p className="text-slate-600 leading-relaxed">
-                  Sicheres Dokumentenmanagementsystem mit vollständiger Audit-Trail. DSGVO-konform.
+                  Sicheres Dokumentenmanagementsystem mit vollständiger Audit-Trail.
                 </p>
               </div>
 
@@ -171,9 +171,9 @@ export default function Home() {
                 <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center text-white mb-4 group-hover:shadow-lg group-hover:scale-105 transition-all duration-300">
                   <CheckCircle2 className="w-7 h-7" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-2">Enterprise-Security</h3>
+                <h3 className="text-xl font-bold text-slate-900 mb-2">Sichere Daten</h3>
                 <p className="text-slate-600 leading-relaxed">
-                  End-to-End-Verschlüsselung, SSO, und Zwei-Faktor-Authentifizierung. Ihre Daten sind sicher.
+                  End-to-End-Verschlüsselung für sensible Patientendaten. Ihre Daten sind sicher.
                 </p>
               </div>
             </div>
