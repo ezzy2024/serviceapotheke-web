@@ -153,6 +153,12 @@ test.describe('Production Registration E2E', () => {
     await page.waitForURL('**/dashboard/pharmacy*');
     await page.waitForLoadState('networkidle');
     await page.screenshot({ path: 'pharmacy_dashboard.png', fullPage: true });
+    
+    // Check PDL page (AMTS modal)
+    await page.goto('https://serviceapotheke.tech/dashboard/pharmacy/pdl');
+    await page.waitForLoadState('networkidle');
+    await page.screenshot({ path: 'amts_modal.png', fullPage: true });
+
     console.log('Pharmacy registration completed successfully!');
   });
 });

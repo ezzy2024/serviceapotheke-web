@@ -9,7 +9,6 @@ import { useToast } from '@/components/ui/Toast';
 import { Button } from '@/components/ui/Button';
 import { FileUpload } from '@/components/ui/FileUpload';
 import { pharmacySchema } from '@/lib/validation';
-import { searchPharmacyRegistry } from '@/app/actions/searchPharmacyRegistry';
 
 export default function PharmacyWizard() {
   const [step, setStep] = useState(1);
@@ -37,37 +36,6 @@ export default function PharmacyWizard() {
 
   const [documentFile, setDocumentFile] = useState<File | null>(null);
   const [otp, setOtp] = useState('');
-  
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<any[]>([]);
-  const [isSearching, setIsSearching] = useState(false);
-  const [showManualFields, setShowManualFields] = useState(false);
-
-  const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const query = e.target.value;
-    setSearchQuery(query);
-    if (query.length >= 2) {
-      setIsSearching(true);
-      const results = await searchPharmacyRegistry(query);
-      setSearchResults(results || []);
-      setIsSearching(false);
-    } else {
-      setSearchResults([]);
-    }
-  };
-
-  const handleSelectPharmacy = (pharmacy: any) => {
-    setFormData((prev) => ({
-      ...prev,
-      pharmacyName: pharmacy.name || '',
-      street: pharmacy.street || '',
-      postalCode: pharmacy.plz || '',
-      city: pharmacy.city || ''
-    }));
-    setSearchQuery(pharmacy.name || '');
-    setSearchResults([]);
-    setShowManualFields(true);
-  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -186,123 +154,84 @@ export default function PharmacyWizard() {
   };
 
   return (
-    <div className="min-h-screen bg-bone flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 font-sans">
+    <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-3xl w-full mx-auto">
         <div className="text-center mb-8">
-          <h2 className="text-4xl md:text-5xl font-black text-ink font-bricolage tracking-tight uppercase">Apotheken Registrierung</h2>
-          <p className="mt-4 text-ink/70 font-medium font-jetbrains uppercase tracking-widest text-sm">Schritt {step} von {step === 4 ? 4 : 3}</p>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">Apotheken Registrierung</h2>
+          <p className="mt-2 text-slate-500 font-semibold text-sm uppercase tracking-wider">Schritt {step} von {step === 4 ? 4 : 3}</p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-xl ring-1 ring-ink/5 p-8">
+        <div className="bg-white rounded-2xl shadow-xl border border-slate-100 p-8 md:p-10">
             {step === 1 && (
               <div key="step1">
-                <h3 className="text-2xl font-bold text-ink mb-6 font-bricolage tracking-tight">Apotheken Daten & Account</h3>
-                
-                <div className="mb-8 relative">
-                  <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Apotheken-Register durchsuchen</label>
-                  <input 
-                    type="text" 
-                    placeholder="Suchen Sie Ihre Apotheke nach Name oder PLZ..." 
-                    value={searchQuery}
-                    onChange={handleSearchChange}
-                    className="block w-full p-3 border border-lime/50 rounded-xl focus:ring-2 focus:ring-lime transition-all shadow-sm bg-white shadow-md rounded-xl ring-1 ring-ink/5"
-                  />
-                  {isSearching && <div className="absolute right-3 top-10 text-sm font-bold text-ink/50">Lade...</div>}
-                  {searchResults.length === 0 && searchQuery.length >= 2 && !isSearching && !showManualFields && (
-                    <div className="absolute z-10 w-full mt-2 bg-white border-2 border-ink shadow-md rounded-xl ring-1 ring-ink/5 p-4 text-center">
-                      <p className="text-sm font-bold text-ink mb-3">Keine Apotheke gefunden?</p>
-                      <Button onClick={() => setShowManualFields(true)} className="w-full bg-white text-ink border border-ink/20 rounded-xl shadow-sm hover:bg-bone font-semibold px-6 py-3 transition-all inline-flex items-center justify-center">
-                        Manuell eintragen
-                      </Button>
-                    </div>
-                  )}
-                  {searchResults.length > 0 && (
-                    <ul className="absolute z-10 w-full mt-2 bg-white border-2 border-ink shadow-md rounded-xl ring-1 ring-ink/5 max-h-60 overflow-y-auto">
-                      {searchResults.map((p) => (
-                        <li 
-                          key={p.id} 
-                          onClick={() => handleSelectPharmacy(p)}
-                          className="p-3 border-b-2 border-ink/10 hover:bg-lime/20 cursor-pointer transition-colors"
-                        >
-                          <div className="font-bold text-ink">{p.name}</div>
-                          <div className="text-xs text-ink/70">{p.street}, {p.plz} {p.city}</div>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-
-                {showManualFields && (
-                  <>
+                <h3 className="text-2xl font-bold text-slate-900 mb-6 tracking-tight">Apotheken Daten & Account</h3>
                   <div className="space-y-6">
                   <div>
-                    <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Name der Apotheke</label>
-                    <input type="text" name="pharmacyName" value={formData.pharmacyName} onChange={handleInputChange} className={`block w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-lime transition-all shadow-sm ${errors.pharmacyName ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
-                    {errors.pharmacyName && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.pharmacyName}</p>}
+                    <label className="block text-sm font-semibold text-slate-700 mb-1">Name der Apotheke</label>
+                    <input type="text" name="pharmacyName" value={formData.pharmacyName} onChange={handleInputChange} className={`w-full px-4 py-3 rounded-xl border transition-all ${errors.pharmacyName ? 'border-red-300 focus:ring-2 focus:ring-red-500/20 bg-red-50 text-red-900' : 'border-slate-200 bg-white text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500'}`} />
+                    {errors.pharmacyName && <p className="mt-2 text-sm text-red-600 font-medium">{errors.pharmacyName}</p>}
                   </div>
                   <div>
-                    <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">E-Mail Adresse</label>
-                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} className={`block w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-lime transition-all shadow-sm ${errors.email ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
-                    {errors.email && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.email}</p>}
+                    <label className="block text-sm font-semibold text-slate-700 mb-1">E-Mail Adresse</label>
+                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} className={`w-full px-4 py-3 rounded-xl border transition-all ${errors.email ? 'border-red-300 focus:ring-2 focus:ring-red-500/20 bg-red-50 text-red-900' : 'border-slate-200 bg-white text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500'}`} />
+                    {errors.email && <p className="mt-2 text-sm text-red-600 font-medium">{errors.email}</p>}
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Passwort</label>
-                      <input type="password" name="password" value={formData.password} onChange={handleInputChange} className={`block w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-lime transition-all shadow-sm ${errors.password ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
-                      {errors.password && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.password}</p>}
+                      <label className="block text-sm font-semibold text-slate-700 mb-1">Passwort</label>
+                      <input type="password" name="password" value={formData.password} onChange={handleInputChange} className={`w-full px-4 py-3 rounded-xl border transition-all ${errors.password ? 'border-red-300 focus:ring-2 focus:ring-red-500/20 bg-red-50 text-red-900' : 'border-slate-200 bg-white text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500'}`} />
+                      {errors.password && <p className="mt-2 text-sm text-red-600 font-medium">{errors.password}</p>}
                     </div>
                     <div>
-                      <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Passwort bestätigen</label>
-                      <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleInputChange} className={`block w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-lime transition-all shadow-sm ${errors.confirmPassword ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
-                      {errors.confirmPassword && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.confirmPassword}</p>}
+                      <label className="block text-sm font-semibold text-slate-700 mb-1">Passwort bestätigen</label>
+                      <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleInputChange} className={`w-full px-4 py-3 rounded-xl border transition-all ${errors.confirmPassword ? 'border-red-300 focus:ring-2 focus:ring-red-500/20 bg-red-50 text-red-900' : 'border-slate-200 bg-white text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500'}`} />
+                      {errors.confirmPassword && <p className="mt-2 text-sm text-red-600 font-medium">{errors.confirmPassword}</p>}
                     </div>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                     <div className="sm:col-span-2">
-                      <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Straße</label>
-                      <input type="text" name="street" value={formData.street} onChange={handleInputChange} className={`block w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-lime transition-all shadow-sm ${errors.street ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
-                      {errors.street && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.street}</p>}
+                      <label className="block text-sm font-semibold text-slate-700 mb-1">Straße</label>
+                      <input type="text" name="street" value={formData.street} onChange={handleInputChange} className={`w-full px-4 py-3 rounded-xl border transition-all ${errors.street ? 'border-red-300 focus:ring-2 focus:ring-red-500/20 bg-red-50 text-red-900' : 'border-slate-200 bg-white text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500'}`} />
+                      {errors.street && <p className="mt-2 text-sm text-red-600 font-medium">{errors.street}</p>}
                     </div>
                     <div>
-                      <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Hausnummer</label>
-                      <input type="text" name="houseNumber" value={formData.houseNumber} onChange={handleInputChange} className={`block w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-lime transition-all shadow-sm ${errors.houseNumber ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
-                      {errors.houseNumber && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.houseNumber}</p>}
+                      <label className="block text-sm font-semibold text-slate-700 mb-1">Hausnummer</label>
+                      <input type="text" name="houseNumber" value={formData.houseNumber} onChange={handleInputChange} className={`w-full px-4 py-3 rounded-xl border transition-all ${errors.houseNumber ? 'border-red-300 focus:ring-2 focus:ring-red-500/20 bg-red-50 text-red-900' : 'border-slate-200 bg-white text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500'}`} />
+                      {errors.houseNumber && <p className="mt-2 text-sm text-red-600 font-medium">{errors.houseNumber}</p>}
                     </div>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                     <div>
-                      <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">PLZ</label>
-                      <input type="text" name="postalCode" value={formData.postalCode} onChange={handleInputChange} className={`block w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-lime transition-all shadow-sm ${errors.postalCode ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
-                      {errors.postalCode && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.postalCode}</p>}
+                      <label className="block text-sm font-semibold text-slate-700 mb-1">PLZ</label>
+                      <input type="text" name="postalCode" value={formData.postalCode} onChange={handleInputChange} className={`w-full px-4 py-3 rounded-xl border transition-all ${errors.postalCode ? 'border-red-300 focus:ring-2 focus:ring-red-500/20 bg-red-50 text-red-900' : 'border-slate-200 bg-white text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500'}`} />
+                      {errors.postalCode && <p className="mt-2 text-sm text-red-600 font-medium">{errors.postalCode}</p>}
                     </div>
                     <div className="sm:col-span-2">
-                      <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Stadt</label>
-                      <input type="text" name="city" value={formData.city} onChange={handleInputChange} className={`block w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-lime transition-all shadow-sm ${errors.city ? 'border-persimmon bg-persimmon/10' : 'border-ink'}`} />
-                      {errors.city && <p className="mt-2 text-xs font-bold text-persimmon uppercase tracking-wider">{errors.city}</p>}
+                      <label className="block text-sm font-semibold text-slate-700 mb-1">Stadt</label>
+                      <input type="text" name="city" value={formData.city} onChange={handleInputChange} className={`w-full px-4 py-3 rounded-xl border transition-all ${errors.city ? 'border-red-300 focus:ring-2 focus:ring-red-500/20 bg-red-50 text-red-900' : 'border-slate-200 bg-white text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500'}`} />
+                      {errors.city && <p className="mt-2 text-sm text-red-600 font-medium">{errors.city}</p>}
                     </div>
                   </div>
                 </div>
                   <div className="mt-10 flex justify-end">
-                    <Button onClick={handleNext} className="bg-ink text-white rounded-xl shadow-md hover:bg-ink/90 font-semibold px-6 py-3 transition-all inline-flex items-center justify-center">
+                    <Button onClick={handleNext} className="bg-blue-600 text-white rounded-xl shadow-sm hover:bg-blue-700 font-semibold px-6 py-3 transition-all inline-flex items-center justify-center">
                       Weiter <ArrowRight className="ml-2 w-5 h-5" />
                     </Button>
                   </div>
-                  </>
-                  )}
               </div>
             )}
 
             {step === 2 && (
               <div key="step2">
-                <h3 className="text-2xl font-bold text-ink mb-6 font-bricolage tracking-tight">Infrastruktur & Details</h3>
+                <h3 className="text-2xl font-bold text-slate-900 mb-6 tracking-tight">Infrastruktur & Details</h3>
                 <div className="space-y-6">
                   <div>
-                    <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Betriebserlaubnis Nummer / IK-Nummer</label>
-                    <input type="text" name="licenseNumber" value={formData.licenseNumber} onChange={handleInputChange} className="block w-full p-3 border-2 border-ink focus:outline-none focus:bg-lime/10 transition-colors" />
+                    <label className="block text-sm font-semibold text-slate-700 mb-1">Betriebserlaubnis Nummer / IK-Nummer</label>
+                    <input type="text" name="licenseNumber" value={formData.licenseNumber} onChange={handleInputChange} className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" />
                   </div>
                   <div>
-                    <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Eingesetztes Warenwirtschaftssystem</label>
-                    <select name="softwareSystem" value={formData.softwareSystem} onChange={handleInputChange} className="block w-full p-3 border-2 border-ink focus:outline-none focus:bg-lime/10 transition-colors bg-white font-bold">
+                    <label className="block text-sm font-semibold text-slate-700 mb-1">Eingesetztes Warenwirtschaftssystem</label>
+                    <select name="softwareSystem" value={formData.softwareSystem} onChange={handleInputChange} className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all appearance-none">
                       <option>CGM Lauer</option>
                       <option>Pharmatechnik IXOS</option>
                       <option>ADG</option>
@@ -310,15 +239,15 @@ export default function PharmacyWizard() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Apotheken Beschreibung (optional)</label>
+                    <label className="block text-sm font-semibold text-slate-700 mb-1">Apotheken Beschreibung (optional)</label>
                     <textarea name="description" value={formData.description} onChange={handleInputChange} rows={4} className="block w-full p-3 border-2 border-ink focus:outline-none focus:bg-lime/10 transition-colors resize-none"></textarea>
                   </div>
                 </div>
                 <div className="mt-10 flex justify-between">
-                  <Button onClick={() => setStep(1)} className="bg-white text-ink border border-ink/20 rounded-xl shadow-sm hover:bg-bone font-semibold px-6 py-3 transition-all inline-flex items-center justify-center">
+                  <Button onClick={() => setStep(1)} className="bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 hover:text-slate-900 shadow-sm font-semibold px-6 py-3 transition-all inline-flex items-center justify-center">
                     <ArrowLeft className="mr-2 w-5 h-5" /> Zurück
                   </Button>
-                  <Button onClick={handleNext} className="bg-ink text-white rounded-xl shadow-md hover:bg-ink/90 font-semibold px-6 py-3 transition-all inline-flex items-center justify-center">
+                  <Button onClick={handleNext} className="bg-blue-600 text-white rounded-xl shadow-sm hover:bg-blue-700 font-semibold px-6 py-3 transition-all inline-flex items-center justify-center">
                     Weiter <ArrowRight className="ml-2 w-5 h-5" />
                   </Button>
                 </div>
@@ -327,7 +256,7 @@ export default function PharmacyWizard() {
 
             {step === 3 && (
               <div key="step3">
-                <h3 className="text-2xl font-bold text-ink mb-6 font-bricolage tracking-tight">Verifizierung Dokument</h3>
+                <h3 className="text-2xl font-bold text-slate-900 mb-6 tracking-tight">Verifizierung Dokument</h3>
                 <div className="space-y-6">
                   <FileUpload 
                     label="Betriebserlaubnis (erforderlich)" 
@@ -338,10 +267,10 @@ export default function PharmacyWizard() {
                   />
                 </div>
                 <div className="mt-10 flex justify-between">
-                  <Button onClick={() => setStep(2)} className="bg-white text-ink border border-ink/20 rounded-xl shadow-sm hover:bg-bone font-semibold px-6 py-3 transition-all inline-flex items-center justify-center">
+                  <Button onClick={() => setStep(2)} className="bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 hover:text-slate-900 shadow-sm font-semibold px-6 py-3 transition-all inline-flex items-center justify-center">
                     <ArrowLeft className="mr-2 w-5 h-5" /> Zurück
                   </Button>
-                  <Button onClick={handleRegister} isLoading={isLoading} className="bg-ink text-white rounded-xl shadow-md hover:bg-ink/90 font-semibold px-6 py-3 transition-all inline-flex items-center justify-center">
+                  <Button onClick={handleRegister} isLoading={isLoading} className="bg-blue-600 text-white rounded-xl shadow-sm hover:bg-blue-700 font-semibold px-6 py-3 transition-all inline-flex items-center justify-center">
                     <CheckCircle2 className="mr-2 w-5 h-5" /> Registrierung abschließen
                   </Button>
                 </div>
@@ -350,16 +279,16 @@ export default function PharmacyWizard() {
 
             {step === 4 && (
               <div key="step4">
-                <h3 className="text-2xl font-bold text-ink mb-6 font-bricolage tracking-tight">E-Mail Bestätigung</h3>
+                <h3 className="text-2xl font-bold text-slate-900 mb-6 tracking-tight">E-Mail Bestätigung</h3>
                 <div className="space-y-6">
-                  <p className="text-ink font-medium">Wir haben einen Code an <strong className="bg-lime px-1">{formData.email}</strong> gesendet. Bitte gib den Code hier ein.</p>
+                  <p className="text-slate-600 font-medium">Wir haben einen Code an <strong className="text-slate-900 font-bold bg-slate-100 px-2 py-0.5 rounded">{formData.email}</strong> gesendet. Bitte gib den Code hier ein.</p>
                   <div>
-                    <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Bestätigungscode</label>
-                    <input type="text" value={otp} onChange={(e) => setOtp(e.target.value)} className="block w-full p-4 border-2 border-ink focus:outline-none focus:bg-lime/10 transition-colors text-center text-3xl tracking-[0.5em] font-jetbrains font-bold" placeholder="123456" />
+                    <label className="block text-sm font-semibold text-slate-700 mb-1">Bestätigungscode</label>
+                    <input type="text" value={otp} onChange={(e) => setOtp(e.target.value)} className="block w-full p-4 rounded-xl border border-slate-200 bg-white text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-center text-3xl tracking-[0.5em] font-mono font-bold" placeholder="123456" />
                   </div>
                 </div>
                 <div className="mt-10 flex justify-end">
-                  <Button onClick={handleVerify} isLoading={isLoading} className="bg-ink text-white rounded-xl shadow-md hover:bg-ink/90 font-semibold px-6 py-3 transition-all inline-flex items-center justify-center">
+                  <Button onClick={handleVerify} isLoading={isLoading} className="bg-blue-600 text-white rounded-xl shadow-sm hover:bg-blue-700 font-semibold px-6 py-3 transition-all inline-flex items-center justify-center">
                     Verifizieren <CheckCircle2 className="ml-2 w-5 h-5" />
                   </Button>
                 </div>

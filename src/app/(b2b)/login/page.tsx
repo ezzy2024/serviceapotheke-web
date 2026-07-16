@@ -41,30 +41,30 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-bone relative overflow-hidden font-bricolage p-4">
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 relative overflow-hidden font-sans p-4">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="relative w-full max-w-md z-10"
       >
-        <div className="bg-white border-4 border-ink shadow-[12px_12px_0px_0px_rgba(12,20,16,1)] rounded-none p-8">
+        <div className="bg-white rounded-2xl shadow-xl border border-slate-100 p-8">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-black text-ink tracking-tight uppercase">ServiceApotheke</h1>
-            <p className="text-ink/80 font-bold mt-2">Willkommen zurück im Command Center.</p>
+            <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">ServiceApotheke</h1>
+            <p className="text-slate-500 font-medium mt-2">Willkommen zurück im Command Center.</p>
           </div>
 
-          <div className="flex bg-bone border-2 border-ink p-1 rounded-none mb-8">
+          <div className="flex bg-slate-100 p-1 rounded-xl mb-8">
             <button
               onClick={() => setRole('Pharmacist')}
-              className={`flex-1 flex items-center justify-center py-2.5 rounded-none text-sm font-black uppercase tracking-wide transition-all duration-200 ${role === 'Pharmacist' ? 'bg-ink text-bone shadow-sm' : 'text-ink/70 hover:bg-white hover:text-ink'}`}
+              className={`flex-1 flex items-center justify-center py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${role === 'Pharmacist' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-900'}`}
             >
               <User className="w-4 h-4 mr-2" />
               Freelancer
             </button>
             <button
               onClick={() => setRole('Pharmacy')}
-              className={`flex-1 flex items-center justify-center py-2.5 rounded-none text-sm font-black uppercase tracking-wide transition-all duration-200 ${role === 'Pharmacy' ? 'bg-ink text-bone shadow-sm' : 'text-ink/70 hover:bg-white hover:text-ink'}`}
+              className={`flex-1 flex items-center justify-center py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${role === 'Pharmacy' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-900'}`}
             >
               <Building2 className="w-4 h-4 mr-2" />
               Apotheke
@@ -73,7 +73,7 @@ export default function LoginPage() {
 
           <form onSubmit={handleLogin} className="space-y-5">
             <div>
-              <label htmlFor="email" className="block text-sm font-black uppercase tracking-wide text-ink mb-1">E-Mail</label>
+              <label htmlFor="email" className="block text-sm font-semibold text-slate-700 mb-1">E-Mail</label>
               <input 
                 id="email"
                 name="email"
@@ -81,13 +81,13 @@ export default function LoginPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 rounded-none border-2 border-ink bg-white text-ink font-bold focus:ring-0 focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(12,20,16,1)] transition-all"
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
                 placeholder="name@beispiel.de"
               />
             </div>
             
             <div>
-              <label htmlFor="password" className="block text-sm font-black uppercase tracking-wide text-ink mb-1">Passwort</label>
+              <label htmlFor="password" className="block text-sm font-semibold text-slate-700 mb-1">Passwort</label>
               <input 
                 id="password"
                 name="password"
@@ -95,19 +95,19 @@ export default function LoginPage() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 rounded-none border-2 border-ink bg-white text-ink font-bold focus:ring-0 focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(12,20,16,1)] transition-all tracking-widest"
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
                 placeholder="••••••••"
               />
             </div>
 
             {error && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-white text-sm font-black p-3 bg-red-500 border-2 border-ink shadow-[4px_4px_0px_0px_rgba(12,20,16,1)] uppercase tracking-wide">
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-red-600 text-sm font-medium p-3 bg-red-50 rounded-xl border border-red-100">
                 {error}
               </motion.div>
             )}
 
             <div className="flex justify-end">
-              <a href="/forgot-password" className="text-sm font-black text-ink hover:underline decoration-2 underline-offset-4 uppercase tracking-wide">
+              <a href="/forgot-password" className="text-sm font-medium text-slate-500 hover:text-slate-900 hover:underline decoration-slate-300 underline-offset-4 transition-colors">
                 Passwort vergessen?
               </a>
             </div>
@@ -115,10 +115,10 @@ export default function LoginPage() {
             <button 
               type="submit" 
               disabled={isLoading}
-              className="w-full flex justify-center items-center py-4 px-4 border-2 border-ink rounded-none shadow-[4px_4px_0px_0px_rgba(12,20,16,1)] text-sm font-black text-ink uppercase tracking-widest bg-lime hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(12,20,16,1)] transition-all disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-[4px_4px_0px_0px_rgba(12,20,16,1)]"
+              className="w-full flex justify-center items-center py-3.5 px-4 bg-blue-600 text-white rounded-xl shadow-sm text-sm font-semibold hover:bg-blue-700 transition-all disabled:opacity-70 disabled:cursor-not-allowed"
             >
               {isLoading ? (
-                <div className="w-5 h-5 border-2 border-ink/30 border-t-ink rounded-full animate-spin"></div>
+                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
               ) : (
                 <>
                   <LogIn className="w-5 h-5 mr-2" />
@@ -128,8 +128,8 @@ export default function LoginPage() {
             </button>
           </form>
           
-          <div className="mt-8 text-center text-sm text-ink font-bold">
-            Noch kein Account? <a href="/register" className="font-black uppercase tracking-wide hover:underline decoration-2 underline-offset-4">Jetzt registrieren</a>
+          <div className="mt-8 text-center text-sm text-slate-500 font-medium">
+            Noch kein Account? <a href="/register" className="font-semibold text-blue-600 hover:text-blue-700 hover:underline decoration-blue-200 underline-offset-4 transition-colors">Jetzt registrieren</a>
           </div>
         </div>
       </motion.div>
