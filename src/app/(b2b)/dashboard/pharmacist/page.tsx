@@ -7,13 +7,17 @@ import { ShiftSidebarFilters } from '@/components/dashboard/ShiftRadar/ShiftSide
 import { ShiftFilterChips } from '@/components/dashboard/ShiftRadar/ShiftFilterChips';
 import { HaversinePriorityCard } from '@/components/dashboard/ShiftRadar/HaversinePriorityCard';
 import { ShiftCard } from '@/components/dashboard/ShiftRadar/ShiftCard';
-import { ComplianceBadgesGroup } from '@/components/ui/ComplianceBadges';
 import { LayoutGrid, List } from 'lucide-react';
 
 export default function ShiftRadarPage() {
   const { user } = useAuth();
   const [shifts, setShifts] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [filters, setFilters] = useState({
+    sortBy: 'Beste Übereinstimmung (Haversine)',
+    durations: [] as string[],
+    wws: [] as string[]
+  });
 
   const fetchJobs = async () => {
     try {
@@ -43,41 +47,62 @@ export default function ShiftRadarPage() {
     }
   };
 
+  const filteredShifts = shifts.filter(shift => {
+    if (filters.wws.length > 0) {
+      const desc = (shift.description || '').toLowerCase() + ' ' + (shift.title || '').toLowerCase();
+      const hasWws = filters.wws.some(w => {
+        const keyword = w.split(' ')[0].toLowerCase();
+        return desc.includes(keyword);
+      });
+      if (!hasWws) return false;
+    }
+
+    if (filters.durations.length > 0) {
+      const text = (shift.description || '').toLowerCase() + ' ' + (shift.title || '').toLowerCase();
+      const match = filters.durations.some(d => {
+        if (d.includes('Ganztags') && (text.includes('ganztag') || text.includes('urlaub'))) return true;
+        if (d.includes('Halbtags') && (text.includes('halbtag') || text.includes('stunden'))) return true;
+        if (d.includes('Nachtdienst') && (text.includes('nacht') || text.includes('notdienst'))) return true;
+        return false;
+      });
+      if (!match) return false; // Shrink list
+    }
+
+    return true;
+  });
+
   return (
-    <div className="min-h-screen bg-slate-50 font-['Outfit',sans-serif]">
-      <div className="max-w-[1320px] mx-auto px-6 lg:px-8 pt-6 flex justify-end">
-        <ComplianceBadgesGroup />
-      </div>
+    <div className="min-h-screen bg-bone font-sans">
       {/* Container for the Chips */}
-      <div className="max-w-[1320px] mx-auto px-6 lg:px-8 pt-6">
+      <div className="max-w-[1320px] mx-auto px-6 lg:px-8 pt-10">
         <ShiftFilterChips />
       </div>
 
-      <main className="max-w-[1320px] mx-auto px-6 lg:px-8 py-6 lg:py-8 grid grid-cols-1 lg:grid-cols-[268px_1fr] gap-6 items-start">
+      <main className="max-w-[1320px] mx-auto px-6 lg:px-8 py-6 lg:py-8 grid grid-cols-1 lg:grid-cols-[268px_1fr] gap-8 items-start">
         
         {/* Sidebar */}
-        <ShiftSidebarFilters />
+        <ShiftSidebarFilters filters={filters} onFilterChange={setFilters} />
 
         {/* Results Area */}
         <div className="min-w-0">
           
           {/* Header Controls */}
-          <div className="flex items-center justify-between mb-4 gap-3">
-            <div className="text-sm text-slate-600">
+          <div className="flex items-center justify-between mb-6 gap-3">
+            <div className="text-[15px] text-ink font-medium">
               {isLoading ? (
                 <span>Lade Vakanzen...</span>
               ) : (
-                <><strong className="text-slate-900 font-bold">{shifts.length} Vakanzen</strong> für Ihr Profil</>
+                <><strong className="text-[20px] text-ink font-black font-bricolage">{filteredShifts.length} VAKANZEN</strong> <span className="font-jetbrains">FÜR IHR PROFIL</span></>
               )}
             </div>
             
             <div className="flex items-center gap-2">
-              <div className="flex border-[1.5px] border-slate-200 rounded-md overflow-hidden">
-                <button className="px-2.5 py-1.5 bg-slate-900 flex items-center justify-center transition-colors">
-                  <List className="w-4 h-4 text-white" />
+              <div className="flex border-4 border-ink rounded-lg overflow-hidden shadow-[4px_4px_0px_0px_rgba(12,20,16,1)]">
+                <button className="px-3 py-2 bg-ink flex items-center justify-center transition-colors">
+                  <List className="w-5 h-5 text-white" />
                 </button>
-                <button className="px-2.5 py-1.5 bg-transparent hover:bg-slate-50 flex items-center justify-center transition-colors">
-                  <LayoutGrid className="w-4 h-4 text-slate-400" />
+                <button className="px-3 py-2 bg-white hover:bg-lime flex items-center justify-center transition-colors">
+                  <LayoutGrid className="w-5 h-5 text-ink" />
                 </button>
               </div>
             </div>
@@ -86,20 +111,20 @@ export default function ShiftRadarPage() {
           {/* Premium Match */}
           <HaversinePriorityCard />
 
-          <div className="flex items-center gap-2.5 my-5 text-[11px] font-semibold uppercase tracking-[0.6px] text-slate-400">
-            <div className="flex-1 h-px bg-slate-200"></div>
-            Weitere Vakanzen
-            <div className="flex-1 h-px bg-slate-200"></div>
+          <div className="flex items-center gap-4 my-6 text-[14px] font-bold uppercase tracking-[1px] text-ink font-jetbrains">
+            <div className="flex-1 h-1 bg-ink"></div>
+            WEITERE VAKANZEN
+            <div className="flex-1 h-1 bg-ink"></div>
           </div>
 
           {/* Shift Cards Feed */}
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-4">
             {isLoading ? (
-               <div className="text-center py-10 text-slate-500">Lade...</div>
-            ) : shifts.length === 0 ? (
-               <div className="text-center py-10 text-slate-500 bg-white border border-slate-200 rounded-xl">Keine offenen Schichten gefunden.</div>
+               <div className="text-center py-10 font-bold text-ink">Lade...</div>
+            ) : filteredShifts.length === 0 ? (
+               <div className="text-center py-12 text-ink bg-white border-4 border-ink rounded-xl shadow-[6px_6px_0px_0px_rgba(12,20,16,1)] font-bold text-[18px]">Keine offenen Schichten für diese Filter gefunden.</div>
             ) : (
-              shifts.map((shift: any) => {
+              filteredShifts.map((shift: any) => {
                 const dates = [];
                 if (shift.startDate && shift.endDate) {
                   const s = new Date(shift.startDate).toLocaleDateString('de-DE');
@@ -145,18 +170,23 @@ export default function ShiftRadarPage() {
           </div>
 
           {/* Pagination */}
-          <div className="flex justify-center items-center gap-1.5 mt-8">
-             <button className="w-9 h-9 flex items-center justify-center rounded-md text-[13px] font-bold border-[1.5px] border-red-600 bg-red-600 text-white shadow-sm">
-               1
-             </button>
-             <button className="w-9 h-9 flex items-center justify-center rounded-md text-[13px] font-medium border-[1.5px] border-slate-200 bg-white text-slate-700 hover:border-red-600 hover:text-red-600 transition-colors">
-               2
-             </button>
-             <button className="w-9 h-9 flex items-center justify-center rounded-md text-[13px] font-medium border-[1.5px] border-slate-200 bg-white text-slate-700 hover:border-red-600 hover:text-red-600 transition-colors">
-               3
-             </button>
-             <span className="text-slate-400 px-1">...</span>
-          </div>
+          {filteredShifts.length > 0 && (
+            <div className="flex justify-center items-center gap-2 mt-10">
+               <button className="w-10 h-10 flex items-center justify-center rounded-lg text-[14px] font-bold border-4 border-ink bg-ink text-lime shadow-[4px_4px_0px_0px_rgba(12,20,16,1)]">
+                 1
+               </button>
+               <button className="w-10 h-10 flex items-center justify-center rounded-lg text-[14px] font-bold border-4 border-ink bg-white text-ink shadow-[4px_4px_0px_0px_rgba(12,20,16,1)] hover:-translate-y-0.5 transition-transform hover:shadow-[6px_6px_0px_0px_rgba(12,20,16,1)]">
+                 2
+               </button>
+               <button className="w-10 h-10 flex items-center justify-center rounded-lg text-[14px] font-bold border-4 border-ink bg-white text-ink shadow-[4px_4px_0px_0px_rgba(12,20,16,1)] hover:-translate-y-0.5 transition-transform hover:shadow-[6px_6px_0px_0px_rgba(12,20,16,1)]">
+                 3
+               </button>
+               <span className="text-ink px-2 font-black">...</span>
+               <button className="w-10 h-10 flex items-center justify-center rounded-lg text-[14px] font-bold border-4 border-ink bg-white text-ink shadow-[4px_4px_0px_0px_rgba(12,20,16,1)] hover:-translate-y-0.5 transition-transform hover:shadow-[6px_6px_0px_0px_rgba(12,20,16,1)]">
+                 14
+               </button>
+            </div>
+          )}
 
         </div>
       </main>
