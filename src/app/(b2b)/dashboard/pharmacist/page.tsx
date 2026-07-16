@@ -161,6 +161,7 @@ export default function ShiftRadarPage() {
                     distance="~ km"
                     rating="0.0"
                     reviews="0"
+                    initialHasApplied={shift.hasApplied || false}
                     onApply={handleApply}
                   />
                 );

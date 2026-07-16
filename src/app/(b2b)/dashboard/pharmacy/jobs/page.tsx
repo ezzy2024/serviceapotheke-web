@@ -110,11 +110,11 @@ export default function PharmacyJobs() {
               <div className="p-6">
                 <h3 className="font-semibold text-slate-700 mb-4 text-sm uppercase tracking-wider">Eingegangene Bewerbungen</h3>
                 
-                {(!job.applications || job.applications.length === 0) ? (
+                {(!job.jobApplications || job.jobApplications.length === 0) ? (
                   <p className="text-sm text-slate-500 italic">Noch keine Bewerbungen für diese Schicht.</p>
                 ) : (
                   <div className="space-y-3">
-                    {job.applications.map((app: any) => (
+                    {job.jobApplications.map((app: any) => (
                       <div key={app.id} className="flex items-center justify-between p-4 rounded-xl border border-slate-200 bg-slate-50/50 hover:border-cyan-300 hover:bg-white transition-all shadow-sm">
                         <div className="flex items-center">
                           <div className="w-10 h-10 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-600 mr-4">

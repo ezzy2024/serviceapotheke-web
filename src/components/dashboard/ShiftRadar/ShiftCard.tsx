@@ -16,6 +16,7 @@ interface ShiftCardProps {
   rating: string;
   reviews: string;
   isSponsored?: boolean;
+  initialHasApplied?: boolean;
   onApply?: (jobId: number) => Promise<boolean>;
 }
 
@@ -32,11 +33,12 @@ export function ShiftCard({
   rating,
   reviews,
   isSponsored = false,
+  initialHasApplied = false,
   onApply
 }: ShiftCardProps) {
   
   const [isApplying, setIsApplying] = useState(false);
-  const [isApplied, setIsApplied] = useState(false);
+  const [isApplied, setIsApplied] = useState(initialHasApplied);
   const [isExpanded, setIsExpanded] = useState(false);
 
   const handleApply = async () => {
