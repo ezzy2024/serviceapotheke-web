@@ -209,7 +209,7 @@ export default function PharmacyWizard() {
                     className="block w-full p-3 border border-lime/50 rounded-xl focus:ring-2 focus:ring-lime transition-all shadow-sm bg-white shadow-md rounded-xl ring-1 ring-ink/5"
                   />
                   {isSearching && <div className="absolute right-3 top-10 text-sm font-bold text-ink/50">Lade...</div>}
-                  {searchResults.length === 0 && searchQuery.length >= 2 && !isSearching && (
+                  {searchResults.length === 0 && searchQuery.length >= 2 && !isSearching && !showManualFields && (
                     <div className="absolute z-10 w-full mt-2 bg-white border-2 border-ink shadow-md rounded-xl ring-1 ring-ink/5 p-4 text-center">
                       <p className="text-sm font-bold text-ink mb-3">Keine Apotheke gefunden?</p>
                       <Button onClick={() => setShowManualFields(true)} className="w-full bg-white text-ink border border-ink/20 rounded-xl shadow-sm hover:bg-bone font-semibold px-6 py-3 transition-all inline-flex items-center justify-center">
