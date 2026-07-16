@@ -216,6 +216,7 @@ export default function PharmacyWizard() {
                 </div>
 
                 {showManualFields && (
+                  <>
                   <div className="space-y-6">
                   <div>
                     <label className="block text-sm font-bold text-ink mb-2 uppercase tracking-wide">Name der Apotheke</label>
@@ -269,6 +270,7 @@ export default function PharmacyWizard() {
                       Weiter <ArrowRight className="ml-2 w-5 h-5" />
                     </Button>
                   </div>
+                  </>
                   )}
                 </motion.div>
               )}
