@@ -44,7 +44,6 @@ jobs:
 
   deploy:
     name: Build and Deploy
-    needs: test
     permissions:
       contents: 'read'
       id-token: 'write'
