@@ -46,12 +46,12 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white border-b-2 border-ink sticky top-0 z-30 w-full h-16 flex items-center justify-between px-6">
+    <header className="bg-white border-b border-slate-200 sticky top-0 z-30 w-full h-16 flex items-center justify-between px-6">
       <div className="flex items-center">
-        <button className="md:hidden text-ink hover:text-ink/70 mr-4" aria-label="Hauptmenü öffnen">
+        <button className="md:hidden text-slate-600 hover:text-slate-900 mr-4" aria-label="Hauptmenü öffnen">
           <Menu className="w-6 h-6" />
         </button>
-        <h2 className="text-xl font-black text-ink uppercase tracking-tight hidden md:block">
+        <h2 className="text-xl font-semibold text-slate-800 hidden md:block">
           {user?.role === 'Pharmacy' ? 'Apotheken Dashboard' : 'Freelancer Portal'}
         </h2>
       </div>
@@ -61,20 +61,20 @@ export default function Header() {
           <button 
             onClick={() => setShowDropdown(!showDropdown)}
             aria-label="Benachrichtigungen"
-            className="p-2 text-ink hover:bg-bone border-2 border-transparent hover:border-ink hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all relative"
+            className="p-2 text-slate-600 hover:bg-slate-100 rounded-full transition-colors relative"
           >
-            <Bell className="w-5 h-5 font-bold" />
+            <Bell className="w-5 h-5" />
             {unreadCount > 0 && (
-              <span className="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-none border-2 border-ink"></span>
+              <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
             )}
           </button>
 
           {showDropdown && (
-            <div className="absolute right-0 mt-4 w-80 bg-white border-2 border-ink shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] z-50">
-              <div className="p-4 border-b-2 border-ink flex justify-between items-center bg-bone">
-                <h3 className="font-black text-ink uppercase tracking-wide text-sm">Benachrichtigungen</h3>
+            <div className="absolute right-0 mt-4 w-80 bg-white border border-slate-200 rounded-xl shadow-lg z-50 overflow-hidden">
+              <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                <h3 className="font-semibold text-slate-800 text-sm">Benachrichtigungen</h3>
                 {unreadCount > 0 && (
-                  <button onClick={markAllAsRead} className="text-xs text-ink underline font-bold hover:text-ink/70">
+                  <button onClick={markAllAsRead} className="text-xs text-blue-600 font-medium hover:text-blue-800">
                     Alle gelesen
                   </button>
                 )}
@@ -109,11 +109,11 @@ export default function Header() {
           )}
         </div>
         
-        <div className="h-8 w-0.5 bg-ink mx-2"></div>
+        <div className="h-8 w-px bg-slate-200 mx-2"></div>
         
         <button 
           onClick={logout}
-          className="flex items-center text-sm font-black uppercase text-ink hover:text-bone hover:bg-ink px-3 py-2 border-2 border-transparent hover:border-ink hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
+          className="flex items-center text-sm font-semibold text-slate-600 hover:text-red-600 hover:bg-red-50 px-3 py-2 rounded-lg transition-colors"
         >
           <LogOut className="w-4 h-4 mr-2" />
           Logout

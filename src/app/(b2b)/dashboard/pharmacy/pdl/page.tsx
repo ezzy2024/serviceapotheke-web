@@ -215,42 +215,42 @@ export default function PdlDashboardPage() {
       <div className={`max-w-7xl mx-auto space-y-8 ${!isUnlocked ? 'filter blur-md pointer-events-none' : ''}`}>
         {/* Toast */}
       {toast && (
-        <div className={`fixed top-4 right-4 z-50 p-4 rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] border-2 border-ink backdrop-blur-md flex items-center gap-3 transition-all ${
-          toast.type === 'success' ? 'bg-lime text-ink' : 'bg-red-400 text-ink'
+        <div className={`fixed top-4 right-4 z-50 p-4 rounded-xl shadow-md rounded-xl border border-slate-200 backdrop-blur-md flex items-center gap-3 transition-all ${
+          toast.type === 'success' ? 'bg-emerald-500 text-slate-800' : 'bg-red-400 text-slate-800'
         }`}>
-          {toast.type === 'success' ? <CheckCircle className="w-5 h-5 text-ink" /> : <AlertTriangle className="w-5 h-5 text-ink" />}
+          {toast.type === 'success' ? <CheckCircle className="w-5 h-5 text-slate-800" /> : <AlertTriangle className="w-5 h-5 text-slate-800" />}
           <p className="font-bold uppercase tracking-wide">{toast.message}</p>
         </div>
       )}
 
       {/* Coming Soon Modal */}
       {isComingSoonOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/80 backdrop-blur-sm p-4">
-          <div className="bg-bone border-4 border-ink w-full max-w-md shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-8 relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-blue-600/80 backdrop-blur-sm p-4">
+          <div className="bg-slate-50 border border-slate-200 w-full max-w-md shadow-lg rounded-2xl p-8 relative">
             <button 
               onClick={() => setIsComingSoonOpen(false)}
-              className="absolute top-4 right-4 p-2 bg-white border-2 border-ink hover:-translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
+              className="absolute top-4 right-4 p-2 bg-white border border-slate-200 hover:-translate-y-0.5 hover:shadow-sm rounded-lg transition-all"
             >
               <div className="w-4 h-4 relative">
-                <div className="absolute inset-0 w-full h-0.5 bg-ink top-1/2 -translate-y-1/2 rotate-45"></div>
-                <div className="absolute inset-0 w-full h-0.5 bg-ink top-1/2 -translate-y-1/2 -rotate-45"></div>
+                <div className="absolute inset-0 w-full h-0.5 bg-blue-600 top-1/2 -translate-y-1/2 rotate-45"></div>
+                <div className="absolute inset-0 w-full h-0.5 bg-blue-600 top-1/2 -translate-y-1/2 -rotate-45"></div>
               </div>
             </button>
             
             <div className="flex justify-center mb-6">
-              <div className="w-16 h-16 bg-lime border-4 border-ink flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                <Lock className="w-8 h-8 text-ink" />
+              <div className="w-16 h-16 bg-emerald-500 border border-slate-200 flex items-center justify-center shadow-md rounded-xl">
+                <Lock className="w-8 h-8 text-slate-800" />
               </div>
             </div>
             
-            <h3 className="text-2xl font-black text-ink uppercase tracking-tight text-center mb-4">AMTS Analyse (Bald verfügbar)</h3>
-            <p className="text-ink/80 font-semibold text-center mb-8">
+            <h3 className="text-2xl font-bold text-slate-800 uppercase tracking-tight text-center mb-4">AMTS Analyse (Bald verfügbar)</h3>
+            <p className="text-slate-600 font-semibold text-center mb-8">
               Die vollautomatisierte KI-gestützte Medikationsanalyse (AMTS) erfordert die Anbindung an einen lizenzierten ABDA-Datenprovider (z.B. pharma4u). Diese Integration wird in Kürze freigeschaltet.
             </p>
             
             <button 
               onClick={() => setIsComingSoonOpen(false)}
-              className="w-full py-4 bg-ink text-bone font-black uppercase tracking-widest hover:bg-ink/90 transition-colors border-2 border-ink"
+              className="w-full py-4 bg-blue-600 text-white font-semiboldst hover:bg-blue-700 transition-colors border border-slate-200"
             >
               Verstanden
             </button>

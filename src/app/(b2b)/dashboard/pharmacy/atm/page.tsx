@@ -206,20 +206,20 @@ export default function AtmDashboardPage() {
         <motion.div 
           initial={{ opacity: 0, height: 0 }} 
           animate={{ opacity: 1, height: 'auto' }} 
-          className="bg-bone border-2 border-ink rounded-none p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+          className="bg-slate-50 border border-slate-200 rounded-xl p-6 shadow-lg rounded-2xl"
         >
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-xl font-black text-ink uppercase tracking-tight flex items-center gap-2">
+              <h3 className="text-xl font-bold text-slate-800 tracking-tight flex items-center gap-2">
                 <MonitorSmartphone className="w-6 h-6" />
                 Terminal Simulator
               </h3>
-              <p className="text-ink/80 font-bold text-sm mt-1">Simuliert die Code-Generierung eines physischen aTM-Kiosks (Keine Hardware nötig).</p>
+              <p className="text-slate-600 font-bold text-sm mt-1">Simuliert die Code-Generierung eines physischen aTM-Kiosks (Keine Hardware nötig).</p>
             </div>
             <div className="flex items-center gap-4">
               {simulatedCode && (
                 <div className="flex flex-col items-end">
-                  <div className="px-4 py-2 bg-white border-2 border-ink font-mono text-2xl font-black tracking-widest text-ink">
+                  <div className="px-4 py-2 bg-white border border-slate-200 font-mono text-2xl font-bold tracking-widest text-slate-800">
                     {simulatedCode}
                   </div>
                   <div className="text-red-600 font-bold mt-1 text-sm flex items-center gap-1">
@@ -230,7 +230,7 @@ export default function AtmDashboardPage() {
               <button 
                 onClick={simulateKioskInitiate}
                 disabled={isGenerating || !!simulatedCode}
-                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 border-2 border-ink text-white font-black uppercase tracking-wide transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 disabled:opacity-50 disabled:translate-y-0 disabled:shadow-none"
+                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 border border-slate-200 text-white font-semibold transition-all shadow-md rounded-xl hover:shadow-md rounded-2xl hover:-translate-y-1 disabled:opacity-50 disabled:translate-y-0 disabled:shadow-none"
               >
                 {isGenerating ? 'Generiert...' : 'Code Generieren'}
               </button>
@@ -311,17 +311,17 @@ export default function AtmDashboardPage() {
           ) : (
             <div className="space-y-3">
               {terminals.map(terminal => (
-                <div key={terminal.id} className="flex items-center justify-between p-4 bg-white border-2 border-ink shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 transition-all">
+                <div key={terminal.id} className="flex items-center justify-between p-4 bg-white border border-slate-200 shadow-sm rounded-lg hover:shadow-md rounded-xl hover:-translate-y-1 transition-all">
                   <div className="flex items-center gap-4">
-                    <div className="w-3 h-3 rounded-none bg-green-500 border border-ink animate-pulse"></div>
+                    <div className="w-3 h-3 rounded-xl bg-green-500 border border-slate-200 animate-pulse"></div>
                     <div>
-                      <h3 className="font-black text-ink">{terminal.name}</h3>
-                      <p className="text-xs font-bold text-ink/70 mt-1 uppercase tracking-wide">Status: Bereit für E2EE Verbindungen</p>
+                      <h3 className="font-bold text-slate-800">{terminal.name}</h3>
+                      <p className="text-xs font-bold text-slate-500 mt-1 uppercase tracking-wide">Status: Bereit für E2EE Verbindungen</p>
                     </div>
                   </div>
                   <button 
                     onClick={() => handleRevoke(terminal.id)}
-                    className="px-3 py-1.5 bg-red-400 text-ink font-black uppercase text-xs tracking-wide border-2 border-ink shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all"
+                    className="px-3 py-1.5 bg-red-400 text-slate-800 font-semibold text-xs tracking-wide border border-slate-200 shadow-sm rounded-lg hover:-translate-y-0.5 hover:shadow rounded-lg transition-all"
                     title="Zugriff widerrufen"
                   >
                     Trennen

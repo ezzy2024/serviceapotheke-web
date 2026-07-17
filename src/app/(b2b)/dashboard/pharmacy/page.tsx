@@ -73,45 +73,45 @@ export default function PharmacyDashboard() {
       <ComplianceWidget type="pharmacy" data={(user || {}) as any} />
 
       {/* Header */}
-      <header className="bg-white p-8 border-2 border-ink shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-bone rounded-full -mr-20 -mt-20 border-4 border-ink"></div>
+      <header className="bg-white p-8 border border-slate-200 shadow-lg rounded-2xl relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-slate-50 rounded-full -mr-20 -mt-20 border border-slate-200"></div>
         <div className="relative z-10">
-          <p className="text-sm font-black tracking-widest uppercase text-ink mb-2">Apotheken OS</p>
-          <h1 className="text-4xl font-black text-ink uppercase tracking-tight">Command Center</h1>
-          <p className="text-ink/80 font-semibold mt-1">Dein täglicher Überblick über Personal, Vakanzen und Operations.</p>
+          <p className="text-sm font-bold tracking-widest uppercase text-slate-800 mb-2">Apotheken OS</p>
+          <h1 className="text-4xl font-bold text-slate-800 uppercase tracking-tight">Command Center</h1>
+          <p className="text-slate-600 font-semibold mt-1">Dein täglicher Überblick über Personal, Vakanzen und Operations.</p>
         </div>
       </header>
 
       {/* Executive Stat Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Link href="/dashboard/pharmacy/jobs" className="bg-white p-6 border-2 border-ink shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all group block">
+        <Link href="/dashboard/pharmacy/jobs" className="bg-white p-6 border border-slate-200 shadow-md rounded-xl hover:-translate-y-1 hover:shadow-md rounded-2xl transition-all group block">
           <div className="flex justify-between items-start mb-4">
-            <div className="p-3 bg-bone border-2 border-ink">
-              <Briefcase className="w-6 h-6 text-ink" />
+            <div className="p-3 bg-slate-50 border border-slate-200">
+              <Briefcase className="w-6 h-6 text-slate-800" />
             </div>
           </div>
-          <p className="text-4xl font-black text-ink">{stats.activeJobs}</p>
-          <p className="text-sm font-bold uppercase tracking-wide text-ink mt-2">Offene Vakanzen</p>
+          <p className="text-4xl font-bold text-slate-800">{stats.activeJobs}</p>
+          <p className="text-sm font-bold uppercase tracking-wide text-slate-800 mt-2">Offene Vakanzen</p>
         </Link>
 
-        <Link href="/dashboard/pharmacy/jobs" className="bg-white p-6 border-2 border-ink shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all group block">
+        <Link href="/dashboard/pharmacy/jobs" className="bg-white p-6 border border-slate-200 shadow-md rounded-xl hover:-translate-y-1 hover:shadow-md rounded-2xl transition-all group block">
           <div className="flex justify-between items-start mb-4">
-            <div className="p-3 bg-bone border-2 border-ink">
-              <Users className="w-6 h-6 text-ink" />
+            <div className="p-3 bg-slate-50 border border-slate-200">
+              <Users className="w-6 h-6 text-slate-800" />
             </div>
           </div>
-          <p className="text-4xl font-black text-ink">{stats.pendingApplications}</p>
-          <p className="text-sm font-bold uppercase tracking-wide text-ink mt-2">Neue Bewerbungen</p>
+          <p className="text-4xl font-bold text-slate-800">{stats.pendingApplications}</p>
+          <p className="text-sm font-bold uppercase tracking-wide text-slate-800 mt-2">Neue Bewerbungen</p>
         </Link>
 
-        <Link href="/dashboard/pharmacy/dienstplan" className="bg-white p-6 border-2 border-ink shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all group block">
+        <Link href="/dashboard/pharmacy/dienstplan" className="bg-white p-6 border border-slate-200 shadow-md rounded-xl hover:-translate-y-1 hover:shadow-md rounded-2xl transition-all group block">
           <div className="flex justify-between items-start mb-4">
-            <div className="p-3 bg-bone border-2 border-ink">
-              <CheckCircle className="w-6 h-6 text-ink" />
+            <div className="p-3 bg-slate-50 border border-slate-200">
+              <CheckCircle className="w-6 h-6 text-slate-800" />
             </div>
           </div>
-          <p className="text-4xl font-black text-ink">{staffOnDuty.length}</p>
-          <p className="text-sm font-bold uppercase tracking-wide text-ink mt-2">Personal im Dienst</p>
+          <p className="text-4xl font-bold text-slate-800">{staffOnDuty.length}</p>
+          <p className="text-sm font-bold uppercase tracking-wide text-slate-800 mt-2">Personal im Dienst</p>
         </Link>
 
       </div>
@@ -121,12 +121,12 @@ export default function PharmacyDashboard() {
         
         {/* Left Column */}
         <div className="space-y-8">
-          <section className="bg-white border-2 border-ink shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden flex flex-col h-full">
-            <div className="p-6 border-b-2 border-ink flex justify-between items-center bg-bone">
-              <h2 className="text-xl font-black uppercase tracking-tight text-ink flex items-center gap-2">
+          <section className="bg-white border border-slate-200 shadow-lg rounded-2xl overflow-hidden flex flex-col h-full">
+            <div className="p-6 border-b border-slate-200 flex justify-between items-center bg-slate-50">
+              <h2 className="text-xl font-semibold tracking-tight text-slate-800 flex items-center gap-2">
                 <CheckCircle className="w-6 h-6" /> Personal im Dienst
               </h2>
-              <Link href="/dashboard/pharmacy/dienstplan" className="text-sm font-black uppercase tracking-wide text-ink hover:underline flex items-center gap-1">
+              <Link href="/dashboard/pharmacy/dienstplan" className="text-sm font-semibold text-slate-800 hover:underline flex items-center gap-1">
                 Dienstplan ffnen <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
@@ -134,19 +134,19 @@ export default function PharmacyDashboard() {
               {staffOnDuty.length > 0 ? (
                 <ul className="divide-y-2 divide-ink">
                   {staffOnDuty.map((staff, idx) => (
-                    <li key={idx} className="p-4 hover:bg-bone transition-colors flex justify-between items-center">
+                    <li key={idx} className="p-4 hover:bg-slate-50 transition-colors flex justify-between items-center">
                       <div>
-                        <p className="font-black text-ink">{staff.name}</p>
-                        <p className="text-xs font-bold text-ink/70 uppercase tracking-wider mt-1">{staff.role}</p>
+                        <p className="font-bold text-slate-800">{staff.name}</p>
+                        <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mt-1">{staff.role}</p>
                       </div>
-                      <div className="bg-ink text-bone px-3 py-1 text-sm font-black tracking-wide border-2 border-ink">
+                      <div className="bg-blue-600 text-white px-3 py-1 text-sm font-bold tracking-wide border border-slate-200">
                         {staff.time}
                       </div>
                     </li>
                   ))}
                 </ul>
               ) : (
-                <div className="p-12 text-center text-ink font-bold">
+                <div className="p-12 text-center text-slate-800 font-bold">
                   <p>Kein Personal für heute eingeteilt.</p>
                 </div>
               )}
@@ -155,29 +155,29 @@ export default function PharmacyDashboard() {
         </div>
             {/* Right Column */}
         <div className="space-y-8">
-          <section className="bg-white border-2 border-ink shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
-            <div className="p-6 border-b-2 border-ink flex justify-between items-center bg-bone">
-              <h2 className="text-xl font-black text-ink uppercase tracking-tight flex items-center gap-2">
+          <section className="bg-white border border-slate-200 shadow-lg rounded-2xl overflow-hidden">
+            <div className="p-6 border-b border-slate-200 flex justify-between items-center bg-slate-50">
+              <h2 className="text-xl font-bold text-slate-800 tracking-tight flex items-center gap-2">
                 <Clock className="w-6 h-6" /> Offene Aufgaben
               </h2>
             </div>
             <ul className="divide-y-2 divide-ink">
               {openTasks.map(task => (
-                <li key={task.id} className="p-4 hover:bg-bone transition-colors flex justify-between items-center bg-white">
+                <li key={task.id} className="p-4 hover:bg-slate-50 transition-colors flex justify-between items-center bg-white">
                   <div className="flex items-center gap-3">
-                    <input id={`task-${task.id}`} type="checkbox" className="w-5 h-5 border-2 border-ink text-ink focus:ring-ink rounded-none bg-white" />
-                    <label htmlFor={`task-${task.id}`} className="font-bold text-ink cursor-pointer">{task.title}</label>
+                    <input id={`task-${task.id}`} type="checkbox" className="w-5 h-5 border border-slate-200 text-slate-800 focus:ring-ink rounded-xl bg-white" />
+                    <label htmlFor={`task-${task.id}`} className="font-bold text-slate-800 cursor-pointer">{task.title}</label>
                   </div>
-                  <p className="text-sm font-black text-ink">{task.time}</p>
+                  <p className="text-sm font-bold text-slate-800">{task.time}</p>
                 </li>
               ))}
             </ul>
           </section>
 
           {/* Security & Compliance Widget */}
-          <section className="bg-ink border-2 border-ink shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden text-bone">
-            <div className="p-6 border-b-2 border-bone/30 flex justify-between items-center bg-ink">
-              <h2 className="text-xl font-black uppercase tracking-tight flex items-center gap-2">
+          <section className="bg-blue-600 border border-slate-200 shadow-lg rounded-2xl overflow-hidden text-white">
+            <div className="p-6 border-b-2 border-bone/30 flex justify-between items-center bg-blue-600">
+              <h2 className="text-xl font-semibold tracking-tight flex items-center gap-2">
                 <ShieldCheck className="w-6 h-6 text-green-400" /> System & Compliance
               </h2>
             </div>
@@ -185,10 +185,10 @@ export default function PharmacyDashboard() {
 
               <div className="flex justify-between items-center">
                 <div>
-                  <p className="font-black">Datenschutz & Cookies</p>
-                  <p className="text-xs font-bold text-bone/70 uppercase tracking-wide mt-1">DSGVO-konforme Caches & E2E</p>
+                  <p className="font-bold">Datenschutz & Cookies</p>
+                  <p className="text-xs font-bold text-white/70 uppercase tracking-wide mt-1">DSGVO-konforme Caches & E2E</p>
                 </div>
-                <div className="bg-green-400 text-ink px-3 py-1 font-black text-xs uppercase tracking-wide border-2 border-green-400">
+                <div className="bg-emerald-50 text-slate-800 px-3 py-1 font-bold text-xs uppercase tracking-wide border-2 border-green-400">
                   Gesichert
                 </div>
               </div>

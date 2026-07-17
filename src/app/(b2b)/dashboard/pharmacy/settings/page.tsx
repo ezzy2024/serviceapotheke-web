@@ -118,8 +118,8 @@ export default function SettingsPage() {
       )}
 
       <div>
-        <h1 className="text-4xl font-black text-ink uppercase tracking-tight">Einstellungen</h1>
-        <p className="text-ink/80 font-bold mt-1">Verwalte die Stammdaten und Prferenzen deiner Apotheke.</p>
+        <h1 className="text-4xl font-bold text-slate-800 uppercase tracking-tight">Einstellungen</h1>
+        <p className="text-slate-600 font-bold mt-1">Verwalte die Stammdaten und Prferenzen deiner Apotheke.</p>
       </div>
 
       <form onSubmit={handleSave} className="space-y-8">
@@ -127,58 +127,58 @@ export default function SettingsPage() {
         {/* Stammdaten Section */}
         <motion.div 
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-          className="bg-white border-2 border-ink shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-0"
+          className="bg-white border border-slate-200 shadow-lg rounded-2xl p-0"
         >
-          <div className="flex items-center gap-3 p-6 border-b-2 border-ink bg-bone">
-            <Building2 className="w-6 h-6 text-ink" />
-            <h2 className="text-xl font-black text-ink uppercase tracking-tight">Apotheken Stammdaten</h2>
+          <div className="flex items-center gap-3 p-6 border-b border-slate-200 bg-slate-50">
+            <Building2 className="w-6 h-6 text-slate-800" />
+            <h2 className="text-xl font-bold text-slate-800 uppercase tracking-tight">Apotheken Stammdaten</h2>
           </div>
           
           <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="md:col-span-2">
-              <label className="block text-sm font-black text-ink uppercase tracking-wide mb-1">Name der Apotheke</label>
+              <label className="block text-sm font-bold text-slate-800 uppercase tracking-wide mb-1">Name der Apotheke</label>
               <input 
                 type="text" 
                 value={formData.pharmacyName}
                 onChange={e => setFormData({...formData, pharmacyName: e.target.value})}
-                className="w-full px-4 py-3 rounded-none bg-white border-2 border-ink focus:ring-0 focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all font-bold text-ink"
+                className="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 focus:ring-0 focus:outline-none focus:shadow-md rounded-xl transition-all font-bold text-slate-800"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-black text-ink uppercase tracking-wide mb-1">Straße</label>
+              <label className="block text-sm font-bold text-slate-800 uppercase tracking-wide mb-1">Straße</label>
               <input 
                 type="text" 
                 value={formData.street}
                 onChange={e => setFormData({...formData, street: e.target.value})}
-                className="w-full px-4 py-3 rounded-none bg-white border-2 border-ink focus:ring-0 focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all font-bold text-ink"
+                className="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 focus:ring-0 focus:outline-none focus:shadow-md rounded-xl transition-all font-bold text-slate-800"
               />
             </div>
             <div>
-              <label className="block text-sm font-black text-ink uppercase tracking-wide mb-1">Hausnummer</label>
+              <label className="block text-sm font-bold text-slate-800 uppercase tracking-wide mb-1">Hausnummer</label>
               <input 
                 type="text" 
                 value={formData.houseNumber}
                 onChange={e => setFormData({...formData, houseNumber: e.target.value})}
-                className="w-full px-4 py-3 rounded-none bg-white border-2 border-ink focus:ring-0 focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all font-bold text-ink"
+                className="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 focus:ring-0 focus:outline-none focus:shadow-md rounded-xl transition-all font-bold text-slate-800"
               />
             </div>
             <div>
-              <label className="block text-sm font-black text-ink uppercase tracking-wide mb-1">PLZ</label>
+              <label className="block text-sm font-bold text-slate-800 uppercase tracking-wide mb-1">PLZ</label>
               <input 
                 type="text" 
                 value={formData.postalCode}
                 onChange={e => setFormData({...formData, postalCode: e.target.value})}
-                className="w-full px-4 py-3 rounded-none bg-white border-2 border-ink focus:ring-0 focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all font-bold text-ink"
+                className="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 focus:ring-0 focus:outline-none focus:shadow-md rounded-xl transition-all font-bold text-slate-800"
               />
             </div>
             <div>
-              <label className="block text-sm font-black text-ink uppercase tracking-wide mb-1">Ort</label>
+              <label className="block text-sm font-bold text-slate-800 uppercase tracking-wide mb-1">Ort</label>
               <input 
                 type="text" 
                 value={formData.city}
                 onChange={e => setFormData({...formData, city: e.target.value})}
-                className="w-full px-4 py-3 rounded-none bg-white border-2 border-ink focus:ring-0 focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all font-bold text-ink"
+                className="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 focus:ring-0 focus:outline-none focus:shadow-md rounded-xl transition-all font-bold text-slate-800"
               />
             </div>
           </div>
@@ -187,20 +187,20 @@ export default function SettingsPage() {
         {/* System & Compliance */}
         <motion.div 
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-          className="bg-white border-2 border-ink shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-0"
+          className="bg-white border border-slate-200 shadow-lg rounded-2xl p-0"
         >
-          <div className="flex items-center gap-3 p-6 border-b-2 border-ink bg-green-400">
-            <ShieldCheck className="w-6 h-6 text-ink" />
-            <h2 className="text-xl font-black text-ink uppercase tracking-tight">System & Compliance</h2>
+          <div className="flex items-center gap-3 p-6 border-b border-slate-200 bg-emerald-50">
+            <ShieldCheck className="w-6 h-6 text-slate-800" />
+            <h2 className="text-xl font-bold text-slate-800 uppercase tracking-tight">System & Compliance</h2>
           </div>
           
           <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-black text-ink uppercase tracking-wide mb-1">Warenwirtschaftssystem (WWS)</label>
+              <label className="block text-sm font-bold text-slate-800 uppercase tracking-wide mb-1">Warenwirtschaftssystem (WWS)</label>
               <select 
                 value={formData.softwareSystem}
                 onChange={e => setFormData({...formData, softwareSystem: e.target.value})}
-                className="w-full px-4 py-3 rounded-none bg-white border-2 border-ink focus:ring-0 focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all font-bold text-ink"
+                className="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 focus:ring-0 focus:outline-none focus:shadow-md rounded-xl transition-all font-bold text-slate-800"
               >
                 <option value="">Bitte whlen...</option>
                 <option value="awinta">awinta / Noventi</option>
@@ -211,8 +211,8 @@ export default function SettingsPage() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-black text-ink uppercase tracking-wide mb-1">Apothekenbetriebserlaubnis</label>
-              <div className="w-full p-4 bg-bone border-2 border-ink flex items-center justify-between">
+              <label className="block text-sm font-bold text-slate-800 uppercase tracking-wide mb-1">Apothekenbetriebserlaubnis</label>
+              <div className="w-full p-4 bg-slate-50 border border-slate-200 flex items-center justify-between">
                 <input 
                   type="file" 
                   ref={fileInputRef} 
@@ -224,16 +224,16 @@ export default function SettingsPage() {
                 <div className="flex items-center gap-2">
                   {formData.licenseDocumentPath ? (
                     <>
-                      <FileText className="w-5 h-5 text-ink" />
+                      <FileText className="w-5 h-5 text-slate-800" />
                       <div>
-                        <span className="text-sm font-black text-ink block">Dokument hinterlegt</span>
+                        <span className="text-sm font-bold text-slate-800 block">Dokument hinterlegt</span>
                         <a href={formData.licenseDocumentPath} target="_blank" className="text-xs font-bold text-blue-600 hover:underline uppercase tracking-wide">Ansehen</a>
                       </div>
                     </>
                   ) : (
                     <>
-                      <ShieldCheck className="w-5 h-5 text-ink/40" />
-                      <span className="text-sm font-bold text-ink/60 uppercase tracking-wide">Kein Dokument hochgeladen</span>
+                      <ShieldCheck className="w-5 h-5 text-slate-800/40" />
+                      <span className="text-sm font-bold text-slate-800/60 uppercase tracking-wide">Kein Dokument hochgeladen</span>
                     </>
                   )}
                 </div>
@@ -242,7 +242,7 @@ export default function SettingsPage() {
                   type="button" 
                   onClick={() => fileInputRef.current?.click()}
                   disabled={isUploading}
-                  className="bg-white border-2 border-ink text-ink px-4 py-2 font-black uppercase text-xs tracking-wide shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all flex items-center gap-2 disabled:opacity-50"
+                  className="bg-white border border-slate-200 text-slate-800 px-4 py-2 font-semibold text-xs tracking-wide shadow-sm rounded-lg hover:-translate-y-0.5 hover:shadow rounded-lg transition-all flex items-center gap-2 disabled:opacity-50"
                 >
                   {isUploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
                   ndern
@@ -256,7 +256,7 @@ export default function SettingsPage() {
           <button 
             type="submit" 
             disabled={isSaving}
-            className="px-8 py-4 bg-blue-600 border-2 border-ink hover:bg-blue-700 text-white font-black uppercase tracking-wide transition-all shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 disabled:opacity-50 disabled:translate-y-0 disabled:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex items-center gap-3"
+            className="px-8 py-4 bg-blue-600 border border-slate-200 hover:bg-blue-700 text-white font-semibold transition-all shadow-md rounded-2xl hover:shadow-lg rounded-2xl hover:-translate-y-1 disabled:opacity-50 disabled:translate-y-0 disabled:shadow-md rounded-xl flex items-center gap-3"
           >
             {isSaving ? <Loader2 className="w-6 h-6 animate-spin" /> : <Save className="w-6 h-6" />}
             nderungen speichern

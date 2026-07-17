@@ -50,7 +50,7 @@ test.describe('Production Registration E2E', () => {
     const account = await getMailTmAccount();
     console.log(`Pharmacist Test Email: ${account.email}`);
 
-    await page.goto('http://localhost:3000/register/pharmacist');
+    await page.goto('https://serviceapotheke.tech/register/pharmacist');
     
     // Step 1: Personal Data
     await page.fill('input[name="firstName"]', 'Test');
@@ -96,7 +96,7 @@ test.describe('Production Registration E2E', () => {
     const account = await getMailTmAccount();
     console.log(`Pharmacy Test Email: ${account.email}`);
 
-    await page.goto('http://localhost:3000/register/pharmacy');
+    await page.goto('https://serviceapotheke.tech/register/pharmacy');
     
     // Step 1: Manually Enter (Search logic removed)
 

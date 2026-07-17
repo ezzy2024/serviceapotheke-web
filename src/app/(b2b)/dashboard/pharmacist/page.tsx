@@ -72,7 +72,7 @@ export default function ShiftRadarPage() {
   });
 
   return (
-    <div className="min-h-screen bg-bone font-sans">
+    <div className="min-h-screen bg-slate-50 font-sans">
       {/* Container for the Chips */}
       <div className="max-w-[1320px] mx-auto px-6 lg:px-8 pt-10">
         <ShiftFilterChips />
@@ -87,21 +87,21 @@ export default function ShiftRadarPage() {
           
           {/* Header Controls */}
           <div className="flex items-center justify-between mb-6 gap-3">
-            <div className="text-[15px] text-ink font-medium">
+            <div className="text-[15px] text-slate-800 font-medium">
               {isLoading ? (
                 <span>Lade Vakanzen...</span>
               ) : (
-                <><strong className="text-[20px] text-ink font-bold font-bricolage">{filteredShifts.length} Vakanzen</strong> <span className="text-ink/80">für Ihr Profil</span></>
+                <><strong className="text-[20px] text-slate-800 font-bold font-bricolage">{filteredShifts.length} Vakanzen</strong> <span className="text-slate-600">für Ihr Profil</span></>
               )}
             </div>
             
             <div className="flex items-center gap-2">
-              <div className="flex border-2 border-ink rounded-lg overflow-hidden shadow-sm">
-                <button className="px-3 py-2 bg-ink flex items-center justify-center transition-colors">
+              <div className="flex border border-slate-200 rounded-lg overflow-hidden shadow-sm">
+                <button className="px-3 py-2 bg-blue-600 flex items-center justify-center transition-colors">
                   <List className="w-5 h-5 text-white" />
                 </button>
-                <button className="px-3 py-2 bg-white hover:bg-bone flex items-center justify-center transition-colors">
-                  <LayoutGrid className="w-5 h-5 text-ink" />
+                <button className="px-3 py-2 bg-white hover:bg-slate-50 flex items-center justify-center transition-colors">
+                  <LayoutGrid className="w-5 h-5 text-slate-800" />
                 </button>
               </div>
             </div>
@@ -110,18 +110,18 @@ export default function ShiftRadarPage() {
           {/* Premium Match */}
           <HaversinePriorityCard />
 
-          <div className="flex items-center gap-4 my-6 text-[14px] font-bold text-ink/70 font-bricolage">
-            <div className="flex-1 h-px bg-ink/20"></div>
+          <div className="flex items-center gap-4 my-6 text-[14px] font-bold text-slate-500 font-bricolage">
+            <div className="flex-1 h-px bg-blue-600/20"></div>
             Weitere Vakanzen
-            <div className="flex-1 h-px bg-ink/20"></div>
+            <div className="flex-1 h-px bg-blue-600/20"></div>
           </div>
 
           {/* Shift Cards Feed */}
           <div className="flex flex-col gap-4">
             {isLoading ? (
-               <div className="text-center py-10 font-bold text-ink">Lade...</div>
+               <div className="text-center py-10 font-bold text-slate-800">Lade...</div>
             ) : filteredShifts.length === 0 ? (
-               <div className="text-center py-12 text-ink bg-white border-2 border-ink rounded-xl shadow-sm font-medium text-[16px]">Keine offenen Schichten für diese Filter gefunden.</div>
+               <div className="text-center py-12 text-slate-800 bg-white border border-slate-200 rounded-xl shadow-sm font-medium text-[16px]">Keine offenen Schichten für diese Filter gefunden.</div>
             ) : (
               filteredShifts.map((shift: any) => {
                 const dates = [];
@@ -172,17 +172,17 @@ export default function ShiftRadarPage() {
           {/* Pagination */}
           {filteredShifts.length > 0 && (
             <div className="flex justify-center items-center gap-2 mt-10">
-               <button className="w-10 h-10 flex items-center justify-center rounded-lg text-[14px] font-bold border-2 border-ink bg-ink text-white shadow-sm">
+               <button className="w-10 h-10 flex items-center justify-center rounded-lg text-[14px] font-bold border border-slate-200 bg-blue-600 text-white shadow-sm">
                  1
                </button>
-               <button className="w-10 h-10 flex items-center justify-center rounded-lg text-[14px] font-medium border-2 border-ink bg-white text-ink shadow-sm hover:bg-bone transition-colors">
+               <button className="w-10 h-10 flex items-center justify-center rounded-lg text-[14px] font-medium border border-slate-200 bg-white text-slate-800 shadow-sm hover:bg-slate-50 transition-colors">
                  2
                </button>
-               <button className="w-10 h-10 flex items-center justify-center rounded-lg text-[14px] font-medium border-2 border-ink bg-white text-ink shadow-sm hover:bg-bone transition-colors">
+               <button className="w-10 h-10 flex items-center justify-center rounded-lg text-[14px] font-medium border border-slate-200 bg-white text-slate-800 shadow-sm hover:bg-slate-50 transition-colors">
                  3
                </button>
-               <span className="text-ink/50 px-2 font-black">...</span>
-               <button className="w-10 h-10 flex items-center justify-center rounded-lg text-[14px] font-medium border-2 border-ink bg-white text-ink shadow-sm hover:bg-bone transition-colors">
+               <span className="text-slate-800/50 px-2 font-bold">...</span>
+               <button className="w-10 h-10 flex items-center justify-center rounded-lg text-[14px] font-medium border border-slate-200 bg-white text-slate-800 shadow-sm hover:bg-slate-50 transition-colors">
                  14
                </button>
             </div>

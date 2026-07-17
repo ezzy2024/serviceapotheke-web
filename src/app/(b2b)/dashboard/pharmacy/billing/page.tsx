@@ -34,7 +34,7 @@ export default function BillingPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Basic Plan */}
-        <div className="border-4 border-black p-6 bg-white hover:-translate-y-2 transition-transform duration-200 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <div className="border-4 border-black p-6 bg-white hover:-translate-y-2 transition-transform duration-200 shadow-lg rounded-2xl">
           <h2 className="text-2xl font-bold uppercase mb-2">Basic Access</h2>
           <p className="text-xl font-bold mb-6">Kostenlos</p>
           <ul className="space-y-3 mb-8">
@@ -54,7 +54,7 @@ export default function BillingPage() {
         </div>
 
         {/* Pro Plan */}
-        <div className="border-4 border-black p-6 bg-[#E0FF00] hover:-translate-y-2 transition-transform duration-200 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex flex-col justify-between">
+        <div className="border-4 border-black p-6 bg-[#E0FF00] hover:-translate-y-2 transition-transform duration-200 shadow-lg rounded-2xl flex flex-col justify-between">
           <div>
             <div className="inline-block bg-black text-white text-xs font-bold uppercase px-2 py-1 mb-4">Empfohlen</div>
             <h2 className="text-2xl font-bold uppercase mb-2">Pro Command Center</h2>

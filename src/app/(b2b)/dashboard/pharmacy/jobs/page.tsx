@@ -91,7 +91,7 @@ export default function PharmacyJobs() {
               <div className="p-6 border-b border-slate-100 flex items-center bg-white">
                 <div className="flex flex-col items-center justify-center bg-blue-50 border border-blue-100 text-blue-700 rounded-xl w-16 h-16 mr-6 shadow-sm">
                   <span className="text-xs font-bold uppercase tracking-wider">{new Date(job.startDate).toLocaleString('de-DE', { month: 'short' })}</span>
-                  <span className="text-2xl font-black">{new Date(job.startDate).getDate()}</span>
+                  <span className="text-2xl font-bold">{new Date(job.startDate).getDate()}</span>
                 </div>
                 <div className="flex-1">
                   <h2 className="text-xl font-bold text-slate-800">{job.title}</h2>
