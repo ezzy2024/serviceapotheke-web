@@ -8,6 +8,7 @@ interface User {
   id: string;
   email: string;
   role: 'Pharmacy' | 'Pharmacist';
+  hasPremiumAccess?: boolean;
 }
 
 interface AuthContextType {

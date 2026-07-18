@@ -21,8 +21,10 @@ export default function Sidebar() {
     { name: 'Vakanzen', href: '/dashboard/pharmacy/jobs', icon: Briefcase },
     { name: 'Dienstplan', href: '/dashboard/pharmacy/dienstplan', icon: Calendar },
     { name: 'Rechnungen', href: '/dashboard/pharmacy/invoices', icon: FileText },
-    { name: 'pDL Analyzer', href: '/dashboard/pharmacy/pdl', icon: FileText },
-    { name: 'aTM Terminals', href: '/dashboard/pharmacy/atm', icon: Radar },
+    ...(user?.hasPremiumAccess ? [
+      { name: 'pDL Analyzer', href: '/dashboard/pharmacy/pdl', icon: FileText },
+      { name: 'aTM Terminals', href: '/dashboard/pharmacy/atm', icon: Radar }
+    ] : []),
     { name: 'Einstellungen', href: '/dashboard/pharmacy/settings', icon: Settings },
   ];
 

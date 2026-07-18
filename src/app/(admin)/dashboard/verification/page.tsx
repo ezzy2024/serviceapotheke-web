@@ -138,6 +138,35 @@ export default function VerificationQueuePage() {
                   </button>
                 </div>
               </div>
+              
+              {selectedItem.type === 'Pharmacy' && (
+                <div className="px-6 py-4 border-b border-slate-200 bg-indigo-50/50 flex justify-between items-center">
+                  <div>
+                    <h3 className="font-semibold text-indigo-900">Premium-Funktionen (Freigabe)</h3>
+                    <p className="text-sm text-indigo-700/80">Schaltet den Zugang zu pDL und aTM für diese Apotheke frei.</p>
+                  </div>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input 
+                      type="checkbox" 
+                      className="sr-only peer" 
+                      onChange={async (e) => {
+                        try {
+                          await fetch(`/api/Admin/pharmacies/${selectedItem.id}/premium-access`, {
+                            method: 'PATCH',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ hasPremiumAccess: e.target.checked })
+                          });
+                          toast.success(`Premium-Zugang ${e.target.checked ? 'aktiviert' : 'deaktiviert'}.`);
+                        } catch (err) {
+                          toast.error("Fehler beim Speichern der Premium-Freigabe.");
+                        }
+                      }}
+                    />
+                    <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                  </label>
+                </div>
+              )}
+
               <div className="flex-1 bg-slate-100 p-6 overflow-hidden flex flex-col">
                 <h3 className="font-semibold text-slate-700 mb-4 flex items-center gap-2">
                   <FileText className="w-5 h-5" />
