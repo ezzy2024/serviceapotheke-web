@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import axios from 'axios';
 
 async function getMailTmAccount() {
   const response = await fetch('https://api.mail.tm/domains');
@@ -24,21 +25,20 @@ async function getMailTmAccount() {
 }
 
 async function getVerificationCode(token: string) {
-  for (let i = 0; i < 30; i++) {
-    const msgRes = await fetch('https://api.mail.tm/messages', {
+  for (let i = 0; i < 60; i++) {
+    const res = await axios.get('https://api.mail.tm/messages', {
       headers: { Authorization: `Bearer ${token}` }
     });
-    const msgs = await msgRes.json();
-    if (msgs['hydra:member'] && msgs['hydra:member'].length > 0) {
-      const msgId = msgs['hydra:member'][0].id;
-      const msgDetail = await fetch(`https://api.mail.tm/messages/${msgId}`, {
+    
+    if (res.data['hydra:member'].length > 0) {
+      const msgId = res.data['hydra:member'][0].id;
+      const msg = await axios.get(`https://api.mail.tm/messages/${msgId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      const msgData = await msgDetail.json();
-      const match = msgData.text.match(/\b\d{6}\b/);
-      if (match) return match[0];
+      const match = msg.data.text.match(/Dein Bestätigungscode lautet:\s*(\d{6})/);
+      if (match) return match[1];
     }
-    await new Promise(r => setTimeout(r, 2000));
+    await new Promise(r => setTimeout(r, 3000));
   }
   throw new Error('Verification code not received');
 }
@@ -50,7 +50,7 @@ test.describe('Production Registration E2E', () => {
     const account = await getMailTmAccount();
     console.log(`Pharmacist Test Email: ${account.email}`);
 
-    await page.goto('https://serviceapotheke.tech/register/pharmacist');
+    await page.goto('/register/pharmacist');
     
     // Step 1: Personal Data
     await page.fill('input[name="firstName"]', 'Test');
@@ -96,7 +96,7 @@ test.describe('Production Registration E2E', () => {
     const account = await getMailTmAccount();
     console.log(`Pharmacy Test Email: ${account.email}`);
 
-    await page.goto('https://serviceapotheke.tech/register/pharmacy');
+    await page.goto('/register/pharmacy');
     
     // Step 1: Manually Enter (Search logic removed)
 
@@ -152,7 +152,7 @@ test.describe('Production Registration E2E', () => {
     await page.screenshot({ path: 'pharmacy_dashboard.png', fullPage: true });
     
     // Check PDL page (AMTS modal)
-    await page.goto('https://serviceapotheke.tech/dashboard/pharmacy/pdl');
+    await page.goto('/dashboard/pharmacy/pdl');
     await page.waitForLoadState('networkidle');
     await page.screenshot({ path: 'amts_modal.png', fullPage: true });
 

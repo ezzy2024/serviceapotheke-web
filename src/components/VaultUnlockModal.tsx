@@ -50,39 +50,39 @@ export default function VaultUnlockModal({ isOpen, onSuccess, onCancel }: VaultU
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/60 backdrop-blur-sm">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm">
         <motion.div 
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
-          className="w-full max-w-md bg-bone border-4 border-ink shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] p-8 relative"
+          className="w-full max-w-md bg-white rounded-2xl shadow-2xl shadow-slate-200/50 p-8 relative border border-slate-100"
         >
           <div className="flex justify-center mb-6">
-            <div className="w-16 h-16 bg-white border-4 border-ink flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-              <Lock className="w-8 h-8 text-ink" />
+            <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center">
+              <Lock className="w-8 h-8 text-blue-600" />
             </div>
           </div>
           
-          <h2 className="text-2xl font-black text-ink uppercase tracking-tight text-center mb-2">
+          <h2 className="text-2xl font-bold text-slate-900 text-center mb-2">
             Tresor Entsperren
           </h2>
-          <p className="text-ink/80 font-bold text-center text-sm mb-8">
+          <p className="text-slate-500 text-center text-sm mb-8">
             Die Gesundheitsdaten sind E2EE verschlüsselt. Bitte geben Sie Ihr Vault-Passwort ein, um den lokalen Schlüssel zu generieren.
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-black text-ink uppercase tracking-wide mb-2">Vault Passwort</label>
+              <label className="block text-sm font-medium text-slate-700 mb-2">Vault Passwort</label>
               <input 
                 type="password" 
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 autoFocus
-                className="w-full px-4 py-3 rounded-none bg-white border-4 border-ink focus:ring-0 focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all font-bold text-ink text-xl tracking-widest text-center"
+                className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition-all font-medium text-slate-900 text-xl tracking-widest text-center"
                 required
               />
               {error && (
-                <div className="mt-3 flex items-center gap-2 text-red-600 font-bold text-sm bg-red-100 p-3 border-2 border-red-600">
+                <div className="mt-3 flex items-center gap-2 text-red-600 font-medium text-sm bg-red-50 p-3 rounded-lg border border-red-100">
                   <ShieldAlert className="w-4 h-4" />
                   {error}
                 </div>
@@ -94,7 +94,7 @@ export default function VaultUnlockModal({ isOpen, onSuccess, onCancel }: VaultU
                 <button 
                   type="button" 
                   onClick={onCancel}
-                  className="flex-1 py-4 bg-white border-4 border-ink text-ink font-black uppercase tracking-wide transition-all hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1"
+                  className="flex-1 py-3.5 bg-white border border-slate-200 text-slate-700 font-medium rounded-xl transition-all hover:bg-slate-50 hover:shadow-sm"
                 >
                   Abbrechen
                 </button>
@@ -102,9 +102,9 @@ export default function VaultUnlockModal({ isOpen, onSuccess, onCancel }: VaultU
               <button 
                 type="submit" 
                 disabled={isUnlocking || !password}
-                className="flex-1 py-4 bg-blue-600 border-4 border-ink text-white font-black uppercase tracking-wide transition-all shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 disabled:opacity-50 disabled:translate-y-0 disabled:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center gap-3"
+                className="flex-1 py-3.5 bg-blue-600 text-white font-medium rounded-xl transition-all shadow-md hover:bg-blue-700 hover:shadow-lg disabled:opacity-50 flex items-center justify-center gap-3"
               >
-                {isUnlocking ? <Loader2 className="w-6 h-6 animate-spin" /> : 'Entsperren'}
+                {isUnlocking ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Entsperren'}
               </button>
             </div>
           </form>

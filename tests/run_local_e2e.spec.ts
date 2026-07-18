@@ -40,7 +40,7 @@ test.describe('E2E Registration Flow', () => {
     const account = await getMailTmAccount();
     console.log(`Pharmacy Test Email: ${account.email}`);
 
-    await page.goto('http://localhost:3000/register/pharmacy');
+    await page.goto('/register/pharmacy');
     
     // Step 1: Manually Enter (Search logic removed)
 
@@ -84,7 +84,7 @@ test.describe('E2E Registration Flow', () => {
     await page.screenshot({ path: 'pharmacy_dashboard_local.png', fullPage: true });
     
     // Check PDL page (AMTS modal)
-    await page.goto('http://localhost:3000/dashboard/pharmacy/pdl');
+    await page.goto('/dashboard/pharmacy/pdl');
     await page.waitForLoadState('networkidle');
     await page.screenshot({ path: 'amts_modal_local.png', fullPage: true });
 

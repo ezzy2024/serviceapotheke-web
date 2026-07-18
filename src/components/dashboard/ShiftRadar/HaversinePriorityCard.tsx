@@ -11,26 +11,26 @@ export function HaversinePriorityCard({
   description = "Perfektes Match! Diese Apotheke sucht eine Urlaubsvertretung und nutzt CGM Lauer, was mit Ihrem Profil übereinstimmt."
 }) {
   return (
-    <div className="bg-ink border-2 border-ink p-5 mb-5 flex gap-4 items-start shadow-[6px_6px_0px_0px_rgba(216,255,58,1)] transition-transform hover:-translate-y-1 hover:shadow-[8px_8px_0px_0px_rgba(216,255,58,1)]">
+    <div className="bg-blue-600 border border-blue-500 rounded-2xl p-6 mb-6 flex gap-4 items-start shadow-md transition-transform hover:-translate-y-1 hover:shadow-lg">
       
-      {/* Brutalist Avatar / Icon block */}
-      <div className="w-14 h-14 shrink-0 bg-lime flex items-center justify-center border-2 border-ink">
-        <ShieldCheck className="w-8 h-8 text-ink" strokeWidth={2.5} />
+      {/* Avatar / Icon block */}
+      <div className="w-14 h-14 shrink-0 bg-white rounded-xl flex items-center justify-center shadow-sm">
+        <ShieldCheck className="w-8 h-8 text-blue-600" strokeWidth={2.5} />
       </div>
 
       <div className="flex-1 font-sans">
-        <div className="text-[12px] font-bold uppercase tracking-[1px] text-lime mb-2 font-jetbrains">
+        <div className="text-xs font-semibold uppercase tracking-wider text-blue-100 mb-2">
           Haversine Priority Match • {matchScore}
         </div>
-        <div className="text-[18px] font-black text-bone mb-2 uppercase leading-tight font-sans tracking-wide">
-          {title} <span className="font-jetbrains text-lime">({distance})</span>
+        <div className="text-xl font-bold text-white mb-3 leading-tight">
+          {title} <span className="text-blue-200">({distance})</span>
         </div>
-        <a href="#" className="block bg-bone text-ink border-2 border-ink py-2.5 px-4 hover:bg-lime transition-colors group">
+        <a href="#" className="block bg-white text-slate-800 rounded-xl py-3 px-4 hover:bg-blue-50 transition-colors group shadow-sm">
           <div className="flex items-center gap-3">
-            <div className="text-[14px] flex-1 font-bold line-clamp-2 uppercase">
-              {pharmacyName}: <span className="font-instrument italic normal-case text-[16px]">{description}</span>
+            <div className="text-sm flex-1 font-semibold line-clamp-2">
+              {pharmacyName}: <span className="font-normal">{description}</span>
             </div>
-            <ArrowRight className="w-6 h-6 text-ink group-hover:translate-x-1 transition-transform shrink-0" strokeWidth={2.5} />
+            <ArrowRight className="w-5 h-5 text-blue-600 group-hover:translate-x-1 transition-transform shrink-0" strokeWidth={2.5} />
           </div>
         </a>
       </div>

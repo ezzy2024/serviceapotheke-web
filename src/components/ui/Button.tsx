@@ -42,11 +42,11 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   let variantClasses = '';
-  if (variant === 'primary') variantClasses = 'bg-ink text-white hover:bg-ink/90 border-transparent rounded-xl shadow-md transition-all font-semibold';
-  if (variant === 'secondary') variantClasses = 'bg-white text-ink hover:bg-bone border border-ink/20 rounded-xl shadow-sm transition-all font-semibold';
-  if (variant === 'danger') variantClasses = 'bg-persimmon text-white hover:bg-persimmon/90 border-transparent rounded-xl shadow-md transition-all font-semibold';
-  if (variant === 'brutalist') variantClasses = 'bg-ink text-white rounded-xl shadow-md hover:bg-ink/90 font-semibold transition-all';
-  if (variant === 'brutalist-secondary') variantClasses = 'bg-white text-ink border border-ink/20 rounded-xl shadow-sm hover:bg-bone font-semibold transition-all';
+  if (variant === 'primary') variantClasses = 'bg-blue-600 text-white hover:bg-blue-700 border-transparent rounded-xl shadow-md transition-all font-semibold';
+  if (variant === 'secondary') variantClasses = 'bg-white text-slate-800 hover:bg-slate-50 border border-slate-200 rounded-xl shadow-sm transition-all font-semibold';
+  if (variant === 'danger') variantClasses = 'bg-red-600 text-white hover:bg-red-700 border-transparent rounded-xl shadow-md transition-all font-semibold';
+  if (variant === 'brutalist') variantClasses = 'bg-blue-600 text-white hover:bg-blue-700 rounded-xl shadow-md font-semibold transition-all';
+  if (variant === 'brutalist-secondary') variantClasses = 'bg-white text-slate-800 hover:bg-slate-50 border border-slate-200 rounded-xl shadow-sm font-semibold transition-all';
 
   const baseClasses = 'inline-flex items-center justify-center transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed';
 

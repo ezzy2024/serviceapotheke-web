@@ -31,36 +31,38 @@ export default function ComplianceReel() {
       {/* Floating Action Button */}
       <button 
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 z-50 bg-lime text-ink border-2 border-ink shadow-[4px_4px_0px_0px_rgba(12,20,16,1)] px-4 py-2 font-bricolage font-bold hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(12,20,16,1)] transition-all"
+        className="fixed bottom-6 right-6 z-50 bg-blue-600 text-white rounded-full shadow-lg px-6 py-3 font-semibold hover:bg-blue-700 hover:shadow-xl hover:-translate-y-0.5 transition-all"
       >
         Legal Updates ({updates.length})
       </button>
 
       {/* Reel Modal */}
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/80 backdrop-blur-sm">
-          <div className="bg-bone border-4 border-ink w-full max-w-sm h-[60vh] flex flex-col relative overflow-hidden shadow-[12px_12px_0px_0px_rgba(216,255,58,1)]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm">
+          <div className="bg-white rounded-3xl w-full max-w-sm h-[60vh] flex flex-col relative overflow-hidden shadow-2xl border border-slate-100">
             
-            <div className="flex justify-between items-center border-b-4 border-ink p-4 bg-lime">
-              <h3 className="font-bricolage font-black uppercase text-xl">Compliance Feed</h3>
-              <button onClick={() => setIsOpen(false)} className="font-jetbrains font-bold text-xl leading-none">&times;</button>
+            <div className="flex justify-between items-center border-b border-slate-100 p-5 bg-slate-50/80">
+              <h3 className="font-bold text-slate-800 text-lg">Compliance Feed</h3>
+              <button onClick={() => setIsOpen(false)} className="text-slate-400 hover:text-slate-600 transition-colors">
+                <span className="text-2xl leading-none">&times;</span>
+              </button>
             </div>
 
-            <div className="flex-1 p-6 flex flex-col justify-center relative">
+            <div className="flex-1 p-6 flex flex-col justify-center relative bg-white">
               {updates.map((update, index) => (
                 <div 
                   key={update.id}
-                  className={`absolute inset-0 p-8 flex flex-col justify-center transition-opacity duration-500 ${index === activeIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
+                  className={`absolute inset-0 p-8 flex flex-col justify-center transition-all duration-500 ${index === activeIndex ? 'opacity-100 z-10 translate-x-0' : 'opacity-0 z-0 translate-x-8'}`}
                 >
-                  <span className="inline-block bg-ink text-bone font-jetbrains text-xs px-2 py-1 uppercase w-fit mb-4">
+                  <span className="inline-block bg-blue-50 text-blue-600 font-semibold text-xs px-3 py-1.5 rounded-full w-fit mb-4">
                     {update.topic}
                   </span>
-                  <a href={update.link} target="_blank" rel="noopener noreferrer" className="hover:underline">
-                    <h4 className="font-bricolage text-3xl font-bold leading-tight mb-4 text-ink">
+                  <a href={update.link} target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors">
+                    <h4 className="text-2xl font-bold leading-tight mb-4 text-slate-900">
                       {update.title}
                     </h4>
                   </a>
-                  <div className="font-jetbrains text-sm text-ink/70 mt-auto">
+                  <div className="text-sm font-medium text-slate-500 mt-auto">
                     <p>Source: {update.source}</p>
                     <p>Date: {update.date}</p>
                   </div>
@@ -69,11 +71,11 @@ export default function ComplianceReel() {
             </div>
 
             {/* Progress Indicators */}
-            <div className="flex border-t-4 border-ink">
+            <div className="flex gap-1.5 p-4 bg-white justify-center">
               {updates.map((_, index) => (
                 <div 
                   key={index} 
-                  className={`h-2 flex-1 border-r-2 last:border-r-0 border-ink ${index === activeIndex ? 'bg-persimmon' : 'bg-bone'}`}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${index === activeIndex ? 'w-6 bg-blue-600' : 'w-1.5 bg-slate-200'}`}
                 />
               ))}
             </div>

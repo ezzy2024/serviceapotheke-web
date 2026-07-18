@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useState } from 'react';
 
@@ -29,55 +29,55 @@ export default function BillingPage() {
   };
 
   return (
-    <div className="p-8 max-w-5xl mx-auto font-mono">
-      <h1 className="text-4xl font-bold uppercase tracking-tighter mb-8 border-b-4 border-black pb-4 text-black">Abonnement & Abrechnung</h1>
+    <div className="p-8 max-w-5xl mx-auto font-sans">
+      <h1 className="text-3xl font-bold tracking-tight mb-8 pb-4 text-slate-800 border-b border-slate-200">Abonnement & Abrechnung</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Basic Plan */}
-        <div className="border-4 border-black p-6 bg-white hover:-translate-y-2 transition-transform duration-200 shadow-lg rounded-2xl">
-          <h2 className="text-2xl font-bold uppercase mb-2">Basic Access</h2>
-          <p className="text-xl font-bold mb-6">Kostenlos</p>
-          <ul className="space-y-3 mb-8">
+        <div className="border border-slate-200 p-8 bg-white hover:shadow-lg transition-all duration-200 shadow-md rounded-2xl">
+          <h2 className="text-xl font-bold text-slate-800 mb-2">Basic Access</h2>
+          <p className="text-3xl font-bold mb-6 text-slate-900">Kostenlos</p>
+          <ul className="space-y-4 mb-8 text-slate-600">
             <li className="flex items-center">
-              <span className="mr-2">✓</span> Apotheken Profil
+              <span className="mr-3 text-blue-500 font-bold">✓</span> Apotheken Profil
             </li>
-            <li className="flex items-center text-gray-500 line-through">
-              <span className="mr-2">✗</span> Shift-Radar (Echtzeit Matches)
+            <li className="flex items-center text-slate-400">
+              <span className="mr-3">✗</span> Shift-Radar (Echtzeit Matches)
             </li>
-            <li className="flex items-center text-gray-500 line-through">
-              <span className="mr-2">✗</span> Priority Support
+            <li className="flex items-center text-slate-400">
+              <span className="mr-3">✗</span> Priority Support
             </li>
           </ul>
-          <button className="w-full py-3 px-4 border-2 border-black font-bold uppercase bg-gray-200 text-gray-500 cursor-not-allowed" disabled>
+          <button className="w-full py-3.5 px-4 rounded-xl border border-slate-200 font-medium bg-slate-50 text-slate-400 cursor-not-allowed" disabled>
             Aktueller Plan
           </button>
         </div>
 
         {/* Pro Plan */}
-        <div className="border-4 border-black p-6 bg-[#E0FF00] hover:-translate-y-2 transition-transform duration-200 shadow-lg rounded-2xl flex flex-col justify-between">
+        <div className="border-2 border-blue-500 p-8 bg-white hover:shadow-xl transition-all duration-200 shadow-md rounded-2xl flex flex-col justify-between relative overflow-hidden">
+          <div className="absolute top-0 right-0 bg-blue-500 text-white text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-bl-lg">Empfohlen</div>
           <div>
-            <div className="inline-block bg-black text-white text-xs font-bold uppercase px-2 py-1 mb-4">Empfohlen</div>
-            <h2 className="text-2xl font-bold uppercase mb-2">Pro Command Center</h2>
-            <p className="text-xl font-bold mb-6">499 € / Monat</p>
-            <ul className="space-y-3 mb-8">
+            <h2 className="text-xl font-bold text-slate-800 mb-2">Pro Command Center</h2>
+            <p className="text-3xl font-bold mb-6 text-slate-900">499 € <span className="text-lg font-normal text-slate-500">/ Monat</span></p>
+            <ul className="space-y-4 mb-8 text-slate-600">
               <li className="flex items-center">
-                <span className="mr-2 font-bold">✓</span> Alle Basic Features
+                <span className="mr-3 text-blue-500 font-bold">✓</span> Alle Basic Features
               </li>
               <li className="flex items-center">
-                <span className="mr-2 font-bold">✓</span> Shift-Radar (Echtzeit Matches)
+                <span className="mr-3 text-blue-500 font-bold">✓</span> Shift-Radar (Echtzeit Matches)
               </li>
               <li className="flex items-center">
-                <span className="mr-2 font-bold">✓</span> Telepharmazie WebRTC
+                <span className="mr-3 text-blue-500 font-bold">✓</span> Telepharmazie WebRTC
               </li>
               <li className="flex items-center">
-                <span className="mr-2 font-bold">✓</span> Priority Support
+                <span className="mr-3 text-blue-500 font-bold">✓</span> Priority Support
               </li>
             </ul>
           </div>
           <button 
             onClick={handleUpgrade} 
             disabled={loading}
-            className="w-full py-3 px-4 border-4 border-black font-bold uppercase bg-black text-white hover:bg-white hover:text-black transition-colors duration-200"
+            className="w-full py-3.5 px-4 rounded-xl font-medium bg-blue-600 text-white hover:bg-blue-700 hover:shadow-md transition-all duration-200 disabled:opacity-50"
           >
             {loading ? 'Lade Checkout...' : 'Jetzt Upgraden'}
           </button>

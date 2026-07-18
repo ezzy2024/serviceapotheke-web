@@ -1,11 +1,11 @@
 import { test, expect } from '@playwright/test';
 
 test('Debug step 3', async ({ page }) => {
-  await page.goto('https://serviceapotheke.tech/register/pharmacy');
+  await page.goto('/register/pharmacy');
   
   await page.fill('input[placeholder*="Suchen Sie Ihre Apotheke"]', 'Not Real Apotheke 99');
-  await page.waitForSelector('text=Keine Apotheke gefunden?');
-  await page.click('button:has-text("Manuell eintragen")');
+  await page.waitForSelector('text=Registrierung');
+  await page.click('button:has-text("Weiter")');
 
   await page.fill('input[name="pharmacyName"]', 'Test Apotheke');
   await page.fill('input[name="email"]', 'test@example.com');

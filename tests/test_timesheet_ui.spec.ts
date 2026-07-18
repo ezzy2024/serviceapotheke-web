@@ -6,14 +6,14 @@ test('Test Umlaute and Timesheet', async ({ page }) => {
   const creds = JSON.parse(fs.readFileSync('creds.json'));
 
   // 1. Pharmacy PDL Upload Test
-  await page.goto('https://serviceapotheke.tech/login');
+  await page.goto('/login');
   await page.click('button:has-text("Apotheke")');
   await page.fill('input[name="email"]', creds.pharmacy.email);
   await page.fill('input[name="password"]', creds.pharmacy.password);
   await page.click('button:has-text("Einloggen")');
   await page.waitForURL('**/dashboard/pharmacy*');
 
-  await page.goto('https://serviceapotheke.tech/dashboard/pharmacy/pdl');
+  await page.goto('/dashboard/pharmacy/pdl');
   await page.waitForLoadState('networkidle');
 
   await page.fill('input[type="password"]', creds.pharmacy.password);
@@ -39,7 +39,7 @@ test('Test Umlaute and Timesheet', async ({ page }) => {
   await page.click('button:has-text("Einloggen")');
   await page.waitForURL('**/dashboard/pharmacist*');
 
-  await page.goto('https://serviceapotheke.tech/dashboard/pharmacist/shifts');
+  await page.goto('/dashboard/pharmacist/shifts');
   await page.waitForLoadState('networkidle');
 
   await page.click('button:has-text("Schicht abschließen")');
@@ -57,3 +57,4 @@ test('Test Umlaute and Timesheet', async ({ page }) => {
   await page.waitForSelector('text=erfolgreich abgeschlossen', { timeout: 15000 });
   await page.screenshot({ path: 'timesheet_success.png' });
 });
+

@@ -1,10 +1,10 @@
 export function ComplianceBadge({ title, description }: { title: string; description: string }) {
   return (
-    <div className="flex flex-col border-2 border-ink bg-bone p-3 shadow-[4px_4px_0px_0px_rgba(12,20,16,1)] mb-4 w-full md:w-auto">
-      <span className="font-jetbrains font-bold uppercase text-xs tracking-wider text-ink mb-1">
+    <div className="flex flex-col border border-slate-200 bg-white p-4 rounded-xl shadow-sm mb-4 w-full md:w-auto">
+      <span className="font-semibold text-xs text-blue-600 mb-1">
         {title}
       </span>
-      <span className="font-bricolage text-sm font-semibold text-ink/80">
+      <span className="text-sm font-medium text-slate-700">
         {description}
       </span>
     </div>

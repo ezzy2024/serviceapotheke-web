@@ -7,7 +7,7 @@ test('Take Bugfix Screenshots', async ({ page }) => {
   const email = `test_${uniqueId}@web-library.net`;
   
   // 1. Pharmacy Registration Step 2
-  await page.goto('https://serviceapotheke.tech/register/pharmacy');
+  await page.goto('/register/pharmacy');
   await page.fill('input[name="pharmacyName"]', 'TestApo');
   await page.fill('input[name="email"]', email);
   await page.fill('input[name="password"]', 'TestPassword123!');
@@ -28,13 +28,13 @@ test('Take Bugfix Screenshots', async ({ page }) => {
   await page.click('button:has-text("Weiter")');
   await page.waitForSelector('text=SCHRITT 3 VON 3');
   await page.check('input[type="checkbox"]');
-  await page.click('button:has-text("Kostenpflichtig registrieren")');
+  await page.click('button:has-text("Registrierung abschließen")');
   
   // Wait for login/dashboard
   await page.waitForURL('**/dashboard/pharmacy*');
 
   // 2. PDL Page Umlaute
-  await page.goto('https://serviceapotheke.tech/dashboard/pharmacy/pdl');
+  await page.goto('/dashboard/pharmacy/pdl');
   await page.waitForLoadState('networkidle');
   
   // Unlock Vault
@@ -47,7 +47,7 @@ test('Take Bugfix Screenshots', async ({ page }) => {
 
   // 3. Forgot Password
   // Need to log out or just go to forgot password (which works when logged out)
-  await page.goto('https://serviceapotheke.tech/forgot-password');
+  await page.goto('/forgot-password');
   // Wait for React to render tabs, we select Pharmacy tab
   await page.waitForSelector('button:has-text("Apotheke")');
   await page.click('button:has-text("Apotheke")');

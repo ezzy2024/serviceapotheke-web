@@ -33,8 +33,8 @@ export default function MarketingNavbar() {
               Login
             </Link>
             <Link 
-              href="/register" 
-              className="inline-flex items-center justify-center px-6 py-2.5 text-sm font-bold uppercase tracking-wide text-ink bg-lime border-2 border-ink shadow-[4px_4px_0px_0px_rgba(12,20,16,1)] hover:shadow-[6px_6px_0px_0px_rgba(12,20,16,1)] hover:-translate-y-0.5 transition-all duration-200 font-jetbrains"
+              href="/register"
+              className="inline-flex items-center justify-center px-6 py-2.5 text-sm font-semibold text-white bg-blue-600 rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
             >
               Loslegen
             </Link>
