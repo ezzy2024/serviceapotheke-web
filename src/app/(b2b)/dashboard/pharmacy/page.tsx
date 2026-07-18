@@ -6,6 +6,7 @@ import { useAuth } from '@/lib/AuthContext';
 import Link from 'next/link';
 import { Briefcase, Users, AlertTriangle, CheckCircle, Package, ArrowRight, Loader2, Clock, ShieldCheck } from 'lucide-react';
 import { ComplianceWidget } from '@/components/ui/ComplianceWidget';
+import { NewsWidget } from '@/components/dashboard/NewsWidget';
 
 export default function PharmacyDashboard() {
   const { user } = useAuth();
@@ -154,8 +155,12 @@ export default function PharmacyDashboard() {
           </section>
         </div>
             {/* Right Column */}
-        <div className="space-y-8">
-          <section className="bg-white border border-slate-200 shadow-lg rounded-2xl overflow-hidden">
+        <div className="space-y-8 flex flex-col h-[800px]">
+          <div className="flex-1 min-h-0">
+            <NewsWidget />
+          </div>
+          
+          <section className="bg-white border border-slate-200 shadow-lg rounded-2xl overflow-hidden shrink-0">
             <div className="p-6 border-b border-slate-200 flex justify-between items-center bg-slate-50">
               <h2 className="text-xl font-bold text-slate-800 tracking-tight flex items-center gap-2">
                 <Clock className="w-6 h-6" /> Offene Aufgaben

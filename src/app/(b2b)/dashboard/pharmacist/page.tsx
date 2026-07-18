@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/AuthContext';
 import api from '@/lib/api';
 import { ShiftSidebarFilters } from '@/components/dashboard/ShiftRadar/ShiftSidebarFilters';
+import { NewsWidget } from '@/components/dashboard/NewsWidget';
 import { ShiftFilterChips } from '@/components/dashboard/ShiftRadar/ShiftFilterChips';
 import { HaversinePriorityCard } from '@/components/dashboard/ShiftRadar/HaversinePriorityCard';
 import { ShiftCard } from '@/components/dashboard/ShiftRadar/ShiftCard';
@@ -81,7 +82,13 @@ export default function ShiftRadarPage() {
       <main className="max-w-[1320px] mx-auto px-6 lg:px-8 py-6 lg:py-8 grid grid-cols-1 lg:grid-cols-[268px_1fr] gap-8 items-start">
         
         {/* Sidebar */}
-        <ShiftSidebarFilters filters={filters} onFilterChange={setFilters} />
+        <div className="flex flex-col gap-6">
+          <ShiftSidebarFilters filters={filters} onFilterChange={setFilters} />
+          <div className="h-[600px] flex-shrink-0">
+            <NewsWidget />
+          </div>
+        </div>
+
         {/* Results Area */}
         <div className="min-w-0">
           
