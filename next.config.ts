@@ -8,6 +8,9 @@ const withPWA = withPWAInit({
 });
 
 const nextConfig: NextConfig = {
+  env: {
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || "https://serviceapotheke-api-830781040278.europe-west1.run.app/api",
+  },
   output: "standalone",
   turbopack: {},
   generateBuildId: async () => {

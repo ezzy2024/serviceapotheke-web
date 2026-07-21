@@ -19,47 +19,79 @@ export default function VerificationQueuePage() {
   const [selectedItem, setSelectedItem] = useState<PendingVerification | null>(null);
   const toast = useToast();
 
-  useEffect(() => {
-    // Stub: fetch pending verifications
-    setTimeout(() => {
-      setQueue([
-        {
-          id: '1',
-          type: 'Pharmacist',
-          name: 'Max Mustermann',
-          email: 'max@example.com',
-          documentUrl: '/api/admin/documents/download/mock-token',
-          submittedAt: new Date().toISOString()
-        },
-        {
-          id: '2',
-          type: 'Pharmacy',
-          name: 'Adler Apotheke',
-          email: 'info@adler-apo.de',
-          documentUrl: null, // missing document
-          submittedAt: new Date().toISOString()
-        }
+  const fetchQueue = async () => {
+    setIsLoading(true);
+    try {
+      const token = localStorage.getItem('sa_admin_token') || sessionStorage.getItem('sa_admin_token');
+      const headers = { 'Authorization': `Bearer ${token}` };
+
+      const [resPharmacists, resPharmacies] = await Promise.all([
+        fetch('https://serviceapotheke.tech/api/Admin/pharmacists/pending', { headers }),
+        fetch('https://serviceapotheke.tech/api/Admin/pharmacies/pending', { headers })
       ]);
+
+      const pharmacists = resPharmacists.ok ? await resPharmacists.json() : [];
+      const pharmacies = resPharmacies.ok ? await resPharmacies.json() : [];
+
+      const combined: PendingVerification[] = [
+        ...pharmacists.map((p: any) => ({
+          id: p.id.toString(),
+          type: 'Pharmacist' as const,
+          name: p.fullName,
+          email: p.email,
+          documentUrl: p.approbationDocumentPath ? `https://serviceapotheke.tech/api/Admin/document/pharmacist/${p.id}/approbation` : null,
+          submittedAt: new Date().toISOString() // API doesn't return created at for pharmacists pending, use current for now
+        })),
+        ...pharmacies.map((p: any) => ({
+          id: p.id.toString(),
+          type: 'Pharmacy' as const,
+          name: p.pharmacyName,
+          email: p.email,
+          documentUrl: null, // Pharmacies might not have a document in the payload yet
+          submittedAt: new Date().toISOString()
+        }))
+      ];
+
+      setQueue(combined);
+    } catch (err) {
+      toast.error('Fehler beim Laden der Warteschlange');
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
+  };
+
+  useEffect(() => {
+    fetchQueue();
   }, []);
 
   const handleApprove = async (id: string, type: string) => {
-    // Call the Admin Controller's verification endpoints
-    // /api/Admin/verify-pharmacist/{id} or /api/Admin/verify-pharmacy/{id}
-    
-    // Stub
-    setQueue(q => q.filter(item => item.id !== id));
-    setSelectedItem(null);
-    toast.success(`${type} erfolgreich verifiziert.`);
+    try {
+      const token = localStorage.getItem('sa_admin_token') || sessionStorage.getItem('sa_admin_token');
+      const endpoint = type === 'Pharmacist' 
+        ? `https://serviceapotheke.tech/api/Admin/pharmacists/${id}/verify`
+        : `https://serviceapotheke.tech/api/Admin/pharmacies/${id}/verify`;
+        
+      const res = await fetch(endpoint, {
+        method: 'PATCH',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      if (res.ok) {
+        setQueue(q => q.filter(item => !(item.id === id && item.type === type)));
+        if (selectedItem?.id === id && selectedItem?.type === type) setSelectedItem(null);
+        toast.success(`${type} erfolgreich verifiziert.`);
+      } else {
+        toast.error(`Fehler bei der Verifizierung von ${type}`);
+      }
+    } catch (err) {
+      toast.error('Netzwerkfehler');
+    }
   };
 
   const handleReject = async (id: string, type: string) => {
-    // Call rejection logic (not fully implemented in backend yet, might just send an email or delete)
-    
-    // Stub
-    setQueue(q => q.filter(item => item.id !== id));
-    setSelectedItem(null);
+    // Backend doesn't have a specific reject endpoint yet, we just remove it from queue visually for now
+    setQueue(q => q.filter(item => !(item.id === id && item.type === type)));
+    if (selectedItem?.id === id && selectedItem?.type === type) setSelectedItem(null);
     toast.success(`${type} abgelehnt.`);
   };
 

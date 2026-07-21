@@ -30,7 +30,7 @@ export default function LoginPage() {
       console.log('[Login] api.post succeeded', res.data);
       
       // Notify Context
-      login({ id: res.data.id, email, role });
+      login({ id: res.data.id, email, role, token: res.data.token });
       console.log('[Login] login context updated');
     } catch (err: any) {
       console.error('[Login] api.post failed', err.message, err.response?.status);

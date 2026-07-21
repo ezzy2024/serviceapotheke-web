@@ -16,7 +16,7 @@ export default function PharmacyDashboard() {
 
   // Mock data for Apotheken OS features
   const openTasks = [
-    { id: 1, title: "BTM-Buchung prßfen", time: "14:00" },
+    { id: 1, title: "BTM-Buchung prüfen", time: "14:00" },
     { id: 2, title: "Kühlschranktemperatur loggen", time: "16:00" },
     { id: 3, title: "Rezeptur Salbe anfertigen", time: "17:30" }
   ];

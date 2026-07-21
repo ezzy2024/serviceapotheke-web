@@ -138,8 +138,9 @@ export default function ShiftRadarPage() {
                   dates.push(s === e ? s : `${s} - ${e}`);
                 }
 
-                // Make initials from pharmacy name
-                const pharmacyName = shift.pharmacy?.name || 'Apotheke';
+                // Handle masked pharmacy names pre-acceptance
+                const pharmacyName = shift.pharmacy?.pharmacyName 
+                  || (shift.pharmacy?.city ? `Apotheke in ${shift.pharmacy.postalCodePrefix} ${shift.pharmacy.city}` : 'Apotheke');
                 const words = pharmacyName.split(' ');
                 const initials = words.length > 1 
                   ? (words[0][0] + words[1][0]).toUpperCase() 
@@ -154,6 +155,23 @@ export default function ShiftRadarPage() {
                 };
                 const descriptionText = shift.reasonForVacancy ? (reasonMap[shift.reasonForVacancy] || shift.reasonForVacancy) : '';
 
+                let distanceStr = "~ km";
+                if ((user as any)?.latitude && (user as any)?.longitude && shift.pharmacy?.latitude && shift.pharmacy?.longitude) {
+                  const R = 6371; // km
+                  const lat1 = (user as any).latitude;
+                  const lon1 = (user as any).longitude;
+                  const lat2 = shift.pharmacy.latitude;
+                  const lon2 = shift.pharmacy.longitude;
+                  const dLat = (lat2 - lat1) * Math.PI / 180;
+                  const dLon = (lon2 - lon1) * Math.PI / 180;
+                  const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                            Math.sin(dLon/2) * Math.sin(dLon/2);
+                  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                  const dist = R * c;
+                  distanceStr = `${dist.toFixed(1)} km`;
+                }
+
                 return (
                   <ShiftCard 
                     key={shift.id} 
@@ -165,7 +183,7 @@ export default function ShiftRadarPage() {
                     conditionsJson={shift.description || ''}
                     hourlyRate={shift.salary?.toFixed(2) || '0,00'}
                     dates={dates}
-                    distance="~ km"
+                    distance={distanceStr}
                     rating="0.0"
                     reviews="0"
                     initialHasApplied={shift.hasApplied || false}

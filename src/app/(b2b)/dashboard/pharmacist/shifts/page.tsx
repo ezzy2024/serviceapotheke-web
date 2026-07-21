@@ -115,10 +115,7 @@ export default function PharmacistShifts() {
         return;
       }
 
-      // 2. Transition Status to Completed
-      await api.put(`/Allocation/shift/${selectedApplicationId}/status`, {
-        newStatus: "Completed"
-      });
+      // Removed api.put that manually mutated JobApplication status to 'Completed'
 
       toast.success('Schicht erfolgreich abgeschlossen.');
       setIsComplianceModalOpen(false);
@@ -166,12 +163,12 @@ export default function PharmacistShifts() {
                   <div className="flex justify-between items-start mb-2">
                     <h2 className="text-xl font-bold text-slate-800">{job?.title || 'Vertretungsschicht'}</h2>
                     <span className={`inline-flex px-3 py-1 rounded-full text-xs font-bold ${
+                      (shift.status === 'Accepted' && shift.timesheetStatus === 'Submitted') || shift.status === 'Completed' ? 'bg-green-100 text-green-700' :
                       shift.status === 'Accepted' ? 'bg-blue-100 text-blue-700' :
-                      shift.status === 'Completed' ? 'bg-green-100 text-green-700' :
                       shift.status === 'Invoiced' ? 'bg-purple-100 text-purple-700' :
                       'bg-slate-100 text-slate-700'
                     }`}>
-                      {shift.status}
+                      {(shift.status === 'Accepted' && shift.timesheetStatus === 'Submitted') ? 'Completed' : shift.status}
                     </span>
                   </div>
                   
@@ -197,7 +194,7 @@ export default function PharmacistShifts() {
                 </div>
                 
                 <div className="p-6 md:w-1/3 bg-slate-50/50 flex flex-col justify-center items-center text-center">
-                  {shift.status === 'Accepted' && (
+                  {shift.status === 'Accepted' && shift.timesheetStatus !== 'Submitted' && shift.timesheetStatus !== 'Approved' && (
                     <>
                       <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-3">
                         <Clock className="w-6 h-6" />
@@ -213,7 +210,7 @@ export default function PharmacistShifts() {
                     </>
                   )}
 
-                  {shift.status === 'Completed' && (
+                  {(shift.status === 'Completed' || (shift.status === 'Accepted' && shift.timesheetStatus === 'Submitted')) && (
                     <>
                       <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-3">
                         <CheckCircle2 className="w-6 h-6" />

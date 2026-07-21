@@ -67,8 +67,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }, 50);
   };
 
-  const login = (userData: User) => {
+  const login = (userData: User & { token?: string }) => {
     sessionStorage.removeItem('sa_history_trap_id');
+    if (userData.token) {
+      localStorage.setItem('token', userData.token);
+      document.cookie = `sa_auth_v2=${userData.token}; path=/; max-age=28800; secure; samesite=lax`;
+    }
     setUser(userData);
     redirectBasedOnRole(userData.role);
   };
@@ -80,6 +84,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.warn('Backend logout failed or session already expired');
     }
     localStorage.removeItem('token');
+    document.cookie = 'sa_auth_v2=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
     setUser(null);
     window.location.href = '/login';
   };
