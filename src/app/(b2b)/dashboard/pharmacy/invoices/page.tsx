@@ -100,26 +100,50 @@ export default function InvoicesPage() {
                     </td>
                     <td className="py-4 px-6 text-right">
                       {invoice.pdfFilePath && (
-                        <a 
-                          href={`${process.env.NEXT_PUBLIC_API_URL?.replace('/api', '')}/api/InvoiceDownload/${invoice.id}`} 
-                          target="_blank"
-                          rel="noreferrer"
+                        <button 
+                          onClick={async () => {
+                            try {
+                              const res = await api.get(`/InvoiceDownload/${invoice.id}/download`, { responseType: 'blob' });
+                              const url = window.URL.createObjectURL(new Blob([res.data], { type: 'application/pdf' }));
+                              const link = document.createElement('a');
+                              link.href = url;
+                              link.setAttribute('download', `Rechnung_${invoice.invoiceNumber || invoice.id}.pdf`);
+                              document.body.appendChild(link);
+                              link.click();
+                              link.remove();
+                              window.URL.revokeObjectURL(url);
+                            } catch (err) {
+                              console.error('Download failed', err);
+                            }
+                          }}
                           className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 rounded-xl transition-all font-medium text-sm"
                         >
                           <Download className="w-4 h-4" />
                           PDF
-                        </a>
+                        </button>
                       )}
                       {invoice.pdfFilePath && invoice.type === 'PharmacistServiceInvoice' && (
-                        <a 
-                          href={`${process.env.NEXT_PUBLIC_API_URL?.replace('/api', '')}/api/InvoiceDownload/${invoice.id}/zugferd`} 
-                          target="_blank"
-                          rel="noreferrer"
+                        <button 
+                          onClick={async () => {
+                            try {
+                              const res = await api.get(`/InvoiceDownload/${invoice.id}/zugferd`, { responseType: 'blob' });
+                              const url = window.URL.createObjectURL(new Blob([res.data], { type: 'application/xml' }));
+                              const link = document.createElement('a');
+                              link.href = url;
+                              link.setAttribute('download', `Rechnung_${invoice.invoiceNumber || invoice.id}_ZUGFeRD.xml`);
+                              document.body.appendChild(link);
+                              link.click();
+                              link.remove();
+                              window.URL.revokeObjectURL(url);
+                            } catch (err) {
+                              console.error('Download failed', err);
+                            }
+                          }}
                           className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 rounded-xl transition-all font-medium text-sm ml-2"
                         >
                           <FileText className="w-4 h-4" />
                           XML
-                        </a>
+                        </button>
                       )}
                     </td>
                   </motion.tr>
