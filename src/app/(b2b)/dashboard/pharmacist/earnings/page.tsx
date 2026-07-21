@@ -212,22 +212,50 @@ export default function EarningsPage() {
                         </button>
                       )}
                       {item.status === 'Approved' && item.invoiceId && (
-                        <button
-                          onClick={() => window.open(`/api/InvoiceDownload/${item.invoiceId}/download`, '_blank')}
-                          className="p-2 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center text-sm font-medium gap-1"
-                          title="Service-Rechnung herunterladen"
-                        >
-                          <Download className="w-4 h-4" /> PDF
-                        </button>
-                      )}
-                      {item.status === 'Approved' && item.invoiceId && (
-                        <button
-                          onClick={() => window.open(`${process.env.NEXT_PUBLIC_API_URL?.replace('/api', '')}/api/InvoiceDownload/${item.invoiceId}/zugferd`, '_blank')}
-                          className="p-2 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 rounded-lg transition-colors flex items-center justify-center text-sm font-medium gap-1"
-                          title="ZUGFeRD XML herunterladen"
-                        >
-                          <FileText className="w-4 h-4" /> XML
-                        </button>
+                        <>
+                          <button 
+                            onClick={async () => {
+                              try {
+                                const res = await api.get(`/InvoiceDownload/${item.invoiceId}/download`, { responseType: 'blob' });
+                                const url = window.URL.createObjectURL(new Blob([res.data], { type: 'application/pdf' }));
+                                const link = document.createElement('a');
+                                link.href = url;
+                                link.setAttribute('download', `Rechnung_${item.invoiceId}.pdf`);
+                                document.body.appendChild(link);
+                                link.click();
+                                link.remove();
+                                window.URL.revokeObjectURL(url);
+                              } catch (err) {
+                                console.error('Download failed', err);
+                              }
+                            }}
+                            className="inline-flex items-center justify-center p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors border border-transparent hover:border-blue-100"
+                            title="PDF Herunterladen"
+                          >
+                            <Download className="w-4 h-4" />
+                          </button>
+                          <button 
+                            onClick={async () => {
+                              try {
+                                const res = await api.get(`/InvoiceDownload/${item.invoiceId}/zugferd`, { responseType: 'blob' });
+                                const url = window.URL.createObjectURL(new Blob([res.data], { type: 'application/xml' }));
+                                const link = document.createElement('a');
+                                link.href = url;
+                                link.setAttribute('download', `Rechnung_${item.invoiceId}_ZUGFeRD.xml`);
+                                document.body.appendChild(link);
+                                link.click();
+                                link.remove();
+                                window.URL.revokeObjectURL(url);
+                              } catch (err) {
+                                console.error('Download failed', err);
+                              }
+                            }}
+                            className="inline-flex items-center justify-center p-2 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors border border-transparent hover:border-emerald-100"
+                            title="ZUGFeRD XML"
+                          >
+                            <FileText className="w-4 h-4" />
+                          </button>
+                        </>
                       )}
                     </div>
                   </td>
