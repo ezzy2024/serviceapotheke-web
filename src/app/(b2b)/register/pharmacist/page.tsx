@@ -110,6 +110,11 @@ export default function PharmacistWizard() {
           password: formData.password,
         });
         userId = loginRes.data.id;
+        
+        if (loginRes.data.token) {
+          localStorage.setItem('token', loginRes.data.token);
+          document.cookie = `sa_auth_v2=${loginRes.data.token}; path=/; max-age=28800; secure; samesite=lax`;
+        }
       } catch (loginErr: any) {
         if (loginErr.response?.status === 401 && loginErr.response?.data?.message?.includes('E-Mail-Adresse')) {
           setStep(4);
@@ -163,6 +168,11 @@ export default function PharmacistWizard() {
       await api.post('/Pharmacist/confirm-email', { email: formData.email, token: otp });
       const loginRes = await api.post('/Pharmacist/login', { email: formData.email, password: formData.password });
       const userId = loginRes.data.id;
+      
+      if (loginRes.data.token) {
+        localStorage.setItem('token', loginRes.data.token);
+        document.cookie = `sa_auth_v2=${loginRes.data.token}; path=/; max-age=28800; secure; samesite=lax`;
+      }
 
       if (approbationFile || cvFile || profilePicFile) {
         const fileData = new FormData();

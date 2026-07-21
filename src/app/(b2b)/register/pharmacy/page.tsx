@@ -138,7 +138,12 @@ export default function PharmacyWizard() {
     setIsLoading(true);
     try {
       await api.post('/Pharmacy/confirm-email', { email: formData.email, token: otp });
-      await api.post('/Pharmacy/login', { email: formData.email, password: formData.password });
+      const loginRes = await api.post('/Pharmacy/login', { email: formData.email, password: formData.password });
+      
+      if (loginRes.data.token) {
+        localStorage.setItem('token', loginRes.data.token);
+        document.cookie = `sa_auth_v2=${loginRes.data.token}; path=/; max-age=28800; secure; samesite=lax`;
+      }
       
       toast.success('E-Mail bestätigt und Registrierung abgeschlossen!');
       window.location.href = '/dashboard/pharmacy';

@@ -30,6 +30,18 @@ const fetchCsrfToken = async () => {
 // Request interceptor
 api.interceptors.request.use(
   async (config) => {
+    // Attach JWT Token from localStorage if present
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('token');
+      if (token) {
+        if (config.headers && typeof config.headers.set === 'function') {
+          config.headers.set('Authorization', `Bearer ${token}`);
+        } else {
+          config.headers['Authorization'] = `Bearer ${token}`;
+        }
+      }
+    }
+
     // Only attach CSRF token for mutating methods
     if (config.method && ['post', 'put', 'patch', 'delete'].includes(config.method.toLowerCase())) {
       try {

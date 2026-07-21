@@ -113,34 +113,94 @@ export default function PharmacyJobs() {
                 {(!job.jobApplications || job.jobApplications.length === 0) ? (
                   <p className="text-sm text-slate-500 italic">Noch keine Bewerbungen für diese Schicht.</p>
                 ) : (
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     {job.jobApplications.map((app: any) => (
-                      <div key={app.id} className="flex items-center justify-between p-4 rounded-xl border border-slate-200 bg-slate-50/50 hover:border-cyan-300 hover:bg-white transition-all shadow-sm">
-                        <div className="flex items-center">
-                          <div className="w-10 h-10 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-600 mr-4">
-                            <User className="w-5 h-5" />
+                      <div key={app.id} className="flex flex-col p-5 rounded-xl border border-slate-200 bg-white shadow-sm hover:shadow-md hover:border-cyan-300 transition-all">
+                        
+                        <div className="flex items-start justify-between w-full">
+                          {/* Profile Header */}
+                          <div className="flex items-center space-x-4">
+                            {app.pharmacist?.profilePicturePath ? (
+                              <img 
+                                src={`https://serviceapotheke.tech/api/Pharmacist/${app.pharmacist.id}/document/profile`} 
+                                alt={app.pharmacist.fullName} 
+                                className="w-14 h-14 rounded-full object-cover border border-slate-200" 
+                                onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.nextElementSibling!.classList.remove('hidden'); }}
+                              />
+                            ) : null}
+                            <div className={app.pharmacist?.profilePicturePath ? "hidden w-14 h-14 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-600" : "w-14 h-14 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-600"}>
+                              <User className="w-6 h-6" />
+                            </div>
+                            
+                            <div>
+                              <h4 className="text-lg font-bold text-slate-800">{app.pharmacist?.fullName || 'Apotheker'}</h4>
+                              <p className="text-sm text-slate-500 font-medium">Bewerbung eingegangen</p>
+                            </div>
                           </div>
-                          <div>
-                            <p className="font-bold text-slate-800">{app.pharmacist?.fullName || 'Apotheker'}</p>
-                            <p className="text-xs text-slate-500">Bewerbung eingegangen</p>
+                          
+                          {/* Actions */}
+                          <div className="flex space-x-3 items-center">
+                            {app.status === 'Pending' && (
+                              <button 
+                                onClick={() => openComplianceModal(app.id)}
+                                className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-cyan-500 text-white hover:from-blue-700 hover:to-cyan-600 rounded-xl font-bold text-sm transition-all shadow-md hover:shadow-lg"
+                              >
+                                Akzeptieren
+                              </button>
+                            )}
+                            {app.status === 'Accepted' && (
+                              <span className="inline-flex items-center px-4 py-2 bg-green-50 text-sm font-bold text-green-700 rounded-xl border border-green-200">
+                                <CheckCircle2 className="w-5 h-5 mr-2" /> Bestätigt
+                              </span>
+                            )}
                           </div>
                         </div>
                         
-                        <div>
-                          {app.status === 'Pending' && (
-                            <button 
-                              onClick={() => openComplianceModal(app.id)}
-                              className="px-4 py-2 bg-white border border-cyan-200 text-cyan-700 hover:bg-cyan-50 hover:border-cyan-300 rounded-lg font-semibold text-sm transition-colors shadow-sm"
-                            >
-                              Akzeptieren
-                            </button>
-                          )}
+                        {/* Profile Details Grid */}
+                        <div className="mt-6 pt-5 border-t border-slate-100 grid grid-cols-2 md:grid-cols-4 gap-4">
+                          <div>
+                            <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Honorar</p>
+                            <p className="font-bold text-slate-800">{app.pharmacist?.hourlyRate} €/h</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Erfahrung</p>
+                            <p className="font-bold text-slate-800">{app.pharmacist?.experienceYears || '-'}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold">WWS Systeme</p>
+                            <p className="font-bold text-slate-800 truncate" title={app.pharmacist?.wwsProficiency}>{app.pharmacist?.wwsProficiency || '-'}</p>
+                          </div>
                           {app.status === 'Accepted' && (
-                            <span className="inline-flex items-center text-sm font-bold text-green-600">
-                              <CheckCircle2 className="w-4 h-4 mr-1" /> Bestätigt
-                            </span>
+                            <div>
+                              <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Kontakt</p>
+                              <p className="font-bold text-blue-600">{app.pharmacist?.email || '-'}</p>
+                              <p className="font-bold text-slate-700">{app.pharmacist?.phoneNumber || '-'}</p>
+                            </div>
                           )}
                         </div>
+                        
+                        {/* Verification Documents */}
+                        <div className="mt-5 bg-slate-50 p-4 rounded-xl border border-slate-200 flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            <span className={`flex h-2 w-2 rounded-full ${app.pharmacist?.approbationDocumentPath ? 'bg-green-500' : 'bg-amber-500'}`}></span>
+                            <span className="text-sm font-semibold text-slate-700">
+                              {app.pharmacist?.approbationDocumentPath ? 'KYC Verifiziert (Approbationsurkunde liegt vor)' : 'KYC Ausstehend (Kein Dokument)'}
+                            </span>
+                          </div>
+                          {app.pharmacist?.approbationDocumentPath ? (
+                            <a 
+                              href={`https://serviceapotheke.tech/api/Pharmacist/${app.pharmacist.id}/document/approbation`}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="text-sm font-bold text-blue-600 hover:text-blue-800 underline"
+                            >
+                              Dokument prüfen
+                            </a>
+                          ) : (
+                            <span className="text-sm text-slate-400 italic">Fehlt</span>
+                          )}
+                        </div>
+
                       </div>
                     ))}
                   </div>
