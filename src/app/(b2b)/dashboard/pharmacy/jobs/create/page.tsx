@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Briefcase, Euro, Calendar as CalendarIcon, Clock, AlertCircle } from 'lucide-react';
 import api from '@/lib/api';
 import { useAuth } from '@/lib/AuthContext';
@@ -13,8 +13,11 @@ type ShiftDay = {
   pauseMinutes: number;
 };
 
-export default function CreateJobPost() {
+import { Suspense } from 'react';
+
+function CreateJobPostContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -27,6 +30,24 @@ export default function CreateJobPost() {
   const [singleStart, setSingleStart] = useState('08:00');
   const [singleEnd, setSingleEnd] = useState('18:00');
   const [singlePause, setSinglePause] = useState<number>(30);
+
+  useEffect(() => {
+    const dateParam = searchParams.get('date');
+    if (dateParam) {
+      try {
+        const d = new Date(dateParam);
+        if (!isNaN(d.getTime())) {
+          const yyyy = d.getFullYear();
+          const mm = String(d.getMonth() + 1).padStart(2, '0');
+          const dd = String(d.getDate()).padStart(2, '0');
+          const dateStr = ${yyyy}--;
+          setSingleDate(dateStr);
+          setMultiStartDate(dateStr);
+          setMultiEndDate(dateStr);
+        }
+      } catch (e) {}
+    }
+  }, [searchParams]);
 
   // Multi Day State
   const [multiStartDate, setMultiStartDate] = useState('');
@@ -513,3 +534,13 @@ export default function CreateJobPost() {
     </div>
   );
 }
+
+
+export default function CreateJobPost() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center text-slate-500">Lade Formular...</div>}>
+      <CreateJobPostContent />
+    </Suspense>
+  );
+}
+
