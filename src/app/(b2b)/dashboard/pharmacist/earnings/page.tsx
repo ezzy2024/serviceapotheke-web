@@ -237,11 +237,11 @@ export default function EarningsPage() {
                           <button 
                             onClick={async () => {
                               try {
-                                const res = await api.get(`/InvoiceDownload/${item.invoiceId}/zugferd`, { responseType: 'blob' });
+                                const res = await api.get(`/InvoiceDownload/${item.invoiceId}/xml`, { responseType: 'blob' });
                                 const url = window.URL.createObjectURL(new Blob([res.data], { type: 'application/xml' }));
                                 const link = document.createElement('a');
                                 link.href = url;
-                                link.setAttribute('download', `Rechnung_${item.invoiceId}_ZUGFeRD.xml`);
+                                link.setAttribute('download', `Rechnung_${item.invoiceId}_Daten.xml`);
                                 document.body.appendChild(link);
                                 link.click();
                                 link.remove();
@@ -251,7 +251,7 @@ export default function EarningsPage() {
                               }
                             }}
                             className="inline-flex items-center justify-center p-2 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors border border-transparent hover:border-emerald-100"
-                            title="ZUGFeRD XML"
+                            title="Rechnungsdaten (XML)"
                           >
                             <FileText className="w-4 h-4" />
                           </button>

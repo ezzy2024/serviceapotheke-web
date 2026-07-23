@@ -126,11 +126,11 @@ export default function InvoicesPage() {
                         <button 
                           onClick={async () => {
                             try {
-                              const res = await api.get(`/InvoiceDownload/${invoice.id}/zugferd`, { responseType: 'blob' });
+                              const res = await api.get(`/InvoiceDownload/${invoice.id}/xml`, { responseType: 'blob' });
                               const url = window.URL.createObjectURL(new Blob([res.data], { type: 'application/xml' }));
                               const link = document.createElement('a');
                               link.href = url;
-                              link.setAttribute('download', `Rechnung_${invoice.invoiceNumber || invoice.id}_ZUGFeRD.xml`);
+                              link.setAttribute('download', `Rechnung_${invoice.invoiceNumber || invoice.id}_Daten.xml`);
                               document.body.appendChild(link);
                               link.click();
                               link.remove();
