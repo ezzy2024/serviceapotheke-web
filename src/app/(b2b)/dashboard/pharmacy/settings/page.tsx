@@ -85,14 +85,11 @@ export default function SettingsPage() {
     setIsUploading(true);
     try {
       const data = new FormData();
-      data.append('file', file);
-      // Simulate API call or call real API if it exists
-      // await api.post(`/ComplianceUpload/betriebserlaubnis`, data);
+      data.append('license', file);
       
-      // Mock delay
-      await new Promise(r => setTimeout(r, 1200));
+      const res = await api.post(`/Pharmacy/${user?.id}/upload-document`, data);
       
-      setFormData(prev => ({ ...prev, licenseDocumentPath: `/uploads/mock_betriebserlaubnis.pdf` }));
+      setFormData(prev => ({ ...prev, licenseDocumentPath: res.data.path || '' }));
       showToast('Betriebserlaubnis erfolgreich hochgeladen.', 'success');
     } catch (err) {
       showToast('Fehler beim Upload.', 'error');
@@ -227,7 +224,7 @@ export default function SettingsPage() {
                       <FileText className="w-5 h-5 text-slate-800" />
                       <div>
                         <span className="text-sm font-bold text-slate-800 block">Dokument hinterlegt</span>
-                        <a href={formData.licenseDocumentPath} target="_blank" className="text-xs font-bold text-blue-600 hover:underline uppercase tracking-wide">Ansehen</a>
+                        <a href={`${process.env.NEXT_PUBLIC_API_URL || '/api'}/Pharmacy/${user?.id}/document/license`} target="_blank" className="text-xs font-bold text-blue-600 hover:underline uppercase tracking-wide">Ansehen</a>
                       </div>
                     </>
                   ) : (

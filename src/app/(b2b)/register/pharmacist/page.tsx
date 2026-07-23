@@ -289,15 +289,15 @@ export default function PharmacistWizard() {
                     <label className="block text-sm font-semibold text-slate-700 mb-1">Warenwirtschaftssysteme (WWS)</label>
                     <div className="flex gap-2">
                       <select value={currentWws} onChange={(e) => setCurrentWws(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all appearance-none">
-                        <option>Pharmatechnik IXOS</option>
-                        <option>CGM Lauer</option>
-                        <option>ADG</option>
-                        <option>Awinta</option>
+                        <option value="Pharmatechnik IXOS">Pharmatechnik IXOS</option>
+                        <option value="CGM Lauer">CGM Lauer</option>
+                        <option value="ADG">ADG</option>
+                        <option value="Awinta">Awinta</option>
                       </select>
                       <select value={currentLevel} onChange={(e) => setCurrentLevel(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all appearance-none">
-                        <option>Grundkenntnisse</option>
-                        <option>Fortgeschritten</option>
-                        <option>Experte</option>
+                        <option value="Grundkenntnisse">Grundkenntnisse</option>
+                        <option value="Fortgeschritten">Fortgeschritten</option>
+                        <option value="Experte">Experte</option>
                       </select>
                       <Button onClick={addWws} className="bg-white text-slate-700 border border-slate-200 rounded-xl shadow-sm hover:bg-slate-50 hover:text-slate-900 font-semibold px-4 py-3 transition-all inline-flex items-center justify-center" size="md">
                         <Plus className="w-5 h-5" />
