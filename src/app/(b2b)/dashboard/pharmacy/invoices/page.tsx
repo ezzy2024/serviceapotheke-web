@@ -112,7 +112,7 @@ export default function InvoicesPage() {
                       )}
                       {invoice.pdfFilePath && invoice.type === 'PharmacistServiceInvoice' && (
                         <a 
-                          href={`${process.env.NEXT_PUBLIC_API_URL?.replace('/api', '')}/api/InvoiceDownload/${invoice.id}/zugferd`} 
+                          href={`${process.env.NEXT_PUBLIC_API_URL?.replace('/api', '')}/api/InvoiceDownload/${invoice.id}/xml`} 
                           target="_blank"
                           rel="noreferrer"
                           className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 rounded-xl transition-all font-medium text-sm ml-2"

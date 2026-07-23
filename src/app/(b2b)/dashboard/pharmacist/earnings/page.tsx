@@ -222,9 +222,9 @@ export default function EarningsPage() {
                       )}
                       {item.status === 'Approved' && item.invoiceId && (
                         <button
-                          onClick={() => window.open(`${process.env.NEXT_PUBLIC_API_URL?.replace('/api', '')}/api/InvoiceDownload/${item.invoiceId}/zugferd`, '_blank')}
+                          onClick={() => window.open(`${process.env.NEXT_PUBLIC_API_URL?.replace('/api', '')}/api/InvoiceDownload/${item.invoiceId}/xml`, '_blank')}
                           className="p-2 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 rounded-lg transition-colors flex items-center justify-center text-sm font-medium gap-1"
-                          title="ZUGFeRD XML herunterladen"
+                          title="Rechnungsdaten (XML) herunterladen"
                         >
                           <FileText className="w-4 h-4" /> XML
                         </button>
