@@ -42,7 +42,7 @@ export default function SettingsPage() {
         postalCode: data.postalCode || '',
         city: data.city || '',
         softwareSystem: data.softwareSystem || '',
-        licenseDocumentPath: data.licenseDocumentPath || ''
+        licenseDocumentPath: data.freelanceContractDocumentPath || data.licenseDocumentPath || ''
       });
     } catch (err) {
       console.error(err);
