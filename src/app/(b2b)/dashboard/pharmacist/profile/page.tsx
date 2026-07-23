@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/lib/AuthContext';
@@ -16,6 +16,7 @@ export default function ProfilePage() {
 
   const approbationInputRef = useRef<HTMLInputElement>(null);
   const cvInputRef = useRef<HTMLInputElement>(null);
+  const profilePicInputRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -76,7 +77,7 @@ export default function ProfilePage() {
     }
   };
 
-  const handleFileUpload = async (file: File, type: 'approbation' | 'cv') => {
+  const handleFileUpload = async (file: File, type: 'approbation' | 'cv' | 'profilePicture') => {
     setIsUploading(true);
     const form = new FormData();
     form.append(type, file);
@@ -87,7 +88,7 @@ export default function ProfilePage() {
           'Content-Type': 'multipart/form-data'
         }
       });
-      showMessage(`${type === 'approbation' ? 'Approbationsurkunde' : 'Lebenslauf'} erfolgreich hochgeladen.`, 'success');
+      showMessage(`${type === 'approbation' ? 'Approbationsurkunde' : (type === 'cv' ? 'Lebenslauf' : 'Profilbild')} erfolgreich hochgeladen.`, 'success');
       fetchProfile();
     } catch (err: any) {
       showMessage(err.response?.data?.message || 'Fehler beim Hochladen.', 'error');
@@ -123,10 +124,33 @@ export default function ProfilePage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="md:col-span-1 space-y-6">
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-white/70 backdrop-blur-xl border border-white/50 rounded-2xl p-6 shadow-sm">
-            <div className="flex flex-col items-center mb-6">
-              <div className="w-24 h-24 bg-cyan-100 rounded-full flex items-center justify-center text-3xl font-bold text-cyan-700 mb-4 shadow-inner">
-                {profile?.fullName?.substring(0, 2).toUpperCase() || 'PH'}
-              </div>
+            <div className="flex flex-col items-center mb-6 relative group">
+              {profile?.profilePicturePath ? (
+                <div className="w-24 h-24 rounded-full mb-4 overflow-hidden border-2 border-slate-200">
+                  <img src={`${process.env.NEXT_PUBLIC_API_URL || '/api'}/Pharmacist/${profile.id}/document/profile`} alt={profile?.fullName} className="w-full h-full object-cover" />
+                </div>
+              ) : (
+                <div className="w-24 h-24 bg-cyan-100 rounded-full flex items-center justify-center text-3xl font-bold text-cyan-700 mb-4 shadow-inner">
+                  {profile?.fullName?.substring(0, 2).toUpperCase() || 'PH'}
+                </div>
+              )}
+              <input 
+                type="file" 
+                ref={profilePicInputRef} 
+                className="hidden" 
+                accept=".jpg,.jpeg,.png"
+                onChange={(e) => e.target.files && handleFileUpload(e.target.files[0], 'profilePicture')} 
+              />
+              <button 
+                type="button"
+                onClick={() => profilePicInputRef.current?.click()}
+                disabled={isUploading}
+                className="absolute bottom-16 right-1/2 translate-x-12 bg-white border border-slate-200 p-1.5 rounded-full shadow-md text-slate-500 hover:text-blue-600 transition-colors opacity-0 group-hover:opacity-100 disabled:opacity-50"
+                title="Profilbild ändern"
+              >
+                <UploadCloud className="w-4 h-4" />
+              </button>
+              
               <h2 className="text-xl font-bold text-slate-900">{profile?.fullName}</h2>
               <p className="text-slate-500">{profile?.qualification || 'Apotheker'}</p>
             </div>

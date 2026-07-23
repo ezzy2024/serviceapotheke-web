@@ -38,7 +38,7 @@ export default function ShiftRadarPage() {
   const handleApply = async (jobId: number) => {
     if (!user?.id) return false;
     try {
-      await api.post(`/Allocation/${jobId}/apply`, { pharmacistId: user.id });
+      await api.post(`/Job/JobApplication/apply`, { jobPostId: jobId, pharmacistId: user.id });
       return true; // success
     } catch (error: any) {
       if (error.response?.status === 409) {

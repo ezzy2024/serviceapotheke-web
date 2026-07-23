@@ -1,13 +1,38 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { jobPostingSchema, JobPostingData } from '../schemas/validationSchemas';
 
 export const JobPostFlow: React.FC = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm<JobPostingData>({
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm<JobPostingData>({
     resolver: zodResolver(jobPostingSchema),
     mode: 'onChange',
   });
+
+  const searchParams = useSearchParams();
+  const dateParam = searchParams.get('date');
+
+  useEffect(() => {
+    if (dateParam) {
+      // Parse ISO string and create a datetime-local compliant string (YYYY-MM-DDThh:mm)
+      try {
+        const d = new Date(dateParam);
+        if (!isNaN(d.getTime())) {
+          // Default to 08:00 start and 16:00 end
+          const yyyy = d.getFullYear();
+          const mm = String(d.getMonth() + 1).padStart(2, '0');
+          const dd = String(d.getDate()).padStart(2, '0');
+          
+          const startStr = `${yyyy}-${mm}-${dd}T08:00`;
+          const endStr = `${yyyy}-${mm}-${dd}T16:00`;
+          
+          setValue('shiftStart', startStr);
+          setValue('shiftEnd', endStr);
+        }
+      } catch (e) {}
+    }
+  }, [dateParam]);
 
   const onSubmit = (data: JobPostingData) => {
     console.log('Job Post dispatch:', data);

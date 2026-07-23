@@ -99,7 +99,9 @@ export default function PharmacistWizard() {
         postalCode: formData.postalCode,
         city: formData.city,
         qualification: formData.qualification,
-        wwsProficiency: selectedWwsList.map(w => `${w.system}: ${w.level}`).join(', ') || 'Keine Angabe'
+        wwsProficiency: selectedWwsList.length > 0 
+          ? selectedWwsList.map(w => `${w.system}: ${w.level}`).join(', ') 
+          : `${currentWws}: ${currentLevel}`
       });
 
       // 3. Login
