@@ -44,6 +44,9 @@ export default function ShiftRadarPage() {
       if (error.response?.status === 409) {
         throw new Error('Already applied');
       }
+      if (error.response?.data?.message) {
+        throw new Error(error.response.data.message);
+      }
       throw error;
     }
   };

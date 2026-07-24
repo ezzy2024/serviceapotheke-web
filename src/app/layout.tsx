@@ -20,8 +20,16 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ServiceApotheke Dashboard",
-  description: "Next-Gen Freelance Pharmacist Platform",
+  title: "ServiceApotheke | Die smarte Freelancer-Plattform",
+  description: "Finde flexible Einsätze als Apotheker:in oder sichere dir qualifizierte Vertretungen für deine Apotheke. Einfach, transparent und direkt.",
+  openGraph: {
+    title: "ServiceApotheke | Die smarte Freelancer-Plattform",
+    description: "Finde flexible Einsätze als Apotheker:in oder sichere dir qualifizierte Vertretungen für deine Apotheke.",
+    url: "https://serviceapotheke.tech",
+    siteName: "ServiceApotheke",
+    locale: "de_DE",
+    type: "website",
+  },
 };
 
 import UtmTracker from "@/components/UtmTracker";

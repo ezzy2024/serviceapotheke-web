@@ -53,7 +53,7 @@ export function ShiftCard({
       if (err.message === 'Already applied') {
         setIsApplied(true);
       } else {
-        alert("Fehler bei der Bewerbung. Bitte versuche es später noch einmal.");
+        alert(err.message || "Fehler bei der Bewerbung. Bitte versuche es später noch einmal.");
       }
     } finally {
       setIsApplying(false);

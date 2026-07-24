@@ -4,6 +4,7 @@ interface ComplianceWidgetProps {
   type: 'pharmacist' | 'pharmacy';
   data: {
     isApprobationVerified?: boolean;
+    status?: string | number;
     freelanceContractStatus?: string;
     ustIdValidationStatus?: string;
     hasActiveConsent?: boolean;
@@ -11,6 +12,8 @@ interface ComplianceWidgetProps {
 }
 
 export const ComplianceWidget = ({ type, data }: ComplianceWidgetProps) => {
+  const isVerified = type === 'pharmacy' ? (data.status === 1 || data.status === 'Verified') : data.isApprobationVerified;
+
   return (
     <div className="bg-white rounded-xl border border-slate-200 p-6 mb-8 shadow-sm">
       <h2 className="text-lg font-bold text-slate-800 flex items-center mb-4">
@@ -20,7 +23,7 @@ export const ComplianceWidget = ({ type, data }: ComplianceWidgetProps) => {
         
         {/* Approbation / License */}
         <div className="flex items-start gap-3 p-3 bg-slate-50 rounded-lg">
-          {data.isApprobationVerified ? (
+          {isVerified ? (
             <ShieldCheck className="w-5 h-5 text-green-500 mt-0.5" />
           ) : (
             <AlertTriangle className="w-5 h-5 text-amber-500 mt-0.5" />
@@ -30,7 +33,7 @@ export const ComplianceWidget = ({ type, data }: ComplianceWidgetProps) => {
               {type === 'pharmacist' ? 'Approbationsurkunde' : 'Betriebserlaubnis'}
             </p>
             <p className="text-xs text-slate-500">
-              {data.isApprobationVerified ? 'Verifiziert' : 'Ausstehend/Fehlend'}
+              {isVerified ? 'Verifiziert' : 'Ausstehend/Fehlend'}
             </p>
           </div>
         </div>
