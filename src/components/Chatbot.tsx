@@ -113,6 +113,11 @@ export default function Chatbot() {
               </button>
             </div>
 
+            {/* AI Disclaimer */}
+            <div className="bg-amber-100 text-amber-900 text-xs p-3 border-b border-amber-200">
+              <span className="font-bold text-amber-700">Wichtiger Hinweis:</span> KI-generierte Analyse — kein Ersatz für professionelle pharmazeutische/klinische Beurteilung. Bitte vor jedem Handeln unabhängig überprüfen.
+            </div>
+
             {/* Messages Area */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50">
               {messages.map((msg) => (
