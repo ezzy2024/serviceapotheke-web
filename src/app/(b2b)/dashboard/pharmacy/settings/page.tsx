@@ -199,7 +199,7 @@ export default function SettingsPage() {
                 onChange={e => setFormData({...formData, softwareSystem: e.target.value})}
                 className="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 focus:ring-0 focus:outline-none focus:shadow-md rounded-xl transition-all font-bold text-slate-800"
               >
-                <option value="">Bitte whlen...</option>
+                <option value="">Bitte wählen...</option>
                 <option value="awinta">awinta / Noventi</option>
                 <option value="cgm">CGM Lauer</option>
                 <option value="pharmatechnik">Pharmatechnik (IXOS)</option>
@@ -242,7 +242,7 @@ export default function SettingsPage() {
                   className="bg-white border border-slate-200 text-slate-800 px-4 py-2 font-semibold text-xs tracking-wide shadow-sm rounded-lg hover:-translate-y-0.5 hover:shadow rounded-lg transition-all flex items-center gap-2 disabled:opacity-50"
                 >
                   {isUploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
-                  ndern
+                  ändern
                 </button>
               </div>
             </div>
