@@ -267,6 +267,17 @@ export default function PdlDashboardPage() {
           <ComplianceBadgesGroup />
         </div>
 
+      {/* AI Disclaimer */}
+      <div className="bg-amber-100 border border-amber-300 rounded-xl p-4 flex gap-3 items-start shadow-sm mt-2 mb-6">
+        <AlertTriangle className="w-6 h-6 text-amber-600 shrink-0 mt-0.5" />
+        <div>
+          <h4 className="font-bold text-amber-900">Wichtiger Hinweis zur KI-Analyse</h4>
+          <p className="text-amber-800 text-sm mt-1">
+            KI-generierte Analyse (AMTS) — <strong>kein Ersatz für professionelle pharmazeutische/klinische Beurteilung</strong>. Bitte vor jedem Handeln unabhängig überprüfen.
+          </p>
+        </div>
+      </div>
+
       {/* Upload Zone */}
       <motion.div 
         initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
