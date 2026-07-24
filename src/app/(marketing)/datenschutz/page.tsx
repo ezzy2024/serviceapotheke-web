@@ -14,31 +14,79 @@ export default function DatenschutzPage() {
           </p>
           
           <div className="prose prose-slate prose-lg max-w-none prose-headings:font-bold prose-headings:text-slate-900">
-            <h2>1. Datenschutz auf einen Blick</h2>
-            <h3>Allgemeine Hinweise</h3>
+            <h2>1. Verantwortlicher</h2>
             <p>
-              Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können.
+              Verantwortlicher im Sinne der Datenschutz-Grundverordnung (DSGVO) ist:<br />
+              Ezzeldin Hassan, Service Apotheke (Einzelunternehmer), Karlsplatz 2, 47798 Krefeld<br />
+              E-Mail: <a href="mailto:team@serviceapotheke.tech" className="text-blue-600 hover:text-blue-500">team@serviceapotheke.tech</a>, Telefon: +49 151 66884447
             </p>
 
-            <h2>2. Datenerfassung auf dieser Website</h2>
-            <h3>Wer ist verantwortlich für die Datenerfassung auf dieser Website?</h3>
+            <h2>2. Datenschutzbeauftragter</h2>
             <p>
-              Die Datenverarbeitung auf dieser Website erfolgt durch den Websitebetreiber. Dessen Kontaktdaten können Sie dem Impressum dieser Website entnehmen.
+              Derzeit ist kein Datenschutzbeauftragter bestellt. Angesichts der Verarbeitung besonderer Kategorien personenbezogener Daten (Gesundheitsdaten im Rahmen der KI-gestützten Medikationsanalyse, siehe Ziffer 7) empfehlen wir dringend, diesen Punkt mit einem Fachanwalt für Datenschutzrecht zu klären, da sich hieraus nach § 38 BDSG i. V. m. Art. 37 DSGVO eine Pflicht zur Bestellung ergeben kann, unabhängig von der Mitarbeiterzahl.
             </p>
 
-            <h3>Wie erfassen wir Ihre Daten?</h3>
+            <h2>3. Allgemeines zur Datenverarbeitung</h2>
             <p>
-              Ihre Daten werden zum einen dadurch erhoben, dass Sie uns diese mitteilen. Hierbei kann es sich z. B. um Daten handeln, die Sie in ein Kontaktformular eingeben oder während einer Kiosk-Terminbuchung übermitteln. Andere Daten werden automatisch oder nach Ihrer Einwilligung beim Besuch der Website durch unsere IT-Systeme erfasst.
-            </p>
-
-            <h2>3. SSL- bzw. TLS-Verschlüsselung</h2>
-            <p>
-              Diese Seite nutzt aus Sicherheitsgründen und zum Schutz der Übertragung vertraulicher Inhalte, wie zum Beispiel Bestellungen oder Anfragen, die Sie an uns als Seitenbetreiber senden, eine SSL- bzw. TLS-Verschlüsselung. Eine verschlüsselte Verbindung erkennen Sie daran, dass die Adresszeile des Browsers von „http://“ auf „https://“ wechselt und an dem Schloss-Symbol in Ihrer Browserzeile.
+              ServiceApotheke ist eine Vermittlungsplattform, die Apotheken mit approbierten Apotheker:innen für die Übernahme von Vertretungsdiensten (Schichten) zusammenbringt. Zur Erbringung dieser Vermittlungsleistung sowie ausgewählter kostenpflichtiger Zusatzfunktionen verarbeiten wir personenbezogene Daten unserer Nutzer:innen.
             </p>
 
             <h2>4. Ihre Rechte</h2>
             <p>
-              Sie haben jederzeit das Recht, unentgeltlich Auskunft über Herkunft, Empfänger und Zweck Ihrer gespeicherten personenbezogenen Daten zu erhalten. Sie haben außerdem ein Recht, die Berichtigung oder Löschung dieser Daten zu verlangen. Wenn Sie eine Einwilligung zur Datenverarbeitung erteilt haben, können Sie diese Einwilligung jederzeit für die Zukunft widerrufen.
+              Auskunft (Art. 15 DSGVO), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18), Datenübertragbarkeit (Art. 20), Widerspruch (Art. 21), Widerruf erteilter Einwilligungen (Art. 7 Abs. 3), Beschwerde bei einer Aufsichtsbehörde (Art. 77).<br />
+              Zuständige Aufsichtsbehörde: Landesbeauftragte für Datenschutz und Informationsfreiheit Nordrhein-Westfalen (LDI NRW), Kavalleriestraße 2–4, 40213 Düsseldorf.
+            </p>
+
+            <h2>5. Welche Daten wir verarbeiten</h2>
+            <h3>5.1 Apotheken</h3>
+            <p>
+              Stammdaten (Name, Anschrift, Kontaktdaten), Betriebserlaubnis/Apothekenbetriebserlaubnis, Umsatzsteuer-ID, hochgeladene Dokumente, Nutzungs- und Zugriffsdaten, UTM-/Kampagnendaten zur Nachverfolgung der Registrierungsquelle.
+            </p>
+
+            <h3>5.2 Apotheker:innen (Vertretungspersonal)</h3>
+            <p>
+              Stammdaten, berufsbezogene Daten (Approbation, Berufserfahrung, WWS-Kenntnisse), Finanzdaten (IBAN, BIC, Steuer-ID), hochgeladene Nachweisdokumente, Profilbild, Geräte- und Standortdaten (Push-Token, Standortdaten zur Schichtsuche).
+            </p>
+
+            <h3>5.3 Verbraucher:innen</h3>
+            <p>
+              Stammdaten sowie ggf. Zeitpunkt eines erklärten Verzichts auf das gesetzliche Widerrufsrecht (§ 356 Abs. 4 BGB).
+            </p>
+
+            <h2>6. Zwecke und Rechtsgrundlagen</h2>
+            <p>
+              Vertragsabwicklung: Art. 6 Abs. 1 lit. b DSGVO. Gesetzliche Pflichten (Rechnungsstellung, steuerliche Aufbewahrung, KYC): Art. 6 Abs. 1 lit. c. Berechtigtes Interesse (Betrugsprävention, Plattformsicherheit, Reichweitenmessung): Art. 6 Abs. 1 lit. f. Freiwillige Zusatzfunktionen mit Einwilligung (Standortdienste, Marketing, KI-Medikationsanalyse): Art. 6 Abs. 1 lit. a, für Gesundheitsdaten zusätzlich Art. 9 Abs. 2 lit. a.
+            </p>
+
+            <h2>7. Besondere Kategorien personenbezogener Daten – KI-gestützte Funktionen (PDL/AMTS, Chatbot)</h2>
+            <p>
+              Im Rahmen der kostenpflichtigen Zusatzleistung &quot;Pharmazeutische Dienstleistungen&quot; (PDL) sowie des Chatbots bieten wir eine KI-gestützte Analyse zur erweiterten Medikationsberatung bei Polymedikation (AMTS) an. Hierbei werden von der Apotheke eingegebene Medikationsdaten von Patient:innen – dies können Gesundheitsdaten im Sinne des Art. 9 DSGVO sein – zur Analyse an den KI-Dienst Google Gemini (Google Ireland Limited bzw. Google LLC) übermittelt. Die Nutzung dieser Funktion setzt eine gesonderte, ausdrückliche Einwilligung nach Art. 9 Abs. 2 lit. a DSGVO voraus. Die von der KI generierten Analysen ersetzen keine pharmazeutische oder ärztliche Beurteilung und sind entsprechend gekennzeichnet.
+            </p>
+
+            <h2>8. Empfänger / Auftragsverarbeiter</h2>
+            <p>
+              Google Cloud Platform (Cloud Run, Cloud SQL, Cloud Storage) – Hosting, EU-Serverstandort (europe-west1/europe-west3). Google Firebase Cloud Messaging – Push-Benachrichtigungen. Google Gemini API – KI-Medikationsanalyse und Chatbot. IONOS SE – System- und Transaktions-E-Mails.
+            </p>
+
+            <h2>9. Datenübermittlung in Drittländer</h2>
+            <p>
+              Da einzelne Dienstleister (Google) ihren Hauptsitz in den USA haben, kann es im Einzelfall zu einer Übermittlung in ein Drittland kommen, auf Grundlage von EU-Standardvertragsklauseln und/oder dem EU-U.S. Data Privacy Framework.
+            </p>
+
+            <h2>10. Speicherdauer</h2>
+            <p>
+              Rechnungen/steuerrelevante Unterlagen: 10 Jahre (§ 147 AO, § 257 HGB). Nachweisdokumente: für die Dauer des Kontos, danach Anonymisierung. Protokoll-/Sitzungs-/Token-Daten: kurzfristig, i. d. R. unter 30 Tage.
+            </p>
+
+            <h2>11. Cookies und Tracking</h2>
+            <p>
+              Wir setzen technisch notwendige Cookies zur Bereitstellung der Plattform ein. Darüberhinausgehende Cookies/Tracking nur mit vorheriger Einwilligung über ein Cookie-Consent-Banner.
+            </p>
+
+            <h2>12. Änderungen dieser Datenschutzerklärung</h2>
+            <p>
+              Wir behalten uns vor, diese Datenschutzerklärung an geänderte Rechtslagen oder Änderungen des Dienstes anzupassen.<br />
+              Stand: Juli 2026
             </p>
           </div>
         </div>
