@@ -14,11 +14,13 @@ export default function ImpressumPage() {
           </p>
           
           <div className="prose prose-slate prose-lg max-w-none prose-headings:font-bold prose-headings:text-slate-900">
+            <h2>Angaben gemäß § 5 DDG</h2>
             <div className="bg-gradient-to-r from-slate-50 to-blue-50/50 p-8 rounded-2xl border border-slate-200/60 mb-12 shadow-sm">
               <h3 className="mt-0 mb-4 text-blue-900">Service Apotheke</h3>
               <p className="my-1 font-medium text-slate-700">Ezzeldin Hassan (Einzelunternehmer)</p>
               <p className="my-1 text-slate-600">Karlsplatz 2</p>
               <p className="my-1 text-slate-600">47798 Krefeld</p>
+              <p className="my-1 text-slate-600">Deutschland</p>
             </div>
 
             <h2>Kontakt</h2>
@@ -27,25 +29,39 @@ export default function ImpressumPage() {
               E-Mail: <a href="mailto:team@serviceapotheke.tech" className="text-blue-600 hover:text-blue-500 transition-colors">team@serviceapotheke.tech</a>
             </p>
 
-            <h2>Umsatzsteuer-ID</h2>
+            <h2>Umsatzsteuer</h2>
             <p>
-              Kleinunternehmerregelung gemäß § 19 UStG
+              Kleinunternehmer gemäß § 19 UStG. Es wird keine Umsatzsteuer ausgewiesen.
             </p>
 
-            <h2>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h2>
+            <h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
             <p>
               Ezzeldin Hassan<br />
               Karlsplatz 2<br />
               47798 Krefeld
             </p>
 
-            <h2>EU-Streitschlichtung</h2>
+            <h2>Streitschlichtung</h2>
             <p>
-              Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: 
-              <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener noreferrer" className="ml-1 text-blue-600 hover:text-blue-500 transition-colors">
-                https://ec.europa.eu/consumers/odr/
-              </a>.<br/>
-              Unsere E-Mail-Adresse finden Sie oben im Impressum.
+              Die Europäische Kommission hat ihre Plattform zur Online-Streitbeilegung (OS-Plattform) zum 20. Juli 2025 eingestellt; ein Verweis auf diese Plattform ist daher nicht mehr zutreffend.
+            </p>
+            <p>
+              Wir sind nicht verpflichtet und nicht bereit, an einem Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle im Sinne des Verbraucherstreitbeilegungsgesetzes (VSBG) teilzunehmen.
+            </p>
+
+            <h2>Haftung für Inhalte</h2>
+            <p>
+              Als Diensteanbieter sind wir gemäß § 7 Abs. 1 DDG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 DDG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.
+            </p>
+
+            <h2>Haftung für Links</h2>
+            <p>
+              Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend entfernen.
+            </p>
+
+            <h2>Urheberrecht</h2>
+            <p>
+              Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.
             </p>
           </div>
         </div>
