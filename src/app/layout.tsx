@@ -41,7 +41,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${bricolage.variable} ${instrument.variable} ${jetbrains.variable} h-full antialiased`}>
+    <html lang="de" className={`${bricolage.variable} ${instrument.variable} ${jetbrains.variable} h-full antialiased`}>
       <body className="font-sans min-h-full flex flex-col bg-bone text-ink">
         <UtmTracker />
         <ToastContainer />
