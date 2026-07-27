@@ -20,7 +20,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: "https://api.serviceapotheke.tech/api/:path*",
+        destination: "https://serviceapotheke-api-830781040278.europe-west1.run.app/api/:path*",
       },
     ];
   },

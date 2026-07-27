@@ -4,6 +4,8 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '0 2 * * *' # Every night at 2 AM UTC
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   smoke-test:
